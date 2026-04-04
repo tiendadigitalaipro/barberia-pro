@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Barbería Pro — A2K Digital Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--bg2:#111;--bg3:#181818;--bg4:#222;--card:#1c1c1c;--border:#2a2a2a;--gold:#c9a96e;--gold2:#d4af37;--red:#dc2626;--green:#16a34a;--orange:#f59e0b;--blue:#2563eb;--violet:#7c3aed;--pink:#db2777;--brown:#a16207;--teal:#0d9488;--text:#e5e5e5;--text2:#888;--text3:#555;--radius:6px;--mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;--display:'Oswald',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow:hidden;height:100vh;width:100vw}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+input,select,textarea,button{font-family:var(--sans);outline:none}
+button{cursor:pointer;border:none;background:none;color:var(--text)}
+input,select,textarea{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:8px 12px;font-size:13px}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+select option{background:var(--bg3);color:var(--text)}
+.form-group{margin-bottom:12px}
+.form-label{display:block;font-size:11px;color:var(--text2);margin-bottom:4px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.form-input{width:100%;padding:9px 12px}
+.btn{padding:8px 16px;border-radius:var(--radius);font-weight:600;font-size:12px;transition:opacity .15s;display:inline-flex;align-items:center;gap:6px;justify-content:center}
+.btn:hover{opacity:.85}
+.btn-sm{padding:5px 10px;font-size:11px}
+.btn-danger{background:rgba(220,38,38,.15);color:var(--red);border:1px solid rgba(220,38,38,.3)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;font-weight:700}
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--orange));color:#000}
+.btn-ghost{border:1px solid var(--border);color:var(--text2)}
+.btn-green{background:rgba(22,163,74,.15);color:var(--green);border:1px solid rgba(22,163,74,.3)}
+.btn-red{background:linear-gradient(135deg,var(--red),#b91c1c);color:#fff;font-weight:700}
+.btn-block{width:100%}
+.badge{display:inline-flex;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;letter-spacing:.5px}
+.badge-gold{background:rgba(201,169,110,.15);color:var(--gold);border:1px solid rgba(201,169,110,.3)}
+.badge-green{background:rgba(22,163,74,.15);color:var(--green)}
+.badge-red{background:rgba(220,38,38,.15);color:var(--red)}
+.badge-blue{background:rgba(37,99,235,.15);color:var(--blue)}
+.toast{position:fixed;bottom:70px;right:20px;padding:12px 20px;border-radius:var(--radius);font-size:13px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:320px;font-weight:600}
+.toast.show{opacity:1}
+.toast.ok{background:rgba(22,163,74,.9);color:#fff}
+.toast.err{background:rgba(220,38,38,.9);color:#fff}
+.toast.warn{background:rgba(245,158,11,.9);color:#000}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;display:none;align-items:center;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px;max-width:600px;width:95%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.modal-title{font-family:var(--display);font-size:20px;color:var(--gold);margin-bottom:16px;font-weight:700}
+/* ===== LOCK SCREEN ===== */
+#lock-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:2000}
+.lock-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:36px;width:420px;max-width:95%;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.lock-logo{text-align:center;margin-bottom:8px}
+.lock-logo img{width:80px;height:80px;border-radius:16px}
+.lock-logo .fallback-logo{width:80px;height:80px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:40px}
+.lock-title{text-align:center;font-family:var(--display);font-size:26px;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.lock-sub{text-align:center;font-size:12px;color:var(--text3);margin-bottom:24px}
+.lock-device{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px;text-align:center;font-family:var(--mono);font-size:13px;color:var(--gold);letter-spacing:2px;margin-bottom:16px}
+.lock-err{color:var(--red);font-size:12px;text-align:center;min-height:18px;margin-top:8px}
+/* ===== MAIN APP ===== */
+#main-app{display:none;height:100vh;flex-direction:column}
+/* HEADER */
+#top-bar{height:50px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:16px;flex-shrink:0;z-index:100}
+.top-logo{font-family:var(--display);font-size:18px;color:var(--gold);font-weight:700;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.top-logo img{width:28px;height:28px;border-radius:6px}
+.top-clock{font-family:var(--mono);font-size:14px;color:var(--text2);margin-left:auto}
+.top-user{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px}
+.top-cash{font-family:var(--mono);font-size:13px;color:var(--green);background:rgba(22,163,74,.1);padding:4px 10px;border-radius:var(--radius);border:1px solid rgba(22,163,74,.2)}
+.top-lic{font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700}
+/* BOTTOM NAV */
+#bottom-nav{height:54px;background:var(--bg2);border-top:1px solid var(--border);display:flex;flex-shrink:0;z-index:100}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;color:var(--text3);transition:color .15s;font-weight:600}
+.nav-btn.active{color:var(--gold)}
+.nav-btn i{font-size:18px}
+/* VIEWS */
+.view{display:none;height:100%;overflow:hidden}
+.view.active{display:flex;flex-direction:column}
+/* ===== POS VIEW ===== */
+#view-pos{flex-direction:row!important}
+.pos-cat-sidebar{width:72px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0}
+.cat-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px;border:none;background:none;color:var(--text2);cursor:pointer;border-bottom:1px solid var(--border);transition:all .15s;min-height:68px;gap:2px}
+.cat-btn .cat-emoji{font-size:22px}
+.cat-btn .cat-label{font-size:9px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;text-align:center;line-height:1.1}
+.cat-btn.active{color:#fff}
+.cat-btn:hover{background:rgba(255,255,255,.04)}
+.pos-center{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.pos-search{padding:8px;flex-shrink:0}
+.pos-search input{width:100%;height:38px;padding:0 12px;font-size:13px;border-radius:var(--radius)}
+.pos-grid{flex:1;overflow-y:auto;padding:8px;display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;align-content:start}
+.pos-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:all .12s;min-height:85px;justify-content:center;text-align:center}
+.pos-item:hover{border-color:var(--gold);background:rgba(201,169,110,.06);transform:scale(1.02)}
+.pos-item:active{transform:scale(.97);background:rgba(201,169,110,.12)}
+.pos-item .item-emoji{font-size:24px}
+.pos-item .item-name{font-size:11px;font-weight:600;line-height:1.2;color:var(--text)}
+.pos-item .item-price{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--gold)}
+/* TICKET PANEL */
+.pos-ticket{width:360px;background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+.ticket-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.ticket-num{font-family:var(--mono);font-size:13px;color:var(--text2)}
+.ticket-client{font-size:12px;color:var(--blue);cursor:pointer;padding:2px 6px;background:rgba(37,99,235,.1);border-radius:4px}
+.ticket-items{flex:1;overflow-y:auto;padding:8px 12px}
+.ticket-item{display:flex;justify-content:space-between;align-items:center;padding:6px 4px;border-bottom:1px solid rgba(255,255,255,.03);font-size:12px;gap:8px}
+.ticket-item-info{flex:1;min-width:0}
+.ticket-item-name{font-weight:600;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ticket-item-price{font-family:var(--mono);color:var(--text2);font-size:11px}
+.ticket-item-qty{display:flex;align-items:center;gap:4px}
+.ticket-item-qty button{width:22px;height:22px;border-radius:4px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.ticket-item-qty span{font-family:var(--mono);font-weight:700;min-width:20px;text-align:center}
+.ticket-item-total{font-family:var(--mono);font-weight:700;color:var(--text);min-width:55px;text-align:right}
+.ticket-item-del{color:var(--text3);cursor:pointer;padding:2px;font-size:11px}
+.ticket-item-del:hover{color:var(--red)}
+.ticket-divider{border-top:1px dashed var(--border);margin:8px 0}
+.ticket-summary{padding:12px 16px;border-top:1px solid var(--border);flex-shrink:0}
+.ticket-row{display:flex;justify-content:space-between;padding:3px 0;font-size:13px}
+.ticket-row.total{font-size:20px;font-weight:800;color:var(--gold);padding-top:6px;border-top:2px solid var(--gold);margin-top:4px}
+.ticket-row .label{color:var(--text2)}
+.ticket-row .value{font-family:var(--mono);font-weight:700}
+.ticket-cobrar{margin:10px 16px 12px;padding:14px;border-radius:var(--radius);background:linear-gradient(135deg,var(--red),#b91c1c);color:#fff;font-size:16px;font-weight:800;letter-spacing:1px;text-align:center;cursor:pointer;border:none;font-family:var(--display)}
+.ticket-cobrar:hover{opacity:.9}
+.ticket-actions{display:flex;gap:6px;padding:0 16px 12px;flex-wrap:wrap}
+.ticket-actions .btn{flex:1;min-width:70px;justify-content:center;font-size:11px}
+/* PAYMENT MODAL */
+.pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.pay-btn{padding:14px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .15s}
+.pay-btn:hover{border-color:var(--gold);background:rgba(201,169,110,.08)}
+.pay-btn i{font-size:22px;color:var(--gold)}
+.pay-btn .pay-name{font-size:12px;font-weight:600}
+.pay-btn .pay-badge{font-size:9px;padding:2px 6px;border-radius:8px;font-weight:700}
+.pay-badge-usd{background:rgba(22,163,74,.15);color:var(--green)}
+.pay-badge-bs{background:rgba(37,99,235,.15);color:var(--blue)}
+.pay-badge-mix{background:rgba(201,169,110,.15);color:var(--gold)}
+.pay-amount{text-align:center;font-family:var(--mono);font-size:28px;font-weight:800;color:var(--gold);margin:12px 0}
+/* DASHBOARD */
+.dash-grid{padding:16px;overflow-y:auto;flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-content:start}
+.dash-stat{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.dash-stat .stat-num{font-family:var(--mono);font-size:28px;font-weight:800}
+.dash-stat .stat-label{font-size:11px;color:var(--text2);margin-top:2px}
+.dash-stat .stat-change{font-size:11px;margin-top:4px}
+.dash-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;grid-column:span 2}
+.dash-card-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.chart-bars{display:flex;align-items:flex-end;gap:8px;height:120px;padding-top:10px}
+.chart-bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.chart-bar-fill{width:100%;background:linear-gradient(180deg,var(--gold),rgba(201,169,110,.2));border-radius:4px 4px 0 0;min-height:4px;transition:height .3s}
+.chart-bar-label{font-size:10px;color:var(--text3)}
+.chart-bar-val{font-size:10px;font-family:var(--mono);color:var(--text2)}
+/* AGENDA */
+.agenda-container{flex:1;overflow-y:auto;padding:16px}
+.agenda-nav{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.agenda-date{font-family:var(--display);font-size:18px;color:var(--gold);font-weight:600}
+.agenda-timeline{position:relative;min-height:500px}
+.agenda-slot{display:flex;border-bottom:1px solid var(--border);min-height:40px;align-items:flex-start}
+.agenda-time{width:60px;font-family:var(--mono);font-size:11px;color:var(--text3);padding:6px 8px 0 0;flex-shrink:0;text-align:right}
+.agenda-content{flex:1;padding:4px 8px;min-height:36px}
+.agenda-event{background:rgba(201,169,110,.12);border-left:3px solid var(--gold);padding:6px 10px;border-radius:0 6px 6px 0;margin-bottom:4px;cursor:pointer;font-size:12px}
+.agenda-event .evt-time{font-family:var(--mono);color:var(--gold);font-size:10px}
+.agenda-event .evt-name{font-weight:700}
+.agenda-event .evt-detail{color:var(--text2);font-size:11px}
+/* CLIENTS */
+.cli-container{flex:1;overflow-y:auto;padding:16px}
+.cli-search{display:flex;gap:10px;margin-bottom:16px}
+.cli-search input{flex:1}
+.cli-table{width:100%;border-collapse:collapse;font-size:12px}
+.cli-table th{padding:10px 8px;text-align:left;color:var(--text2);font-size:11px;border-bottom:1px solid var(--border);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.cli-table td{padding:8px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle}
+.cli-table tr:hover td{background:rgba(255,255,255,.02)}
+/* MORE MENU */
+.more-grid{padding:24px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;overflow-y:auto;flex:1;align-content:start}
+.more-card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .15s}
+.more-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.more-card i{font-size:28px;color:var(--gold);margin-bottom:8px}
+.more-card .mc-title{font-size:13px;font-weight:700}
+.more-card .mc-desc{font-size:11px;color:var(--text3);margin-top:4px}
+/* SUB VIEWS */
+.sub-view{padding:16px;overflow-y:auto;flex:1}
+.sub-title{font-family:var(--display);font-size:20px;color:var(--gold);font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sub-title .back-btn{cursor:pointer;color:var(--text2);font-size:14px}
+.sub-title .back-btn:hover{color:var(--gold)}
+.search-bar{display:flex;gap:10px;margin-bottom:14px}
+.search-bar input{flex:1;height:38px}
+.filter-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px}
+.filter-tab{padding:6px 12px;border-radius:var(--radius);font-size:11px;font-weight:600;background:var(--bg3);border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all .15s}
+.filter-tab.active{background:rgba(201,169,110,.15);color:var(--gold);border-color:var(--gold)}
+.data-table{width:100%;border-collapse:collapse;font-size:12px}
+.data-table th{padding:10px 8px;text-align:left;color:var(--text2);font-size:11px;border-bottom:1px solid var(--border);font-weight:600}
+.data-table td{padding:8px;border-bottom:1px solid rgba(255,255,255,.03)}
+.data-table tr:hover td{background:rgba(255,255,255,.02)}
+.empty-state{text-align:center;padding:60px 20px;color:var(--text3)}
+.empty-state i{font-size:48px;margin-bottom:12px;display:block}
+.empty-state p{font-size:14px}
+.config-section{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:14px}
+.config-section h3{font-size:14px;font-weight:700;margin-bottom:12px;color:var(--gold);display:flex;align-items:center;gap:8px}
+.pm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.pm-item{display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg4);border-radius:var(--radius);border:1px solid var(--border)}
+.pm-item label{flex:1;font-size:12px;font-weight:600;cursor:pointer}
+.pm-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--gold)}
+</style>
+</head>
+<body>
+
+<!-- ===== LOCK SCREEN ===== -->
+<div id="lock-screen">
+  <div class="lock-card">
+    <div class="lock-logo"><div class="fallback-logo">💈</div></div>
+    <div class="lock-title">BARBERÍA PRO</div>
+    <div class="lock-sub">A2K Digital Studio · Sistema Profesional de Gestión</div>
+    <div id="lock-register">
+      <div class="form-group"><label class="form-label">Nombre del Negocio</label><input type="text" id="reg-negocio" class="form-input" placeholder="Ej: Barbería El Classic"></div>
+      <div class="form-group"><label class="form-label">Teléfono</label><input type="tel" id="reg-telefono" class="form-input" placeholder="Ej: 0414-1234567"></div>
+      <div class="form-group"><label class="form-label">Nombre del Dueño</label><input type="text" id="reg-dueno" class="form-input" placeholder="Ej: Carlos Pérez"></div>
+      <div class="form-group"><label class="form-label">TU DEVICE ID (comparte para obtener licencia)</label><div class="lock-device" id="lock-device-id">LOADING...</div></div>
+      <div class="form-group"><label class="form-label">CÓDIGO DE LICENCIA</label><input type="text" id="reg-licencia" class="form-input" placeholder="BP-PRO-... o BP-DEMO-..." style="font-family:var(--mono);text-align:center;letter-spacing:1px;text-transform:uppercase"></div>
+      <button class="btn btn-primary btn-block" onclick="registrarYActivar()" style="padding:12px;font-size:14px">🔑 Crear Cuenta y Activar</button>
+      <button class="btn btn-ghost btn-block" onclick="usarDemo()" style="margin-top:8px">🎯 Prueba gratuita 5 días</button>
+      <div class="lock-err" id="lock-err"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div id="main-app">
+  <!-- TOP BAR -->
+  <div id="top-bar">
+    <div class="top-logo"><span>💈</span> BARBERÍA PRO</div>
+    <div class="top-clock" id="top-clock">00:00:00</div>
+    <div class="top-user"><i class="fas fa-user"></i> <span id="top-user-name">Admin</span></div>
+    <div class="top-cash"><i class="fas fa-cash-register"></i> $<span id="top-caja">0.00</span></div>
+    <div class="top-lic" id="top-lic-badge">● PRO</div>
+  </div>
+
+  <!-- ===== POS VIEW ===== -->
+  <div class="view active" id="view-pos">
+    <div class="pos-cat-sidebar" id="pos-categories"></div>
+    <div class="pos-center">
+      <div class="pos-search"><input type="text" id="pos-search-input" placeholder="🔍 Buscar servicio..." oninput="filtrarPOSGrid()"></div>
+      <div class="pos-grid" id="pos-grid"></div>
+    </div>
+    <div class="pos-ticket">
+      <div class="ticket-header">
+        <span class="ticket-num">📋 TICKET #<span id="ticket-num">0001</span></span>
+        <span class="ticket-client" id="ticket-client-btn" onclick="selClienteTicket()">👤 Sin cliente</span>
+      </div>
+      <div class="ticket-items" id="ticket-items">
+        <div class="empty-state" style="padding:30px 10px"><i class="fas fa-scissors"></i><p style="font-size:12px;margin-top:8px">Selecciona servicios del catálogo</p></div>
+      </div>
+      <div class="ticket-summary" id="ticket-summary" style="display:none">
+        <div class="ticket-row"><span class="label">Subtotal</span><span class="value" id="t-subtotal">$0.00</span></div>
+        <div class="ticket-row" id="t-desc-row" style="display:none"><span class="label">Descuento</span><span class="value" style="color:var(--red)" id="t-desc">-$0.00</span></div>
+        <div class="ticket-row"><span class="label">Bs</span><span class="value" style="color:var(--text2);font-size:12px" id="t-bs">Bs 0.00</span></div>
+        <div class="ticket-row total"><span class="label">TOTAL</span><span class="value" id="t-total">$0.00</span></div>
+      </div>
+      <button class="ticket-cobrar" id="btn-cobrar" onclick="abrirModalCobro()" style="display:none">💵 COBRAR</button>
+      <div class="ticket-actions">
+        <button class="btn btn-ghost" onclick="pausarVenta()"><i class="fas fa-pause"></i> Pausar</button>
+        <button class="btn btn-ghost" onclick="abrirModalDescuento()"><i class="fas fa-tag"></i> Desc</button>
+        <button class="btn btn-ghost" onclick="selClienteTicket()"><i class="fas fa-user"></i> Cliente</button>
+        <button class="btn btn-danger" onclick="vaciarCarrito()"><i class="fas fa-trash"></i> Vaciar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DASHBOARD ===== -->
+  <div class="view" id="view-dash">
+    <div class="dash-grid" id="dash-grid"></div>
+  </div>
+
+  <!-- ===== AGENDA ===== -->
+  <div class="view" id="view-agenda">
+    <div class="agenda-container">
+      <div class="agenda-nav">
+        <button class="btn btn-ghost btn-sm" onclick="agendaNav(-1)"><i class="fas fa-chevron-left"></i></button>
+        <div class="agenda-date" id="agenda-date"></div>
+        <button class="btn btn-ghost btn-sm" onclick="agendaNav(1)"><i class="fas fa-chevron-right"></i></button>
+        <button class="btn btn-ghost btn-sm" onclick="agendaNav(0)">Hoy</button>
+        <button class="btn btn-gold btn-sm" onclick="abrirModalCita()" style="margin-left:auto"><i class="fas fa-plus"></i> Nueva Cita</button>
+      </div>
+      <div class="agenda-timeline" id="agenda-timeline"></div>
+    </div>
+  </div>
+
+  <!-- ===== CLIENTES ===== -->
+  <div class="view" id="view-clientes">
+    <div class="cli-container">
+      <div class="cli-search">
+        <input type="text" id="cli-buscar" placeholder="🔍 Buscar cliente..." oninput="renderClientes()">
+        <button class="btn btn-gold" onclick="abrirModalCliente()"><i class="fas fa-plus"></i> Nuevo</button>
+      </div>
+      <div id="cli-list"></div>
+    </div>
+  </div>
+
+  <!-- ===== MORE MENU ===== -->
+  <div class="view" id="view-more">
+    <div class="more-grid">
+      <div class="more-card" onclick="showSubView('view-productos')"><i class="fas fa-box"></i><div class="mc-title">Productos</div><div class="mc-desc">Inventario y ventas</div></div>
+      <div class="more-card" onclick="showSubView('view-caja')"><i class="fas fa-cash-register"></i><div class="mc-title">Caja</div><div class="mc-desc">Arqueo y movimientos</div></div>
+      <div class="more-card" onclick="showSubView('view-reportes')"><i class="fas fa-chart-bar"></i><div class="mc-title">Reportes</div><div class="mc-desc">Estadísticas y análisis</div></div>
+      <div class="more-card" onclick="showSubView('view-barberos')"><i class="fas fa-user-tie"></i><div class="mc-title">Barberos</div><div class="mc-desc">Personal y comisiones</div></div>
+      <div class="more-card" onclick="showSubView('view-cola')"><i class="fas fa-users-line"></i><div class="mc-title">Cola de Espera</div><div class="mc-desc">Walk-ins y seguimiento</div></div>
+      <div class="more-card" onclick="showSubView('view-membresias')"><i class="fas fa-id-card"></i><div class="mc-title">Membresías</div><div class="mc-desc">Paquetes y suscripciones</div></div>
+      <div class="more-card" onclick="showSubView('view-config')"><i class="fas fa-cog"></i><div class="mc-title">Configuración</div><div class="mc-desc">Datos del negocio</div></div>
+      <div class="more-card" onclick="mostrarInfoLicencia()"><i class="fas fa-key"></i><div class="mc-title">Licencia</div><div class="mc-desc">Info y activación</div></div>
+    </div>
+  </div>
+
+  <!-- ===== SUB: PRODUCTOS ===== -->
+  <div class="view" id="view-productos">
+    <div class="sub-view">
+      <div class="sub-title"><span class="back-btn" onclick="showView('view-more')"><i class="fas fa-arrow-left"></i></span> 🧴 Productos / Inventario</div>
+      <div class="filter-tabs" id="prod-filter-tabs"></div>
+      <div class="search-bar"><input type="text" id="prod-buscar" placeholder="🔍 Buscar producto..." oninput="renderProductos()"></div>
+      <div id="prod-list"></div>
+    </div>
+  </div>
+
+  <!-- ===== SUB: CAJA ===== -->
+  <div class="view" id="view-caja">
+    <div class="sub-view">
+      <div class="sub-title"><span class="back-btn" onclick="showView('view-more')"><i class="fas fa-arrow-left"></i></span> 💰 Caja / Arqueo</div>
+      <div id="caja-content"></div>
+    </div>
+  </div>
+
+  <!-- ===== SUB: REPORTES ===== -->
+  <div class="view" id="view-reportes">
+    <div class="sub-view">
+      <div class="sub-title"><span class="back-btn" onclick="showView('view-more')"><i class="fas fa-arrow-left"></i></span> 📊 Reportes</div>
+      <div id="reportes-content"></div>
+    </div>
+  </div>
+
+  <!-- ===== SUB: BARBEROS ===== -->
+  <div class="view" id="view-barberos">
+    <div class="sub-view">
+      <div class="sub-title"><span class="back-btn" onclick="showView('view-more')"><i class="fas fa-arrow-left"></i></span> 👨‍🦰 Barberos / Personal</div>
+      <button class="btn btn-gold" onclick="abrirModalBarbero()" style="margin-bottom:14px"><i class="fas fa-plus"></i> Agregar Barbero</button>
+      <div id="barberos-list"></div>
+    </div>
+  </div>
+
+  <!-- ===== SUB: COLA ===== -->
+  <div class="view" id="view-cola">
+    <div class="sub-view">
+      <div class="sub-title"><span class="back-btn" onclick="showView('view-more')"><i class="fas fa-arrow-left"></i></span> 📋 Cola de Espera</div>
+      <button class="btn btn-gold" onclick="agregarCola()" style="margin-bottom:14px"><i class="fas fa-plus"></i> Agregar a Cola</button>
+      <div id="cola-list"></div>
+    </div>
+  </div>
+
+  <!-- ===== SUB: MEMBRESIAS ===== -->
+  <div class="view" id="view-membresias">
+    <div class="sub-view">
+      <div class="sub-title"><span class="back-btn" onclick="showView('view-more')"><i class="fas fa-arrow-left"></i></span> 🏷️ Membresías / Paquetes</div>
+      <button class="btn btn-gold" onclick="abrirModalMembresia()" style="margin-bottom:14px"><i class="fas fa-plus"></i> Crear Paquete</button>
+      <div id="membresias-list"></div>
+    </div>
+  </div>
+
+  <!-- ===== SUB: CONFIG ===== -->
+  <div class="view" id="view-config">
+    <div class="sub-view">
+      <div class="sub-title"><span class="back-btn" onclick="showView('view-more')"><i class="fas fa-arrow-left"></i></span> ⚙️ Configuración</div>
+      <div id="config-content"></div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div id="bottom-nav">
+    <button class="nav-btn active" data-view="view-pos" onclick="navTo(this)"><i class="fas fa-cash-register"></i><span>POS</span></button>
+    <button class="nav-btn" data-view="view-dash" onclick="navTo(this)"><i class="fas fa-chart-pie"></i><span>Inicio</span></button>
+    <button class="nav-btn" data-view="view-agenda" onclick="navTo(this)"><i class="fas fa-calendar"></i><span>Agenda</span></button>
+    <button class="nav-btn" data-view="view-clientes" onclick="navTo(this)"><i class="fas fa-users"></i><span>Clientes</span></button>
+    <button class="nav-btn" data-view="view-more" onclick="navTo(this)"><i class="fas fa-ellipsis"></i><span>Más</span></button>
+  </div>
+</div>
+
+<!-- ===== MODAL: COBRO ===== -->
+<div class="modal-overlay" id="modal-cobro">
+  <div class="modal">
+    <div class="modal-title">💵 Seleccionar Método de Pago</div>
+    <div class="pay-amount">Total: $<span id="pay-total">0.00</span> <span style="font-size:14px;color:var(--text2)">· Bs <span id="pay-bs">0.00</span></span></div>
+    <div class="pay-grid" id="pay-grid"></div>
+    <button class="btn btn-ghost btn-block" onclick="cerrarModal('modal-cobro')" style="margin-top:14px">Cancelar</button>
+  </div>
+</div>
+
+<!-- ===== MODAL: DESCUENTO ===== -->
+<div class="modal-overlay" id="modal-descuento">
+  <div class="modal">
+    <div class="modal-title">🏷️ Aplicar Descuento</div>
+    <div class="form-group"><label class="form-label">Tipo de descuento</label>
+      <select class="form-input" id="desc-tipo"><option value="pct">Porcentaje (%)</option><option value="fix">Monto fijo ($)</option></select>
+    </div>
+    <div class="form-group"><label class="form-label">Valor</label><input type="number" class="form-input" id="desc-valor" placeholder="Ej: 10" min="0"></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn btn-gold btn-block" onclick="aplicarDescuento()">Aplicar</button>
+      <button class="btn btn-ghost btn-block" onclick="cerrarModal('modal-descuento')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: CLIENTE ===== -->
+<div class="modal-overlay" id="modal-cliente">
+  <div class="modal">
+    <div class="modal-title" id="modal-cliente-title">👤 Nuevo Cliente</div>
+    <div class="form-group"><label class="form-label">Nombre completo *</label><input type="text" class="form-input" id="cli-nombre" placeholder="Nombre y apellido"></div>
+    <div class="form-group"><label class="form-label">Teléfono *</label><input type="tel" class="form-input" id="cli-telefono" placeholder="0414-1234567"></div>
+    <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="cli-email" placeholder="correo@ejemplo.com"></div>
+    <div class="form-group"><label class="form-label">Dirección</label><input type="text" class="form-input" id="cli-dir" placeholder="Dirección"></div>
+    <div class="form-group"><label class="form-label">Cumpleaños</label><input type="date" class="form-input" id="cli-cumple"></div>
+    <div class="form-group"><label class="form-label">Etiquetas</label>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
+        <label style="font-size:12px;display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="VIP"> VIP</label>
+        <label style="font-size:12px;display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="Nuevo"> Nuevo</label>
+        <label style="font-size:12px;display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="Moroso"> Moroso</label>
+        <label style="font-size:12px;display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" value="Regular"> Regular</label>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Notas</label><textarea class="form-input" id="cli-notas" rows="2" placeholder="Notas internas..."></textarea></div>
+    <input type="hidden" id="cli-edit-id">
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn btn-gold btn-block" onclick="guardarCliente()">Guardar</button>
+      <button class="btn btn-ghost btn-block" onclick="cerrarModal('modal-cliente')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: CITA ===== -->
+<div class="modal-overlay" id="modal-cita">
+  <div class="modal">
+    <div class="modal-title">📅 Nueva Cita</div>
+    <div class="form-group"><label class="form-label">Cliente *</label><select class="form-input" id="cita-cliente"><option value="">Seleccionar...</option></select></div>
+    <div class="form-group"><label class="form-label">Servicio *</label><select class="form-input" id="cita-servicio"><option value="">Seleccionar...</option></select></div>
+    <div class="form-group"><label class="form-label">Barbero</label><select class="form-input" id="cita-barbero"><option value="">Cualquiera</option></select></div>
+    <div class="form-group"><label class="form-label">Fecha *</label><input type="date" class="form-input" id="cita-fecha"></div>
+    <div class="form-group"><label class="form-label">Hora *</label><input type="time" class="form-input" id="cita-hora" value="10:00"></div>
+    <div class="form-group"><label class="form-label">Notas</label><textarea class="form-input" id="cita-notas" rows="2"></textarea></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn btn-gold btn-block" onclick="guardarCita()">Guardar Cita</button>
+      <button class="btn btn-ghost btn-block" onclick="cerrarModal('modal-cita')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: BARBERO ===== -->
+<div class="modal-overlay" id="modal-barbero">
+  <div class="modal">
+    <div class="modal-title">👨‍🦰 Nuevo Barbero</div>
+    <div class="form-group"><label class="form-label">Nombre *</label><input type="text" class="form-input" id="bar-nombre" placeholder="Nombre completo"></div>
+    <div class="form-group"><label class="form-label">Teléfono</label><input type="tel" class="form-input" id="bar-telefono" placeholder="0414-1234567"></div>
+    <div class="form-group"><label class="form-label">Especialidad</label><input type="text" class="form-input" id="bar-especialidad" placeholder="Ej: Fades, Diseños"></div>
+    <div class="form-group"><label class="form-label">Comisión (%)</label><input type="number" class="form-input" id="bar-comision" value="20" min="0" max="100"></div>
+    <input type="hidden" id="bar-edit-id">
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn btn-gold btn-block" onclick="guardarBarbero()">Guardar</button>
+      <button class="btn btn-ghost btn-block" onclick="cerrarModal('modal-barbero')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: PRODUCTO ===== -->
+<div class="modal-overlay" id="modal-producto">
+  <div class="modal">
+    <div class="modal-title" id="modal-prod-title">🧴 Nuevo Producto</div>
+    <div class="form-group"><label class="form-label">Nombre *</label><input type="text" class="form-input" id="prod-nombre" placeholder="Nombre del producto"></div>
+    <div class="form-group"><label class="form-label">Categoría *</label><select class="form-input" id="prod-categoria"><option>Cuidado Capilar</option><option>Cuidado Barba</option><option>Afeitado</option><option>Cuidado Piel</option><option>Herramientas</option><option>Fragancias</option><option>Accesorios</option></select></div>
+    <div class="form-group"><label class="form-label">Precio ($)</label><input type="number" class="form-input" id="prod-precio" step="0.01" min="0" placeholder="0.00"></div>
+    <div class="form-group"><label class="form-label">Stock</label><input type="number" class="form-input" id="prod-stock" min="0" value="10"></div>
+    <div class="form-group"><label class="form-label">Descripción</label><input type="text" class="form-input" id="prod-desc" placeholder="Breve descripción"></div>
+    <input type="hidden" id="prod-edit-id">
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn btn-gold btn-block" onclick="guardarProducto()">Guardar</button>
+      <button class="btn btn-ghost btn-block" onclick="cerrarModal('modal-producto')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: MEMBRESÍA ===== -->
+<div class="modal-overlay" id="modal-membresia">
+  <div class="modal">
+    <div class="modal-title">🏷️ Nuevo Paquete / Membresía</div>
+    <div class="form-group"><label class="form-label">Nombre *</label><input type="text" class="form-input" id="mem-nombre" placeholder="Ej: 5 Cortes Premium"></div>
+    <div class="form-group"><label class="form-label">Precio ($)</label><input type="number" class="form-input" id="mem-precio" step="0.01" min="0" placeholder="0.00"></div>
+    <div class="form-group"><label class="form-label">Sesiones incluidas</label><input type="number" class="form-input" id="mem-sesiones" min="1" value="5"></div>
+    <div class="form-group"><label class="form-label">Servicios incluidos</label><input type="text" class="form-input" id="mem-servicios" placeholder="Ej: Corte Clásico, Fade, Barba"></div>
+    <div class="form-group"><label class="form-label">Tipo</label><select class="form-input" id="mem-tipo"><option value="paquete">Paquete Prepagado</option><option value="mensual">Membresía Mensual</option></select></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn btn-gold btn-block" onclick="guardarMembresia()">Guardar</button>
+      <button class="btn btn-ghost btn-block" onclick="cerrarModal('modal-membresia')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: INFO LICENCIA ===== -->
+<div class="modal-overlay" id="modal-licencia">
+  <div class="modal">
+    <div class="modal-title">🔐 Información de Licencia</div>
+    <div id="lic-info-content" style="font-size:13px;line-height:1.8"></div>
+    <button class="btn btn-ghost btn-block" onclick="cerrarModal('modal-licencia')" style="margin-top:16px">Cerrar</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+<script>
+'use strict';
+// ═══════════════════════════════════════════════════════
+// BARBERÍA PRO — A2K Digital Studio
+// Sistema Profesional de Gestión para Barberías
+// ═══════════════════════════════════════════════════════
+
+// ── HELPERS ──
+var gel=function(id){return document.getElementById(id)};
+var _lsOK=(function(){try{localStorage.setItem('_t','1');localStorage.removeItem('_t');return true;}catch(e){return false;}})();
+
+// ── DATABASE ──
+function DB(){
+  this.get=function(k){try{var v=localStorage.getItem('bp_'+k);return v?JSON.parse(v):null;}catch(e){return null;}};
+  this.set=function(k,v){try{localStorage.setItem('bp_'+k,JSON.stringify(v));}catch(e){}};
+  this.remove=function(k){try{localStorage.removeItem('bp_'+k);}catch(e){}};
+}
+var db=new DB();
+function getCfg(){return db.get('config')||{tasa:36.5,negocio:'Mi Barbería',telefono:'',dueno:'',direccion:'',rif:'',instagram:'',twitter:'',banco:'',cuenta:'',ciPagoMovil:'',zelleEmail:'',metodosPago:['Efectivo $','Efectivo Bs','Pago Móvil','Zelle','Transferencia','Punto Débito','Punto Crédito','Binance Pay','Bio Pago','Fiado']};}
+function fmt$(n){return '$'+Number(n||0).toFixed(2);}
+function fmtBs(n,t){return 'Bs '+Number(n||0).toFixed(2);}
+
+// ═══════════════════════════════════════════════════════
+// IRON LOCK v2 — BARBERÍA PRO
+// ═══════════════════════════════════════════════════════
+var _SIGN_SALT='BPBARBER2026';
+var MASTER_LICS=['BP-PRO-DEMO-2024','BP-PRO-A2K-2026','BP-PRO-MAST-2026'];
+function _hash(s){var h=0;for(var i=0;i<s.length;i++){h=Math.imul(31,h)+s.charCodeAt(i)|0;}return Math.abs(h).toString(36).toUpperCase();}
+function getDeviceId(){var saved=_lsOK?localStorage.getItem('bp_device_id'):null;if(saved&&saved.length>4)return saved;var fp=[navigator.userAgent,navigator.language,navigator.platform,screen.width+'x'+screen.height+screen.colorDepth,new Date().getTimezoneOffset(),navigator.hardwareConcurrency||2].join('||');var h=0,h2=0;for(var i=0;i<fp.length;i++){h=Math.imul(31,h)+fp.charCodeAt(i)|0;h2=Math.imul(37,h2)+fp.charCodeAt(i)|0;}var id='BP-'+Math.abs(h).toString(36).toUpperCase().padStart(4,'0').slice(0,4)+'-'+Math.abs(h2).toString(36).toUpperCase().padStart(4,'0').slice(0,4)+'-'+Math.abs(h^h2).toString(36).toUpperCase().padStart(4,'0').slice(0,4);if(_lsOK)localStorage.setItem('bp_device_id',id);return id;}
+function _devHash(d){return _hash(d+_SIGN_SALT).slice(0,6);}
+function _verificarLicencia(code){var p=code.trim().toUpperCase();if(MASTER_LICS.indexOf(p)>=0)return{valid:true,tipo:'PRO',master:true};var mPRO=p.match(/^(BP-PRO-([A-Z0-9]{6})-[A-Z0-9]{4})-([A-Z0-9]{4})$/);if(mPRO){var base=mPRO[1],emb=mPRO[2],check=mPRO[3];if(_hash(base+_SIGN_SALT).slice(0,4)!==check)return{valid:false,msg:'❌ Código PRO inválido.'};if(emb!==_devHash(getDeviceId()))return{valid:false,msg:'🚫 Licencia en uso en otro terminal.'};return{valid:true,tipo:'PRO'};}var mDEMO=p.match(/^(BP-DEMO-[A-Z0-9]{6})-([A-Z0-9]{4})$/);if(mDEMO){if(_hash(mDEMO[1]+_SIGN_SALT).slice(0,4)!==mDEMO[2])return{valid:false,msg:'❌ Código DEMO inválido.'};return{valid:true,tipo:'DEMO'};}return{valid:false,msg:'❌ Código no reconocido.'};}
+
+// ── LIC ACTIVATION ──
+function _activarApp(licObj){db.set('cuenta',{negocio:gel('reg-negocio').value,telefono:gel('reg-telefono').value,dueno:gel('reg-dueno').value});db.set('licencia_activa',licObj);gel('lock-screen').style.display='none';gel('main-app').style.display='flex';_initApp();}
+function registrarYActivar(){var n=gel('reg-negocio').value.trim(),t=gel('reg-telefono').value.trim(),d=gel('reg-dueno').value.trim(),l=gel('reg-licencia').value.trim();if(!n||!t||!d){gel('lock-err').textContent='⚠️ Completa todos los campos.';return;}if(!l){gel('lock-err').textContent='⚠️ Ingresa un código de licencia.';return;}var r=_verificarLicencia(l);if(!r.valid){gel('lock-err').textContent=r.msg;return;}if(r.tipo==='DEMO'){_activarApp({code:l,tipo:'DEMO',device:getDeviceId(),activado:Date.now(),expiry:Date.now()+5*86400000});}else{_activarApp({code:l,tipo:'PRO',device:getDeviceId(),activado:Date.now(),master:!!r.master});}}
+function usarDemo(){var n=gel('reg-negocio').value.trim(),t=gel('reg-telefono').value.trim(),d=gel('reg-dueno').value.trim();if(!n||!t||!d){gel('lock-err').textContent='⚠️ Completa todos los campos.';return;}var rnd=Math.random().toString(36).slice(2,8).toUpperCase();var base='BP-DEMO-'+rnd;var check=_hash(base+_SIGN_SALT).slice(0,4);_activarApp({code:base+'-'+check,tipo:'DEMO',device:getDeviceId(),activado:Date.now(),expiry:Date.now()+5*86400000});}
+
+// ── LOCK CHECK ON LOAD ──
+(function(){gel('lock-device-id').textContent=getDeviceId();var lic=db.get('licencia_activa');if(!lic){gel('lock-screen').style.display='flex';gel('main-app').style.display='none';return;}var devId=getDeviceId();if(!lic.master&&lic.device!==devId){db.remove('licencia_activa');gel('lock-screen').style.display='flex';gel('main-app').style.display='none';return;}if(lic.tipo==='DEMO'&&lic.expiry&&Date.now()>lic.expiry){db.remove('licencia_activa');gel('lock-screen').style.display='flex';gel('main-app').style.display='none';return;}gel('lock-screen').style.display='none';gel('main-app').style.display='flex';})();
+
+// ═══════════════════════════════════════════════════════
+// POS CATEGORIES & SERVICES
+// ═══════════════════════════════════════════════════════
+var CATEGORIAS=[
+  {id:'Cortes',emoji:'✂️',color:'#2563eb'},
+  {id:'Barba',emoji:'🧔',color:'#f59e0b'},
+  {id:'Afeitado',emoji:'🪒',color:'#dc2626'},
+  {id:'Color',emoji:'🎨',color:'#7c3aed'},
+  {id:'Tratamientos',emoji:'🧴',color:'#16a34a'},
+  {id:'Facial',emoji:'😊',color:'#db2777'},
+  {id:'Cejas',emoji:'🪡',color:'#a16207'},
+  {id:'Especiales',emoji:'⭐',color:'#c9a96e'},
+  {id:'Paquetes',emoji:'📦',color:'#0d9488'}
+];
+
+var SERVICIOS_DEFAULT=[
+  {id:'s1',emoji:'✂️',nombre:'Corte Clásico',cat:'Cortes',precio:15,duracion:30,desc:'Corte tradicional con tijera'},
+  {id:'s2',emoji:'✂️',nombre:'Fade Low',cat:'Cortes',precio:20,duracion:40,desc:'Desvanecimiento bajo'},
+  {id:'s3',emoji:'✂️',nombre:'Fade Mid',cat:'Cortes',precio:22,duracion:45,desc:'Desvanecimiento medio'},
+  {id:'s4',emoji:'✂️',nombre:'Fade High',cat:'Cortes',precio:25,duracion:45,desc:'Desvanecimiento alto'},
+  {id:'s5',emoji:'✂️',nombre:'Taper Fade',cat:'Cortes',precio:23,duracion:40,desc:'Degradado cónico'},
+  {id:'s6',emoji:'✂️',nombre:'Mohawk',cat:'Cortes',precio:25,duracion:45,desc:'Corte mohawk con degradado'},
+  {id:'s7',emoji:'✂️',nombre:'Afro',cat:'Cortes',precio:20,duracion:35,desc:'Corte y moldeado de afro'},
+  {id:'s8',emoji:'✂️',nombre:'Buzz Cut',cat:'Cortes',precio:12,duracion:20,desc:'Corte con máquina cero'},
+  {id:'s9',emoji:'✂️',nombre:'Mullet',cat:'Cortes',precio:22,duracion:40,desc:'Corte mullet moderno'},
+  {id:'s10',emoji:'✂️',nombre:'Pompadour',cat:'Cortes',precio:25,duracion:45,desc:'Estilo pompadour clásico'},
+  {id:'s11',emoji:'✂️',nombre:'Undercut',cat:'Cortes',precio:22,duracion:40,desc:'Undercut con diseño'},
+  {id:'s12',emoji:'✂️',nombre:'Caesar',cat:'Cortes',precio:18,duracion:30,desc:'Corte tipo César frontal'},
+  {id:'s13',emoji:'✂️',nombre:'Crew Cut',cat:'Cortes',precio:15,duracion:25,desc:'Corte militar corto'},
+  {id:'s14',emoji:'✂️',nombre:'Corte Niño',cat:'Cortes',precio:10,duracion:20,desc:'Corte para niños hasta 12 años'},
+  {id:'s15',emoji:'✂️',nombre:'Corte + Diseño',cat:'Cortes',precio:30,duracion:50,desc:'Corte con diseño grabado'},
+  {id:'s16',emoji:'✂️',nombre:'Dreads Maintenance',cat:'Cortes',precio:25,duracion:45,desc:'Mantenimiento de dreads'},
+  {id:'s17',emoji:'✂️',nombre:'Corte Ejecutivo',cat:'Cortes',precio:20,duracion:35,desc:'Corte formal de negocios'},
+  {id:'s18',emoji:'✂️',nombre:'Degradado Simple',cat:'Cortes',precio:15,duracion:30,desc:'Degradado en los lados'},
+  {id:'s19',emoji:'🧔',nombre:'Recorte de Barba',cat:'Barba',precio:8,duracion:15,desc:'Recorte y moldeado'},
+  {id:'s20',emoji:'🧔',nombre:'Diseño de Barba',cat:'Barba',precio:15,duracion:30,desc:'Diseño profesional'},
+  {id:'s21',emoji:'🧔',nombre:'Afeitado Clásico Barba',cat:'Barba',precio:12,duracion:25,desc:'Afeitado completo'},
+  {id:'s22',emoji:'🧔',nombre:'Hot Towel Barba',cat:'Barba',precio:18,duracion:35,desc:'Toalla caliente'},
+  {id:'s23',emoji:'🧔',nombre:'Barba Completa',cat:'Barba',precio:20,duracion:40,desc:'Recorte+diseño+hot towel'},
+  {id:'s24',emoji:'🧔',nombre:'Recorte Bigote',cat:'Barba',precio:5,duracion:10,desc:'Recorte de bigote'},
+  {id:'s25',emoji:'🧔',nombre:'Afeitado Patilla',cat:'Barba',precio:5,duracion:10,desc:'Definición de patilla'},
+  {id:'s26',emoji:'🧔',nombre:'Perfilado Cuello',cat:'Barba',precio:5,duracion:10,desc:'Línea de cuello'},
+  {id:'s27',emoji:'🧔',nombre:'Tinte de Barba',cat:'Barba',precio:15,duracion:25,desc:'Coloración de barba'},
+  {id:'s28',emoji:'🧔',nombre:'Alisado de Barba',cat:'Barba',precio:12,duracion:20,desc:'Alisado con plancha'},
+  {id:'s29',emoji:'🪒',nombre:'Afeitado Cabeza',cat:'Afeitado',precio:12,duracion:25,desc:'Afeitado completo cabeza'},
+  {id:'s30',emoji:'🪒',nombre:'Afeitado Navaja',cat:'Afeitado',precio:18,duracion:35,desc:'Navaja tradicional'},
+  {id:'s31',emoji:'🪒',nombre:'Royal Shave',cat:'Afeitado',precio:25,duracion:45,desc:'Premium con hot towel'},
+  {id:'s32',emoji:'🪒',nombre:'Afeitado Media Cabeza',cat:'Afeitado',precio:10,duracion:20,desc:'Mitad superior'},
+  {id:'s33',emoji:'🪒',nombre:'Hot Towel Shave',cat:'Afeitado',precio:20,duracion:40,desc:'Toalla caliente'},
+  {id:'s34',emoji:'🪒',nombre:'Afeitado + Facial',cat:'Afeitado',precio:30,duracion:50,desc:'Combo afeitado+facial'},
+  {id:'s35',emoji:'🪒',nombre:'Afeitado Patrón',cat:'Afeitado',precio:15,duracion:30,desc:'Con diseño de patrón'},
+  {id:'s36',emoji:'🪒',nombre:'Corte Cero + Afeitado',cat:'Afeitado',precio:15,duracion:25,desc:'Máquina cero + afeitado'},
+  {id:'s37',emoji:'🎨',nombre:'Tinte Completo',cat:'Color',precio:35,duracion:60,desc:'Coloración completa'},
+  {id:'s38',emoji:'🎨',nombre:'Mechas',cat:'Color',precio:40,duracion:70,desc:'Mechas claras'},
+  {id:'s39',emoji:'🎨',nombre:'Balayage',cat:'Color',precio:55,duracion:90,desc:'Degradado natural'},
+  {id:'s40',emoji:'🎨',nombre:'Gamuza',cat:'Color',precio:30,duracion:50,desc:'Mechas suaves'},
+  {id:'s41',emoji:'🎨',nombre:'Color Fantasía',cat:'Color',precio:40,duracion:60,desc:'Color no natural'},
+  {id:'s42',emoji:'🎨',nombre:'Degradado Color',cat:'Color',precio:45,duracion:75,desc:'Transición de colores'},
+  {id:'s43',emoji:'🎨',nombre:'Decoloración',cat:'Color',precio:35,duracion:60,desc:'Blanqueamiento completo'},
+  {id:'s44',emoji:'🎨',nombre:'Mechas Finas',cat:'Color',precio:30,duracion:45,desc:'Mechas discretas'},
+  {id:'s45',emoji:'🎨',nombre:'Raíces',cat:'Color',precio:20,duracion:30,desc:'Retoque de raíz'},
+  {id:'s46',emoji:'🎨',nombre:'Gris Disimulado',cat:'Color',precio:25,duracion:40,desc:'Cobertura de canas'},
+  {id:'s47',emoji:'🎨',nombre:'Reflejos',cat:'Color',precio:35,duracion:55,desc:'Tono sobre tono'},
+  {id:'s48',emoji:'🎨',nombre:'Tinte + Corte',cat:'Color',precio:45,duracion:75,desc:'Color + corte'},
+  {id:'s49',emoji:'🧴',nombre:'Keratina',cat:'Tratamientos',precio:60,duracion:90,desc:'Alisante con keratina'},
+  {id:'s50',emoji:'🧴',nombre:'Botox Capilar',cat:'Tratamientos',precio:50,duracion:75,desc:'Rellenador capilar'},
+  {id:'s51',emoji:'🧴',nombre:'Detox Cuero Cabelludo',cat:'Tratamientos',precio:20,duracion:30,desc:'Limpieza profunda'},
+  {id:'s52',emoji:'🧴',nombre:'Hidratación Profunda',cat:'Tratamientos',precio:25,duracion:40,desc:'Hidratación intensiva'},
+  {id:'s53',emoji:'🧴',nombre:'Alisado',cat:'Tratamientos',precio:45,duracion:70,desc:'Alisado temporal'},
+  {id:'s54',emoji:'🧴',nombre:'Caída del Cabello',cat:'Tratamientos',precio:30,duracion:40,desc:'Tratamiento anticaída'},
+  {id:'s55',emoji:'🧴',nombre:'Brillo y Sellado',cat:'Tratamientos',precio:20,duracion:30,desc:'Sellado de cutícula'},
+  {id:'s56',emoji:'🧴',nombre:'Protección Solar Capilar',cat:'Tratamientos',precio:15,duracion:20,desc:'Protector para cabello'},
+  {id:'s57',emoji:'🧴',nombre:'Aceite Hot Oil',cat:'Tratamientos',precio:20,duracion:30,desc:'Aceite caliente'},
+  {id:'s58',emoji:'🧴',nombre:'Reparación Capilar',cat:'Tratamientos',precio:35,duracion:50,desc:'Cabello dañado'},
+  {id:'s59',emoji:'😊',nombre:'Facial Clásico',cat:'Facial',precio:20,duracion:35,desc:'Limpieza facial completa'},
+  {id:'s60',emoji:'😊',nombre:'Mascarilla Facial',cat:'Facial',precio:15,duracion:25,desc:'Mascarilla hidratante'},
+  {id:'s61',emoji:'😊',nombre:'Exfoliación Facial',cat:'Facial',precio:18,duracion:30,desc:'Exfoliación profunda'},
+  {id:'s62',emoji:'😊',nombre:'Limpieza Profunda',cat:'Facial',precio:25,duracion:40,desc:'Limpieza de poros'},
+  {id:'s63',emoji:'😊',nombre:'Tratamiento Acné',cat:'Facial',precio:22,duracion:35,desc:'Para piel con acné'},
+  {id:'s64',emoji:'😊',nombre:'Hidratación Facial',cat:'Facial',precio:18,duracion:30,desc:'Hidratación intensiva'},
+  {id:'s65',emoji:'😊',nombre:'Anti-edad',cat:'Facial',precio:30,duracion:40,desc:'Antiarrugas'},
+  {id:'s66',emoji:'😊',nombre:'Facial Premium',cat:'Facial',precio:35,duracion:50,desc:'Completo premium'},
+  {id:'s67',emoji:'🪡',nombre:'Recorte de Cejas',cat:'Cejas',precio:5,duracion:10,desc:'Recorte y definición'},
+  {id:'s68',emoji:'🪡',nombre:'Depilación Cejas',cat:'Cejas',precio:8,duracion:15,desc:'Con cera o hilo'},
+  {id:'s69',emoji:'🪡',nombre:'Tinte de Cejas',cat:'Cejas',precio:10,duracion:15,desc:'Coloración de cejas'},
+  {id:'s70',emoji:'🪡',nombre:'Laminado de Cejas',cat:'Cejas',precio:15,duracion:25,desc:'Cejas levantadas'},
+  {id:'s71',emoji:'🪡',nombre:'Diseño de Cejas',cat:'Cejas',precio:12,duracion:20,desc:'Según forma de rostro'},
+  {id:'s72',emoji:'🪡',nombre:'Cejas + Barba Combo',cat:'Cejas',precio:12,duracion:25,desc:'Cejas + perfilado barba'},
+  {id:'s73',emoji:'⭐',nombre:'Diseño Capilar',cat:'Especiales',precio:15,duracion:30,desc:'Diseño artístico'},
+  {id:'s74',emoji:'⭐',nombre:'Trenzas',cat:'Especiales',precio:25,duracion:60,desc:'Estilo africano'},
+  {id:'s75',emoji:'⭐',nombre:'Extensiones',cat:'Especiales',precio:60,duracion:120,desc:'Extensiones de cabello'},
+  {id:'s76',emoji:'⭐',nombre:'Locs / Dreads',cat:'Especiales',precio:80,duracion:180,desc:'Creación o mantenimiento'},
+  {id:'s77',emoji:'⭐',nombre:'Cera / Encerado',cat:'Especiales',precio:8,duracion:15,desc:'Cera para estilizar'},
+  {id:'s78',emoji:'⭐',nombre:'Corte+Barba+Facial',cat:'Especiales',precio:35,duracion:60,desc:'Combo grooming'},
+  {id:'s79',emoji:'⭐',nombre:'Día de Rey',cat:'Especiales',precio:50,duracion:90,desc:'Todo incluido'},
+  {id:'s80',emoji:'⭐',nombre:'Maquillaje Masculino',cat:'Especiales',precio:15,duracion:20,desc:'Contornos masculinos'},
+  {id:'s81',emoji:'⭐',nombre:'Solidario Gratuita',cat:'Especiales',precio:0,duracion:30,desc:'Quimioterapia/Prótesis'},
+  {id:'s82',emoji:'⭐',nombre:'Evento Especial',cat:'Especiales',precio:40,duracion:60,desc:'Quinceañeros/eventos'},
+  {id:'s83',emoji:'📦',nombre:'Corte + Barba',cat:'Paquetes',precio:30,duracion:50,desc:'Combo corte + barba'},
+  {id:'s84',emoji:'📦',nombre:'Corte + Facial',cat:'Paquetes',precio:28,duracion:50,desc:'Combo corte + facial'},
+  {id:'s85',emoji:'📦',nombre:'Combo Completo',cat:'Paquetes',precio:45,duracion:80,desc:'Corte+Barba+Facial'},
+  {id:'s86',emoji:'📦',nombre:'Mensual 4 Cortes',cat:'Paquetes',precio:50,duracion:30,desc:'4 cortes al mes'},
+  {id:'s87',emoji:'📦',nombre:'Quincenal 2 Cortes',cat:'Paquetes',precio:28,duracion:30,desc:'Cada 15 días'},
+  {id:'s88',emoji:'📦',nombre:'Semanal Premium',cat:'Paquetes',precio:60,duracion:30,desc:'Corte semanal + barba'},
+  {id:'s89',emoji:'📦',nombre:'Pareja',cat:'Paquetes',precio:35,duracion:60,desc:'2 cortes + 2 barbas'},
+  {id:'s90',emoji:'📦',nombre:'Padre e Hijo',cat:'Paquetes',precio:25,duracion:45,desc:'Adulto + niño'}
+];
+
+// ── PRODUCTS DEFAULT ──
+var PRODUCTOS_DEFAULT=[
+  {id:'p1',emoji:'🧴',nombre:'Shampoo Hidratante',cat:'Cuidado Capilar',precio:12,stock:15,desc:'Shampoo para cabello seco'},
+  {id:'p2',emoji:'🧴',nombre:'Acondicionador',cat:'Cuidado Capilar',precio:10,stock:12,desc:'Acondicionador profesional'},
+  {id:'p3',emoji:'🧴',nombre:'Cera de Peinar',cat:'Cuidado Capilar',precio:8,stock:20,desc:'Cera fuerte fijación'},
+  {id:'p4',emoji:'🧴',nombre:'Pomada Matte',cat:'Cuidado Capilar',precio:10,stock:15,desc:'Acabado mate natural'},
+  {id:'p5',emoji:'🧴',nombre:'Aceite Capilar',cat:'Cuidado Capilar',precio:14,stock:10,desc:'Argán para barba y pelo'},
+  {id:'p6',emoji:'🧴',nombre:'Spray Fijador',cat:'Cuidado Capilar',precio:9,stock:18,desc:'Fijación media'},
+  {id:'p7',emoji:'🧴',nombre:'Crema para Peinar',cat:'Cuidado Capilar',precio:11,stock:14,desc:'Control de frizz'},
+  {id:'p8',emoji:'🧴',nombre:'Shampoo Anticaspa',cat:'Cuidado Capilar',precio:13,stock:10,desc:'Control de caspa'},
+  {id:'p9',emoji:'🧴',nombre:'Tinte para Cabello',cat:'Cuidado Capilar',precio:8,stock:25,desc:'Caja de tinte profesional'},
+  {id:'p10',emoji:'🧴',nombre:'Oxidante Crema',cat:'Cuidado Capilar',precio:6,stock:30,desc:'Crema desarrolladora'},
+  {id:'p11',emoji:'🧔',nombre:'Aceite para Barba',cat:'Cuidado Barba',precio:12,stock:15,desc:'Aceite hidratante'},
+  {id:'p12',emoji:'🧔',nombre:'Balm para Barba',cat:'Cuidado Barba',precio:10,stock:12,desc:'Balm modelador'},
+  {id:'p13',emoji:'🧔',nombre:'Cera para Barba',cat:'Cuidado Barba',precio:8,stock:18,desc:'Fijación fuerte'},
+  {id:'p14',emoji:'🧔',nombre:'Shampoo Barba',cat:'Cuidado Barba',precio:9,stock:14,desc:'Limpieza de barba'},
+  {id:'p15',emoji:'🧔',nombre:'Cepillo Barba',cat:'Cuidado Barba',precio:7,stock:20,desc:'Cepillo de madera'},
+  {id:'p16',emoji:'🧔',nombre:'Afeitadora Eléctrica',cat:'Cuidado Barba',precio:45,stock:5,desc:'Máquina recargable'},
+  {id:'p17',emoji:'🧔',nombre:'Kit Barbería',cat:'Cuidado Barba',precio:35,stock:6,desc:'Kit completo grooming'},
+  {id:'p18',emoji:'🧔',nombre:'Serum Barba',cat:'Cuidado Barba',precio:15,stock:10,desc:'Serum de crecimiento'},
+  {id:'p19',emoji:'🪒',nombre:'Crema de Afeitar',cat:'Afeitado',precio:8,stock:20,desc:'Crema profesional'},
+  {id:'p20',emoji:'🪒',nombre:'Navaja de Afeitar',cat:'Afeitado',precio:25,stock:8,desc:'Navaja profesional'},
+  {id:'p21',emoji:'🪒',nombre:'Cuchillas Recambio',cat:'Afeitado',precio:10,stock:30,desc:'Paquete de 10 unidades'},
+  {id:'p22',emoji:'🪒',nombre:'After Shave',cat:'Afeitado',precio:9,stock:15,desc:'Bálsamo post afeitado'},
+  {id:'p23',emoji:'🪒',nombre:'Almohadillas Afeitar',cat:'Afeitado',precio:6,stock:25,desc:'Paquete de 100'},
+  {id:'p24',emoji:'🪒',nombre:'Cepillo Afeitado',cat:'Afeitado',precio:18,stock:10,desc:'Cerdas de jabalí'},
+  {id:'p25',emoji:'🪒',nombre:'Aceite Navaja',cat:'Afeitado',precio:12,stock:12,desc:'Para mantenimiento'},
+  {id:'p26',emoji:'🧴',nombre:'Protector Solar Facial',cat:'Cuidado Piel',precio:14,stock:10,desc:'FPS 50'},
+  {id:'p27',emoji:'🧴',nombre:'Loción Hidratante',cat:'Cuidado Piel',precio:12,stock:12,desc:'Hidratación diaria'},
+  {id:'p28',emoji:'🧴',nombre:'Limpiador Facial',cat:'Cuidado Piel',precio:10,stock:15,desc:'Gel limpiador'},
+  {id:'p29',emoji:'🧴',nombre:'Tónico Facial',cat:'Cuidado Piel',precio:11,stock:12,desc:'Equilibrante'},
+  {id:'p30',emoji:'🔧',nombre:'Máquina Cortar',cat:'Herramientas',precio:65,stock:4,desc:'Máquina cordless profesional'},
+  {id:'p31',emoji:'🔧',nombre:'Tijeras Profesionales',cat:'Herramientas',precio:45,stock:3,desc:'Acero inoxidable 6"'},
+  {id:'p32',emoji:'🔧',nombre:'Corta Cero',cat:'Herramientas',precio:15,stock:10,desc:'Cuchilla ajustable'},
+  {id:'p33',emoji:'🔧',nombre:'Cape Corte',cat:'Herramientas',precio:8,stock:15,desc:'Cape impermeable'},
+  {id:'p34',emoji:'🔧',nombre:'Peine Carbon',cat:'Herramientas',precio:5,stock:20,desc:'Peine antistático'},
+  {id:'p35',emoji:'🔧',nombre:'Pinza Adelgazar',cat:'Herramientas',precio:12,stock:8,desc:'Pinza de corte'},
+  {id:'p36',emoji:'🔧',nombre:'Secador Profesional',cat:'Herramientas',precio:55,stock:3,desc:'2200W iónico'},
+  {id:'p37',emoji:'🔧',nombre:'Cutter',cat:'Herramientas',precio:20,stock:8,desc:'Para limpieza de cuello'},
+  {id:'p38',emoji:'🔧',nombre:'Espejo Mano',cat:'Herramientas',precio:12,stock:10,desc:'Espejo retrovisor'},
+  {id:'p39',emoji:' Cologne',nombre:'Colonia Premium',cat:'Fragancias',precio:25,stock:8,desc:'Fragancia masculina 100ml'},
+  {id:'p40',emoji:' Cologne',nombre:'Desodorante Roll-On',cat:'Fragancias',precio:8,stock:20,desc:'Antitranspirante'},
+  {id:'p41',emoji:' Cologne',nombre:'Colonia Barba',cat:'Fragancias',precio:15,stock:12,desc:'Splash para barba'},
+  {id:'p42',emoji:'🧢',nombre:'Gorra Logo',cat:'Accesorios',precio:15,stock:20,desc:'Gorra bordada'},
+  {id:'p43',emoji:'👕',nombre:'Camiseta Logo',cat:'Accesorios',precio:18,stock:15,desc:'Camiseta negra logo'},
+  {id:'p44',emoji:'🎒',nombre:'Maletín Barbero',cat:'Accesorios',precio:40,stock:5,desc:'Maletín de cuero'},
+  {id:'p45',emoji:'🧹',nombre:'Brocha Barba',cat:'Accesorios',precio:6,stock:25,desc:'Para aplicar productos'},
+  {id:'p46',emoji:'🧹',nombre:'Toallas Barbería',cat:'Accesorios',precio:12,stock:30,desc:'Paquete de 50'}
+];
+
+// ═══════════════════════════════════════════════════════
+// CART STATE
+// ═══════════════════════════════════════════════════════
+var _cart={items:[],cliente:null,descuento:{tipo:null,valor:0},pausada:false};
+var _ticketCounter=db.get('ticket_counter')||1;
+var _posCat='Cortes';
+
+// ═══════════════════════════════════════════════════════
+// APP INIT
+// ═══════════════════════════════════════════════════════
+function _initApp(){
+  _loadDefaultData();
+  var cuenta=db.get('cuenta')||{};
+  gel('top-user-name').textContent=cuenta.dueno||'Admin';
+  _renderPOSCategories();
+  _renderPOSGrid();
+  _renderTicket();
+  _updateClock();
+  setInterval(_updateClock,1000);
+  _updateLicBadge();
+  _updateCajaDisplay();
+  // Load paused sale
+  var pausada=db.get('venta_pausada');
+  if(pausada&&pausada.items&&pausada.items.length>0){_cart=pausada;toast('⏸️ Venta pausada recuperada','warn');_renderTicket();}
+  renderDashboard();
+}
+
+function _loadDefaultData(){
+  var ver=db.get('data_version');
+  if(!ver||ver<2){
+    db.set('servicios',SERVICIOS_DEFAULT);
+    db.set('productos',PRODUCTOS_DEFAULT);
+    db.set('data_version',2);
+  }
+}
+
+function _updateClock(){
+  var d=new Date();
+  gel('top-clock').textContent=d.toLocaleTimeString('es-VE',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+function _updateLicBadge(){
+  var lic=db.get('licencia_activa');
+  var b=gel('top-lic-badge');
+  if(!lic){b.textContent='● Sin licencia';b.style.color='var(--red)';return;}
+  if(lic.tipo==='DEMO'&&lic.expiry){
+    var rem=Math.ceil((lic.expiry-Date.now())/86400000);
+    if(rem<=0){b.textContent='● Expirada';b.style.color='var(--red)';}
+    else{b.textContent='● DEMO '+rem+'d';b.style.color='var(--orange)';}
+  }else{b.textContent='● PRO';b.style.color='var(--green)';}
+}
+
+function _updateCajaDisplay(){
+  var caja=db.get('caja');
+  var total=0;
+  if(caja&&caja.abierta){total=caja.ventas||0;}
+  gel('top-caja').textContent=Number(total).toFixed(2);
+}
+
+// ═══════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════
+function showView(id){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+  var el=gel(id);if(el)el.classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.toggle('active',b.dataset.view===id);});
+  if(id==='view-dash')renderDashboard();
+  if(id==='view-agenda')renderAgenda();
+  if(id==='view-clientes')renderClientes();
+  if(id==='view-productos'){renderProdFilterTabs();renderProductos();}
+  if(id==='view-caja')renderCaja();
+  if(id==='view-reportes')renderReportes();
+  if(id==='view-barberos')renderBarberos();
+  if(id==='view-cola')renderCola();
+  if(id==='view-membresias')renderMembresias();
+  if(id==='view-config')renderConfig();
+}
+
+function showSubView(id){showView(id);}
+
+function navTo(btn){var vid=btn.dataset.view;if(vid==='view-pos'){showView('view-pos');}else{showView(vid);}}
+
+// ═══════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════
+function toast(msg,type){var t=gel('toast');t.textContent=msg;t.className='show '+(type||'ok');setTimeout(function(){t.className='';},3000);}
+
+// ═══════════════════════════════════════════════════════
+// MODALS
+// ═══════════════════════════════════════════════════════
+function abrirModal(id){gel(id).classList.add('active');}
+function cerrarModal(id){gel(id).classList.remove('active');}
+
+// ═══════════════════════════════════════════════════════
+// POS — CATEGORIES
+// ═══════════════════════════════════════════════════════
+function _renderPOSCategories(){
+  var c=gel('pos-categories');
+  c.innerHTML=CATEGORIAS.map(function(cat){
+    return'<button class="cat-btn'+(_posCat===cat.id?' active':'')+'" onclick="_posCat=\''+cat.id+'\';_renderPOSCategories();_renderPOSGrid()" style="'+( _posCat===cat.id?'background:'+cat.color+'22;border-left:3px solid '+cat.color:''  )+'"><span class="cat-emoji">'+cat.emoji+'</span><span class="cat-label">'+cat.id.replace('Tratamientos','Tratam.').replace('Especiales','Especial')+'</span></button>';
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// POS — GRID
+// ═══════════════════════════════════════════════════════
+function _renderPOSGrid(){
+  var q=(gel('pos-search-input')||{}).value||'';
+  var servs=db.get('servicios')||[];
+  var f=servs.filter(function(s){
+    return s.cat===_posCat&&(!q||s.nombre.toLowerCase().indexOf(q.toLowerCase())>=0);
+  });
+  var g=gel('pos-grid');
+  if(!f.length){g.innerHTML='<div class="empty-state"><i class="fas fa-scissors"></i><p>Sin servicios en esta categoría</p></div>';return;}
+  g.innerHTML=f.map(function(s){
+    return'<div class="pos-item" onclick="addToCart(\''+s.id+'\')"><span class="item-emoji">'+s.emoji+'</span><span class="item-name">'+s.nombre+'</span><span class="item-price">'+fmt$(s.precio)+'</span></div>';
+  }).join('');
+}
+
+function filtrarPOSGrid(){_renderPOSGrid();}
+
+// ═══════════════════════════════════════════════════════
+// POS — CART
+// ═══════════════════════════════════════════════════════
+function addToCart(servId){
+  var servs=db.get('servicios')||[];
+  var serv=null;
+  for(var i=0;i<servs.length;i++){if(servs[i].id===servId){serv=servs[i];break;}}
+  if(!serv)return;
+  // Check if already in cart
+  for(var j=0;j<_cart.items.length;j++){
+    if(_cart.items[j].id===servId){_cart.items[j].qty++;_renderTicket();return;}
+  }
+  _cart.items.push({id:servId,nombre:serv.nombre,precio:serv.precio,qty:1,emoji:serv.emoji});
+  _renderTicket();
+}
+
+function removeFromCart(idx){_cart.items.splice(idx,1);_renderTicket();}
+
+function changeQty(idx,delta){
+  _cart.items[idx].qty+=delta;
+  if(_cart.items[idx].qty<=0)_cart.items.splice(idx,1);
+  _renderTicket();
+}
+
+function vaciarCarrito(){_cart={items:[],cliente:null,descuento:{tipo:null,valor:0},pausada:false};_renderTicket();}
+
+function pausarVenta(){
+  if(!_cart.items.length){toast('⚠️ No hay items en el ticket','warn');return;}
+  db.set('venta_pausada',_cart);_cart={items:[],cliente:null,descuento:{tipo:null,valor:0},pausada:false};_renderTicket();toast('⏸️ Venta pausada','ok');
+}
+
+function _getSubtotal(){
+  var t=0;_cart.items.forEach(function(i){t+=i.precio*i.qty;});return t;
+}
+
+function _getTotal(){
+  var sub=_getSubtotal();
+  if(_cart.descuento.tipo==='pct'){sub=sub*(1-_cart.descuento.valor/100);}
+  else if(_cart.descuento.tipo==='fix'){sub=Math.max(0,sub-_cart.descuento.valor);}
+  return sub;
+}
+
+function _renderTicket(){
+  gel('ticket-num').textContent=String(_ticketCounter).padStart(4,'0');
+  if(_cart.cliente){gel('ticket-client-btn').textContent='👤 '+_cart.cliente.nombre;gel('ticket-client-btn').style.color='var(--blue)';}
+  else{gel('ticket-client-btn').textContent='👤 Sin cliente';gel('ticket-client-btn').style.color='var(--text3)';}
+  var container=gel('ticket-items');
+  if(!_cart.items.length){
+    container.innerHTML='<div class="empty-state" style="padding:30px 10px"><i class="fas fa-scissors"></i><p style="font-size:12px;margin-top:8px">Selecciona servicios del catálogo</p></div>';
+    gel('ticket-summary').style.display='none';gel('btn-cobrar').style.display='none';return;
+  }
+  var cfg=getCfg();var tasa=cfg.tasa||36.5;
+  container.innerHTML=_cart.items.map(function(item,idx){
+    return'<div class="ticket-item"><div class="ticket-item-qty"><button onclick="changeQty('+idx+',-1)">−</button><span>'+item.qty+'</span><button onclick="changeQty('+idx+',1)">+</button></div><div class="ticket-item-info"><div class="ticket-item-name">'+item.emoji+' '+item.nombre+'</div><div class="ticket-item-price">'+fmt$(item.precio)+' c/u</div></div><div class="ticket-item-total">'+fmt$(item.precio*item.qty)+'</div><span class="ticket-item-del" onclick="removeFromCart('+idx+')"><i class="fas fa-times"></i></span></div>';
+  }).join('');
+  gel('ticket-summary').style.display='block';
+  gel('btn-cobrar').style.display='block';
+  var sub=_getSubtotal(),total=_getTotal(),desc=0;
+  if(_cart.descuento.tipo==='pct'){desc=sub*_cart.descuento.valor/100;}
+  else if(_cart.descuento.tipo==='fix'){desc=Math.min(sub,_cart.descuento.valor);}
+  gel('t-subtotal').textContent=fmt$(sub);
+  gel('t-bs').textContent=fmtBs(total*tasa);
+  gel('t-total').textContent=fmt$(total);
+  var dr=gel('t-desc-row');
+  if(desc>0){dr.style.display='flex';gel('t-desc').textContent='-'+fmt$(desc);}else{dr.style.display='none';}
+  gel('btn-cobrar').textContent='💵 COBRAR '+fmt$(total);
+}
+
+// ═══════════════════════════════════════════════════════
+// PAYMENT
+// ═══════════════════════════════════════════════════════
+var METODOS_PAGO=[
+  {nombre:'Efectivo $',icon:'fas fa-dollar-sign',moneda:'USD'},
+  {nombre:'Efectivo Bs',icon:'fas fa-money-bill-wave',moneda:'Bs'},
+  {nombre:'Pago Móvil',icon:'fas fa-mobile-alt',moneda:'Bs'},
+  {nombre:'Zelle',icon:'fas fa-building-columns',moneda:'USD'},
+  {nombre:'Transferencia',icon:'fas fa-right-left',moneda:'MIX'},
+  {nombre:'Punto Débito',icon:'fas fa-credit-card',moneda:'USD'},
+  {nombre:'Punto Crédito',icon:'fas fa-credit-card',moneda:'USD'},
+  {nombre:'Binance Pay',icon:'fas fa-coins',moneda:'USD'},
+  {nombre:'Bio Pago',icon:'fas fa-fingerprint',moneda:'Bs'},
+  {nombre:'Fiado',icon:'fas fa-handshake',moneda:'MIX'}
+];
+
+function abrirModalCobro(){
+  if(!_cart.items.length){toast('⚠️ No hay items','warn');return;}
+  var cfg=getCfg();var tasa=cfg.tasa||36.5;var total=_getTotal();
+  gel('pay-total').textContent=total.toFixed(2);
+  gel('pay-bs').textContent=(total*tasa).toFixed(2);
+  var g=gel('pay-grid');
+  var metodos=cfg.metodosPago||METODOS_PAGO.map(function(m){return m.nombre;});
+  g.innerHTML=metodos.map(function(nombre){
+    var m=METODOS_PAGO.find(function(mp){return mp.nombre===nombre;})||{icon:'fas fa-money-bill',moneda:'USD'};
+    var bc=m.moneda==='USD'?'pay-badge-usd':m.moneda==='Bs'?'pay-badge-bs':'pay-badge-mix';
+    return'<div class="pay-btn" onclick="procesarPago(\''+nombre.replace(/'/g,"\\'")+'\')"><i class="'+m.icon+'"></i><span class="pay-name">'+nombre+'</span><span class="pay-badge '+bc+'">'+m.moneda+'</span></div>';
+  }).join('');
+  abrirModal('modal-cobro');
+}
+
+function procesarPago(metodo){
+  var total=_getTotal();var cfg=getCfg();var tasa=cfg.tasa||36.5;
+  var venta={
+    id:'v'+Date.now(),num:_ticketCounter,
+    items:_cart.items.slice(),subtotal:_getSubtotal(),
+    descuento:_cart.descuento,total:total,metodo:metodo,
+    cliente:_cart.cliente,fecha:Date.now(),
+    tasa:tasa,totalBs:total*tasa
+  };
+  // Save venta
+  var ventas=db.get('ventas')||[];
+  ventas.push(venta);
+  db.set('ventas',ventas);
+  // Update caja
+  var caja=db.get('caja');
+  if(!caja||!caja.abierta){caja={abierta:true,inicio:0,ventas:0,gastos:0,movimientos:[],fecha:Date.now()};}
+  caja.ventas=(caja.ventas||0)+total;
+  caja.movimientos.push({tipo:'venta',monto:total,metodo:metodo,fecha:Date.now(),detalle:'Ticket #'+_ticketCounter});
+  db.set('caja',caja);
+  _updateCajaDisplay();
+  // Update product stock if any products
+  // Update client visits
+  if(_cart.cliente){
+    var clientes=db.get('clientes')||[];
+    for(var i=0;i<clientes.length;i++){
+      if(clientes[i].id===_cart.cliente.id){
+        clientes[i].visitas=(clientes[i].visitas||0)+1;
+        clientes[i].totalGastado=(clientes[i].totalGastado||0)+total;
+        clientes[i].ultimaVisita=Date.now();
+        db.set('clientes',clientes);break;
+      }
+    }
+  }
+  _ticketCounter++;
+  db.set('ticket_counter',_ticketCounter);
+  db.remove('venta_pausada');
+  cerrarModal('modal-cobro');
+  vaciarCarrito();
+  toast('✅ Venta registrada — Ticket #'+(_ticketCounter-1),'ok');
+}
+
+// ═══════════════════════════════════════════════════════
+// DISCOUNT
+// ═══════════════════════════════════════════════════════
+function abrirModalDescuento(){abrirModal('modal-descuento');gel('desc-valor').value='';}
+function aplicarDescuento(){
+  var tipo=gel('desc-tipo').value;
+  var valor=parseFloat(gel('desc-valor').value)||0;
+  if(valor<=0){toast('⚠️ Ingresa un valor válido','warn');return;}
+  if(tipo==='pct'&&valor>100){toast('⚠️ Máximo 100%','warn');return;}
+  _cart.descuento={tipo:tipo,valor:valor};
+  cerrarModal('modal-descuento');_renderTicket();toast('🏷️ Descuento aplicado','ok');
+}
+
+// ═══════════════════════════════════════════════════════
+// SELECT CLIENT FOR TICKET
+// ═══════════════════════════════════════════════════════
+function selClienteTicket(){
+  var clientes=db.get('clientes')||[];
+  var html='<div style="max-height:300px;overflow-y:auto">';
+  html+='<div style="margin-bottom:10px"><button class="btn btn-ghost btn-sm" onclick="_cart.cliente=null;_renderTicket();cerrarModal(\'modal-cliente\')">✕ Quitar cliente</button></div>';
+  clientes.forEach(function(c){
+    html+='<div style="padding:8px;border:1px solid var(--border);border-radius:6px;margin-bottom:4px;cursor:pointer;display:flex;justify-content:space-between" onclick="_cart.cliente={id:\''+c.id+'\',nombre:\''+c.nombre+'\'};_renderTicket();cerrarModal(\'modal-cliente\')"><span>'+c.nombre+'</span><span style="color:var(--text3);font-size:11px">'+c.telefono+'</span></div>';
+  });
+  html+='</div>';
+  gel('modal-cliente-title').textContent='👤 Seleccionar Cliente';
+  gel('modal-cliente').querySelector('.modal').innerHTML='<div class="modal-title">👤 Seleccionar Cliente</div>'+html+'<button class="btn btn-ghost btn-block" onclick="cerrarModal(\'modal-cliente\')" style="margin-top:10px">Cancelar</button>';
+  abrirModal('modal-cliente');
+}
+
+// ═══════════════════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════════════════
+function renderDashboard(){
+  var ventas=db.get('ventas')||[];
+  var cfg=getCfg();var tasa=cfg.tasa||36.5;
+  var hoy=new Date();hoy.setHours(0,0,0,0);
+  var semana=new Date(hoy);semana.setDate(semana.getDate()-semana.getDay());
+  var mes=new Date(hoy.getFullYear(),hoy.getMonth(),1);
+  var vHoy=0,vSemana=0,vMes=0;
+  ventas.forEach(function(v){
+    if(v.fecha>=hoy.getTime())vHoy+=v.total;
+    if(v.fecha>=semana.getTime())vSemana+=v.total;
+    if(v.fecha>=mes.getTime())vMes+=v.total;
+  });
+  var citas=db.get('citas')||[];
+  var citasHoy=citas.filter(function(c){return new Date(c.fecha).toDateString()===new Date().toDateString();});
+  var clientes=db.get('clientes')||[];
+  var clientesMes=clientes.filter(function(c){return c.creado&&c.creado>=mes.getTime();});
+  // Weekly chart
+  var dias=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  var chartData=new Array(7).fill(0);
+  ventas.forEach(function(v){
+    var d=new Date(v.fecha);var day=d.getDay();
+    if(d>=semana){chartData[day]+=v.total;}
+  });
+  var maxChart=Math.max.apply(null,chartData)||1;
+  // Top services
+  var servCount={};
+  ventas.forEach(function(v){
+    v.items.forEach(function(it){
+      if(!servCount[it.nombre])servCount[it.nombre]={nombre:it.nombre,cant:0,ing:0};
+      servCount[it.nombre].cant+=it.qty;
+      servCount[it.nombre].ing+=it.precio*it.qty;
+    });
+  });
+  var topServs=Object.values(servCount).sort(function(a,b){return b.cant-a.cant;}).slice(0,5);
+  var g=gel('dash-grid');
+  g.innerHTML=
+    '<div class="dash-stat"><div class="stat-num" style="color:var(--gold)">'+fmt$(vHoy)+'</div><div class="stat-label">💰 Ventas Hoy</div><div class="stat-change" style="color:var(--green)">' +fmtBs(vHoy*tasa)+'</div></div>'+
+    '<div class="dash-stat"><div class="stat-num" style="color:var(--blue)">'+citasHoy.length+'</div><div class="stat-label">📅 Citas Hoy</div><div class="stat-change" style="color:var(--text3)">'+(citasHoy.filter(function(c){return c.estado==='pendiente'||c.estado==='confirmada';}).length)+' pendientes</div></div>'+
+    '<div class="dash-stat"><div class="stat-num" style="color:var(--teal)">'+clientesMes.length+'</div><div class="stat-label">👥 Clientes Nuevos</div><div class="stat-change" style="color:var(--text3)">Este mes</div></div>'+
+    '<div class="dash-card"><div class="dash-card-title"><i class="fas fa-chart-bar"></i> Ventas de la Semana — '+fmt$(vSemana)+'</div><div class="chart-bars">'+chartData.map(function(v,i){var h=Math.round(v/maxChart*100);return '<div class="chart-bar"><div class="chart-bar-val">'+fmt$(v)+'</div><div class="chart-bar-fill" style="height:'+Math.max(h,4)+'%"></div><div class="chart-bar-label">'+dias[i]+'</div></div>';}).join('')+'</div></div>'+
+    '<div class="dash-card"><div class="dash-card-title"><i class="fas fa-star"></i> Top Servicios</div>'+(topServs.length?topServs.map(function(s,i){return '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px"><span>'+(i+1)+'. '+s.nombre+'</span><span style="color:var(--gold);font-family:var(--mono)">'+s.cant+'x · '+fmt$(s.ing)+'</span></div>';}).join(''):'<div style="text-align:center;color:var(--text3);padding:20px">Sin datos aún</div>')+'</div>'+
+    '<div class="dash-stat"><div class="stat-num" style="color:var(--orange)">'+fmt$(vSemana)+'</div><div class="stat-label">📊 Semana</div></div>'+
+    '<div class="dash-stat"><div class="stat-num" style="color:var(--violet)">'+fmt$(vMes)+'</div><div class="stat-label">📈 Mes</div></div>'+
+    '<div class="dash-stat"><div class="stat-num" style="color:var(--text)">'+ventas.length+'</div><div class="stat-label">🧾 Total Ventas</div></div>';
+}
+
+// ═══════════════════════════════════════════════════════
+// AGENDA
+// ═══════════════════════════════════════════════════════
+var _agendaDate=new Date();
+function agendaNav(dir){
+  if(dir===0)_agendaDate=new Date();
+  else _agendaDate.setDate(_agendaDate.getDate()+dir);
+  renderAgenda();
+}
+function renderAgenda(){
+  var opts={weekday:'long',day:'numeric',month:'long',year:'numeric'};
+  gel('agenda-date').textContent=_agendaDate.toLocaleDateString('es-VE',opts);
+  var citas=db.get('citas')||[];
+  var dateStr=_agendaDate.toISOString().split('T')[0];
+  var dayCitas=citas.filter(function(c){return c.fecha===dateStr;});
+  var hours=[];for(var h=8;h<20;h++){for(var m=0;m<60;m+=30){hours.push(String(h).padStart(2,'0')+':'+String(m).padStart(2,'0'));}}
+  var html='';
+  hours.forEach(function(hr){
+    var hcitas=dayCitas.filter(function(c){return c.hora===hr;});
+    html+='<div class="agenda-slot"><div class="agenda-time">'+hr+'</div><div class="agenda-content">';
+    hcitas.forEach(function(c){
+      var stColor=c.estado==='confirmada'?'var(--green)':c.estado==='completada'?'var(--text3)':c.estado==='cancelada'?'var(--red)':'var(--orange)';
+      html+='<div class="agenda-event" style="border-left-color:'+stColor+'" onclick="editarCita(\''+c.id+'\')"><div class="evt-time">'+c.hora+' · '+c.servicio+'</div><div class="evt-name">'+(c.cliente||'Sin cliente')+'</div>'+(c.barbero?'<div class="evt-detail">💈 '+c.barbero+'</div>':'')+'</div>';
+    });
+    html+='</div></div>';
+  });
+  gel('agenda-timeline').innerHTML=html;
+}
+function abrirModalCita(){
+  gel('cita-fecha').value=_agendaDate.toISOString().split('T')[0];
+  // Populate clients
+  var clientes=db.get('clientes')||[];
+  gel('cita-cliente').innerHTML='<option value="">Seleccionar...</option>'+clientes.map(function(c){return'<option value="'+c.nombre+'">'+c.nombre+'</option>';}).join('');
+  // Populate services
+  var servs=db.get('servicios')||[];
+  gel('cita-servicio').innerHTML='<option value="">Seleccionar...</option>'+servs.map(function(s){return'<option value="'+s.nombre+'">'+s.emoji+' '+s.nombre+' '+fmt$(s.precio)+'</option>';}).join('');
+  // Populate barbers
+  var barberos=db.get('barberos')||[];
+  gel('cita-barbero').innerHTML='<option value="">Cualquiera</option>'+barberos.map(function(b){return'<option value="'+b.nombre+'">'+b.nombre+'</option>';}).join('');
+  abrirModal('modal-cita');
+}
+function guardarCita(){
+  var cliente=gel('cita-cliente').value;
+  var servicio=gel('cita-servicio').value;
+  var fecha=gel('cita-fecha').value;
+  var hora=gel('cita-hora').value;
+  if(!cliente||!servicio||!fecha||!hora){toast('⚠️ Completa los campos obligatorios','warn');return;}
+  var citas=db.get('citas')||[];
+  citas.push({id:'c'+Date.now(),cliente:cliente,servicio:servicio,barbero:gel('cita-barbero').value,fecha:fecha,hora:hora,notas:gel('cita-notas').value,estado:'pendiente',creado:Date.now()});
+  db.set('citas',citas);
+  cerrarModal('modal-cita');renderAgenda();toast('✅ Cita creada','ok');
+}
+function editarCita(citId){
+  var citas=db.get('citas')||[];
+  var idx=citas.findIndex(function(c){return c.id===citId;});
+  if(idx<0)return;
+  var estados=['pendiente','confirmada','completada','cancelada','no asistió'];
+  var nuevoEstado=prompt('Cambiar estado de cita:\n'+estados.map(function(e,i){return(i+1)+'. '+e;}).join('\n')+'\n\nNúmero:',citas[idx].estado);
+  if(nuevoEstado!==null){
+    var ni=parseInt(nuevoEstado)-1;
+    if(ni>=0&&ni<estados.length){citas[idx].estado=estados[ni];db.set('citas',citas);renderAgenda();toast('Estado actualizado','ok');}
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// CLIENTES
+// ═══════════════════════════════════════════════════════
+function renderClientes(){
+  var q=(gel('cli-buscar')||{}).value||'';
+  var clientes=db.get('clientes')||[];
+  var f=clientes.filter(function(c){return!q||c.nombre.toLowerCase().indexOf(q.toLowerCase())>=0||c.telefono.indexOf(q)>=0;});
+  var el=gel('cli-list');
+  if(!f.length){el.innerHTML='<div class="empty-state"><i class="fas fa-users"></i><p>No hay clientes registrados</p></div>';return;}
+  el.innerHTML='<table class="cli-table"><thead><tr><th>Cliente</th><th>Teléfono</th><th>Visitas</th><th>Total</th><th>Última</th><th>Acciones</th></tr></thead><tbody>'+
+  f.map(function(c){
+    return'<tr><td><strong>'+c.nombre+'</strong>'+(c.tags&&c.tags.length?' <span class="badge badge-gold">'+c.tags.join(', ')+'</span>':'')+'</td><td style="color:var(--text2)">'+c.telefono+'</td><td style="font-family:var(--mono)">'+(c.visitas||0)+'</td><td style="font-family:var(--mono);color:var(--gold)">'+fmt$(c.totalGastado||0)+'</td><td style="font-size:11px;color:var(--text3)">'+(c.ultimaVisita?new Date(c.ultimaVisita).toLocaleDateString('es-VE'):'—')+'</td><td><button class="btn btn-ghost btn-sm" onclick="editarCliente(\''+c.id+'\')">Editar</button> <a href="https://wa.me/'+(c.telefono||'').replace(/[^0-9]/g,'')+'" target="_blank" class="btn btn-green btn-sm"><i class="fab fa-whatsapp"></i></a> <button class="btn btn-danger btn-sm" onclick="eliminarCliente(\''+c.id+'\')"><i class="fas fa-trash"></i></button></td></tr>';
+  }).join('')+'</tbody></table>';
+}
+function abrirModalCliente(editId){
+  // Reset modal HTML
+  gel('modal-cliente-title').textContent=editId?'👤 Editar Cliente':'👤 Nuevo Cliente';
+  gel('cli-nombre').value='';gel('cli-telefono').value='';gel('cli-email').value='';gel('cli-dir').value='';gel('cli-cumple').value='';gel('cli-notas').value='';gel('cli-edit-id').value='';
+  document.querySelectorAll('#modal-cliente input[type=checkbox]').forEach(function(cb){cb.checked=false;});
+  if(editId){
+    var clientes=db.get('clientes')||[];
+    var c=clientes.find(function(cl){return cl.id===editId;});
+    if(c){
+      gel('cli-nombre').value=c.nombre||'';
+      gel('cli-telefono').value=c.telefono||'';
+      gel('cli-email').value=c.email||'';
+      gel('cli-dir').value=c.direccion||'';
+      gel('cli-cumple').value=c.cumpleanos||'';
+      gel('cli-notas').value=c.notas||'';
+      gel('cli-edit-id').value=editId;
+      if(c.tags){c.tags.forEach(function(t){var cb=document.querySelector('#modal-cliente input[value="'+t+'"]');if(cb)cb.checked=true;});}
+    }
+  }
+  abrirModal('modal-cliente');
+}
+function guardarCliente(){
+  var nombre=gel('cli-nombre').value.trim();
+  var telefono=gel('cli-telefono').value.trim();
+  if(!nombre||!telefono){toast('⚠️ Nombre y teléfono obligatorios','warn');return;}
+  var tags=[];
+  document.querySelectorAll('#modal-cliente input[type=checkbox]:checked').forEach(function(cb){tags.push(cb.value);});
+  var clientes=db.get('clientes')||[];
+  var editId=gel('cli-edit-id').value;
+  if(editId){
+    var idx=clientes.findIndex(function(c){return c.id===editId;});
+    if(idx>=0){
+      clientes[idx].nombre=nombre;clientes[idx].telefono=telefono;
+      clientes[idx].email=gel('cli-email').value;clientes[idx].direccion=gel('cli-dir').value;
+      clientes[idx].cumpleanos=gel('cli-cumple').value;clientes[idx].notas=gel('cli-notas').value;
+      clientes[idx].tags=tags;
+    }
+  }else{
+    clientes.push({id:'cl'+Date.now(),nombre:nombre,telefono:telefono,email:gel('cli-email').value,direccion:gel('cli-dir').value,cumpleanos:gel('cli-cumple').value,notas:gel('cli-notas').value,tags:tags,visitas:0,totalGastado:0,creado:Date.now()});
+  }
+  db.set('clientes',clientes);cerrarModal('modal-cliente');renderClientes();
+  toast(editId?'✅ Cliente actualizado':'✅ Cliente registrado','ok');
+}
+function editarCliente(id){abrirModalCliente(id);}
+function eliminarCliente(id){if(!confirm('¿Eliminar este cliente?'))return;var clientes=db.get('clientes')||[];db.set('clientes',clientes.filter(function(c){return c.id!==id;}));renderClientes();toast('Cliente eliminado','warn');}
+
+// ═══════════════════════════════════════════════════════
+// PRODUCTOS
+// ═══════════════════════════════════════════════════════
+var _prodCat='Todas';
+function renderProdFilterTabs(){
+  var cats=['Todas','Cuidado Capilar','Cuidado Barba','Afeitado','Cuidado Piel','Herramientas','Fragancias','Accesorios'];
+  gel('prod-filter-tabs').innerHTML=cats.map(function(c){return'<button class="filter-tab'+(_prodCat===c?' active':'')+'" onclick="_prodCat=\''+c+'\';renderProdFilterTabs();renderProductos()">'+c+'</button>';}).join('');
+}
+function renderProductos(){
+  var q=(gel('prod-buscar')||{}).value||'';
+  var prods=db.get('productos')||[];
+  var f=prods.filter(function(p){
+    return(_prodCat==='Todas'||p.cat===_prodCat)&&(!q||p.nombre.toLowerCase().indexOf(q.toLowerCase())>=0);
+  });
+  var cfg=getCfg();var tasa=cfg.tasa||36.5;
+  var el=gel('prod-list');
+  if(!f.length){el.innerHTML='<div class="empty-state"><i class="fas fa-box"></i><p>Sin productos</p></div>';return;}
+  el.innerHTML='<table class="data-table"><thead><tr><th>Nombre</th><th>Categoría</th><th>Precio $</th><th>Precio Bs</th><th>Stock</th><th>Acciones</th></tr></thead><tbody>'+
+  f.map(function(p){
+    var lowStock=p.stock<=3?'<span style="color:var(--red);font-weight:700">⚠️ '+p.stock+'</span>':p.stock;
+    return'<tr><td>'+p.nombre+'</td><td style="color:var(--text3);font-size:11px">'+p.cat+'</td><td style="font-family:var(--mono);color:var(--gold)">'+fmt$(p.precio)+'</td><td style="font-family:var(--mono);color:var(--text3);font-size:11px">'+fmtBs(p.precio*tasa)+'</td><td>'+lowStock+'</td><td><button class="btn btn-ghost btn-sm" onclick="editarProducto(\''+p.id+'\')">Editar</button> <button class="btn btn-danger btn-sm" onclick="eliminarProducto(\''+p.id+'\')"><i class="fas fa-trash"></i></button></td></tr>';
+  }).join('')+'</tbody></table>'+'<button class="btn btn-gold" onclick="abrirModalProducto()" style="margin-top:14px"><i class="fas fa-plus"></i> Nuevo Producto</button>';
+}
+function abrirModalProducto(editId){
+  gel('modal-prod-title').textContent=editId?'Editar Producto':'Nuevo Producto';
+  gel('prod-nombre').value='';gel('prod-precio').value='';gel('prod-stock').value='10';gel('prod-desc').value='';gel('prod-edit-id').value='';
+  if(editId){
+    var prods=db.get('productos')||[];
+    var p=prods.find(function(pr){return pr.id===editId;});
+    if(p){gel('prod-nombre').value=p.nombre;gel('prod-categoria').value=p.cat;gel('prod-precio').value=p.precio;gel('prod-stock').value=p.stock;gel('prod-desc').value=p.desc;gel('prod-edit-id').value=editId;}
+  }
+  abrirModal('modal-producto');
+}
+function guardarProducto(){
+  var nombre=gel('prod-nombre').value.trim();
+  var precio=parseFloat(gel('prod-precio').value)||0;
+  if(!nombre){toast('⚠️ Nombre obligatorio','warn');return;}
+  var prods=db.get('productos')||[];
+  var editId=gel('prod-edit-id').value;
+  if(editId){
+    var idx=prods.findIndex(function(p){return p.id===editId;});
+    if(idx>=0){prods[idx].nombre=nombre;prods[idx].cat=gel('prod-categoria').value;prods[idx].precio=precio;prods[idx].stock=parseInt(gel('prod-stock').value)||0;prods[idx].desc=gel('prod-desc').value;}
+  }else{prods.push({id:'p'+Date.now(),nombre:nombre,cat:gel('prod-categoria').value,precio:precio,stock:parseInt(gel('prod-stock').value)||0,desc:gel('prod-desc').value});}
+  db.set('productos',prods);cerrarModal('modal-producto');renderProductos();toast('✅ Producto guardado','ok');
+}
+function editarProducto(id){abrirModalProducto(id);}
+function eliminarProducto(id){if(!confirm('¿Eliminar?'))return;var prods=db.get('productos')||[];db.set('productos',prods.filter(function(p){return p.id!==id;}));renderProductos();toast('Eliminado','warn');}
+
+// ═══════════════════════════════════════════════════════
+// CAJA
+// ═══════════════════════════════════════════════════════
+function renderCaja(){
+  var caja=db.get('caja')||{abierta:false,inicio:0,ventas:0,gastos:0,movimientos:[]};
+  var cfg=getCfg();var tasa=cfg.tasa||36.5;
+  var html='';
+  if(!caja.abierta){
+    html+='<div style="text-align:center;padding:40px"><div style="font-size:48px;margin-bottom:12px">💰</div><div style="font-size:18px;font-weight:700;margin-bottom:8px">Caja Cerrada</div><div style="color:var(--text3);margin-bottom:20px">Abre la caja para comenzar a registrar ventas</div><div class="form-group" style="max-width:250px;margin:0 auto"><label class="form-label">Fondo inicial ($)</label><input type="number" id="caja-inicio" class="form-input" value="100" step="0.01"></div><button class="btn btn-gold btn-block" onclick="abrirCaja()" style="max-width:250px;margin:12px auto 0">🔓 Abrir Caja</button></div>';
+  }else{
+    var neto=caja.inicio+caja.ventas-(caja.gastos||0);
+    html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">'+
+      '<div class="dash-stat"><div class="stat-num" style="color:var(--green)">'+fmt$(caja.ventas)+'</div><div class="stat-label">Ventas</div><div class="stat-change">'+fmtBs(caja.ventas*tasa)+'</div></div>'+
+      '<div class="dash-stat"><div class="stat-num" style="color:var(--red)">'+fmt$(caja.gastos||0)+'</div><div class="stat-label">Gastos</div></div>'+
+      '<div class="dash-stat"><div class="stat-num" style="color:var(--blue)">'+fmt$(caja.inicio)+'</div><div class="stat-label">Fondo Inicial</div></div>'+
+      '<div class="dash-stat"><div class="stat-num" style="color:var(--gold)">'+fmt$(neto)+'</div><div class="stat-label">Balance</div></div></div>';
+    html+='<div style="margin-bottom:14px;display:flex;gap:8px"><div class="form-group" style="flex:1"><label class="form-label">Registrar gasto ($)</label><div style="display:flex;gap:6px"><input type="number" id="caja-gasto" class="form-input" placeholder="Monto" step="0.01"><input type="text" id="caja-gasto-desc" class="form-input" placeholder="Concepto"><button class="btn btn-danger" onclick="registrarGasto()">Registrar</button></div></div></div>';
+    html+='<button class="btn btn-red btn-block" onclick="cerrarCaja()" style="margin-bottom:20px">🔒 Cerrar Caja (Corte Z)</button>';
+    // Movimientos
+    var movs=(caja.movimientos||[]).slice().reverse();
+    if(movs.length){
+      html+='<h3 style="font-size:14px;margin-bottom:10px;color:var(--text2)">📝 Movimientos</h3><table class="data-table"><thead><tr><th>Hora</th><th>Tipo</th><th>Detalle</th><th>Monto</th></tr></thead><tbody>';
+      movs.forEach(function(m){
+        var color=m.tipo==='venta'?'var(--green)':'var(--red)';
+        html+='<tr><td style="font-family:var(--mono);font-size:11px">'+new Date(m.fecha).toLocaleTimeString('es-VE',{hour:'2-digit',minute:'2-digit'})+'</td><td><span class="badge badge-'+(m.tipo==='venta'?'green':'red')+'">'+m.tipo+'</span></td><td style="font-size:12px">'+(m.detalle||'—')+'</td><td style="font-family:var(--mono);color:'+color+'">'+(m.tipo==='venta'?'+':'-')+fmt$(m.monto)+'</td></tr>';
+      });
+      html+='</tbody></table>';
+    }
+  }
+  gel('caja-content').innerHTML=html;
+}
+function abrirCaja(){
+  var inicio=parseFloat(gel('caja-inicio').value)||0;
+  db.set('caja',{abierta:true,inicio:inicio,ventas:0,gastos:0,movimientos:[{tipo:'apertura',monto:inicio,detalle:'Fondo inicial',fecha:Date.now()}],fecha:Date.now()});
+  _updateCajaDisplay();renderCaja();toast('✅ Caja abierta con '+fmt$(inicio),'ok');
+}
+function cerrarCaja(){
+  if(!confirm('¿Cerrar caja? Se generará el corte Z.'))return;
+  var caja=db.get('caja')||{};
+  caja.abierta=false;
+  db.set('caja',caja);
+  _updateCajaDisplay();renderCaja();toast('🔒 Caja cerrada — Corte Z generado','ok');
+}
+function registrarGasto(){
+  var monto=parseFloat(gel('caja-gasto').value)||0;
+  var desc=gel('caja-gasto-desc').value.trim();
+  if(monto<=0){toast('⚠️ Monto inválido','warn');return;}
+  var caja=db.get('caja')||{};
+  caja.gastos=(caja.gastos||0)+monto;
+  caja.movimientos.push({tipo:'gasto',monto:monto,detalle:desc||'Gasto',fecha:Date.now()});
+  db.set('caja',caja);_updateCajaDisplay();renderCaja();toast('Gasto registrado','warn');
+}
+
+// ═══════════════════════════════════════════════════════
+// REPORTES
+// ═══════════════════════════════════════════════════════
+function renderReportes(){
+  var ventas=db.get('ventas')||[];
+  var cfg=getCfg();var tasa=cfg.tasa||36.5;
+  var hoy=new Date();hoy.setHours(0,0,0,0);
+  var mes=new Date(hoy.getFullYear(),hoy.getMonth(),1);
+  var vMes=ventas.filter(function(v){return v.fecha>=mes.getTime();});
+  var totalMes=0;vMes.forEach(function(v){totalMes+=v.total;});
+  // Top services
+  var servCount={};
+  vMes.forEach(function(v){v.items.forEach(function(it){if(!servCount[it.nombre])servCount[it.nombre]={nombre:it.nombre,cant:0,ing:0};servCount[it.nombre].cant+=it.qty;servCount[it.nombre].ing+=it.precio*it.qty;});});
+  var topServs=Object.values(servCount).sort(function(a,b){return b.ing-a.ing;}).slice(0,10);
+  // Top clientes
+  var cliCount={};
+  vMes.forEach(function(v){if(v.cliente){if(!cliCount[v.cliente.nombre])cliCount[v.cliente.nombre]={nombre:v.cliente.nombre,total:0,cant:0};cliCount[v.cliente.nombre].total+=v.total;cliCount[v.cliente.nombre].cant++;}});
+  var topClis=Object.values(cliCount).sort(function(a,b){return b.total-a.total;}).slice(0,5);
+  // Payment methods breakdown
+  var metodos={};
+  vMes.forEach(function(v){if(!metodos[v.metodo])metodos[v.metodo]=0;metodos[v.metodo]+=v.total;});
+  var html='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">'+
+    '<div class="dash-stat"><div class="stat-num" style="color:var(--gold)">'+fmt$(totalMes)+'</div><div class="stat-label">💰 Ventas del Mes</div></div>'+
+    '<div class="dash-stat"><div class="stat-num" style="color:var(--blue)">'+vMes.length+'</div><div class="stat-label">🧾 Transacciones</div></div>'+
+    '<div class="dash-stat"><div class="stat-num" style="color:var(--green)">'+fmt$(vMes.length?totalMes/vMes.length:0)+'</div><div class="stat-label">📊 Ticket Promedio</div></div></div>';
+  if(topServs.length){
+    html+='<div class="config-section"><h3><i class="fas fa-star" style="color:var(--gold)"></i> Top Servicios del Mes</h3><table class="data-table"><thead><tr><th>#</th><th>Servicio</th><th>Cantidad</th><th>Ingresos</th></tr></thead><tbody>';
+    topServs.forEach(function(s,i){html+='<tr><td>'+(i+1)+'</td><td>'+s.nombre+'</td><td style="font-family:var(--mono)">'+s.cant+'</td><td style="font-family:var(--mono);color:var(--gold)">'+fmt$(s.ing)+'</td></tr>';});
+    html+='</tbody></table></div>';
+  }
+  if(topClis.length){
+    html+='<div class="config-section"><h3><i class="fas fa-users" style="color:var(--blue)"></i> Top Clientes del Mes</h3><table class="data-table"><thead><tr><th>Cliente</th><th>Visitas</th><th>Total Gastado</th></tr></thead><tbody>';
+    topClis.forEach(function(c){html+='<tr><td>'+c.nombre+'</td><td style="font-family:var(--mono)">'+c.cant+'</td><td style="font-family:var(--mono);color:var(--gold)">'+fmt$(c.total)+'</td></tr>';});
+    html+='</tbody></table></div>';
+  }
+  html+='<button class="btn btn-gold btn-block" onclick="exportarCSVReporte()" style="margin-top:14px"><i class="fas fa-download"></i> Exportar CSV</button>';
+  gel('reportes-content').innerHTML=html;
+}
+function exportarCSVReporte(){
+  var ventas=db.get('ventas')||[];if(!ventas.length){toast('Sin datos','warn');return;}
+  var rows=[['Fecha','Ticket','Cliente','Items','Subtotal','Descuento','Total','Método','Bs']];
+  ventas.forEach(function(v){
+    rows.push([new Date(v.fecha).toLocaleDateString('es-VE'),'#'+v.num,v.cliente? v.cliente.nombre:'—',v.items.map(function(i){return i.qty+'x '+i.nombre;}).join('; '),v.subtotal.toFixed(2),v.descuento&&v.descuento.valor?v.descuento.valor:'0',v.total.toFixed(2),v.metodo,(v.totalBs||0).toFixed(2)]);
+  });
+  var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='barberia-pro-reporte-'+new Date().toISOString().split('T')[0]+'.csv';a.click();toast('CSV exportado','ok');
+}
+
+// ═══════════════════════════════════════════════════════
+// BARBEROS
+// ═══════════════════════════════════════════════════════
+function renderBarberos(){
+  var barberos=db.get('barberos')||[];
+  var ventas=db.get('ventas')||[];
+  var el=gel('barberos-list');
+  if(!barberos.length){el.innerHTML='<div class="empty-state"><i class="fas fa-user-tie"></i><p>No hay barberos registrados</p></div>';return;}
+  el.innerHTML=barberos.map(function(b){
+    // Calculate commissions
+    var totalVentas=0;
+    ventas.forEach(function(v){if(v.barbero===b.nombre||true)totalVentas+=v.total;});
+    var comision=totalVentas*(b.comision||0)/100;
+    return'<div class="config-section" style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:16px;font-weight:700">💈 '+b.nombre+'</div><div style="font-size:12px;color:var(--text2)">'+(b.especialidad||'General')+' · Comisión: '+(b.comision||20)+'%</div>'+(b.telefono?'<div style="font-size:11px;color:var(--text3)">'+b.telefono+'</div>':'')+'</div><div style="text-align:right"><div style="font-family:var(--mono);color:var(--gold);font-weight:700">'+fmt$(totalVentas)+'</div><div style="font-size:11px;color:var(--green)">Comisión: '+fmt$(comision)+'</div><div style="margin-top:6px"><button class="btn btn-ghost btn-sm" onclick="editarBarbero(\''+b.id+'\')">Editar</button> <button class="btn btn-danger btn-sm" onclick="eliminarBarbero(\''+b.id+'\')"><i class="fas fa-trash"></i></button></div></div></div>';
+  }).join('');
+}
+function abrirModalBarbero(editId){
+  gel('bar-nombre').value='';gel('bar-telefono').value='';gel('bar-especialidad').value='';gel('bar-comision').value='20';gel('bar-edit-id').value='';
+  if(editId){
+    var barberos=db.get('barberos')||[];
+    var b=barberos.find(function(br){return br.id===editId;});
+    if(b){gel('bar-nombre').value=b.nombre;gel('bar-telefono').value=b.telefono;gel('bar-especialidad').value=b.especialidad;gel('bar-comision').value=b.comision;gel('bar-edit-id').value=editId;}
+  }
+  abrirModal('modal-barbero');
+}
+function guardarBarbero(){
+  var nombre=gel('bar-nombre').value.trim();
+  if(!nombre){toast('⚠️ Nombre obligatorio','warn');return;}
+  var barberos=db.get('barberos')||[];
+  var editId=gel('bar-edit-id').value;
+  if(editId){
+    var idx=barberos.findIndex(function(b){return b.id===editId;});
+    if(idx>=0){barberos[idx].nombre=nombre;barberos[idx].telefono=gel('bar-telefono').value;barberos[idx].especialidad=gel('bar-especialidad').value;barberos[idx].comision=parseInt(gel('bar-comision').value)||20;}
+  }else{barberos.push({id:'bar'+Date.now(),nombre:nombre,telefono:gel('bar-telefono').value,especialidad:gel('bar-especialidad').value,comision:parseInt(gel('bar-comision').value)||20,creado:Date.now()});}
+  db.set('barberos',barberos);cerrarModal('modal-barbero');renderBarberos();toast('✅ Barbero guardado','ok');
+}
+function editarBarbero(id){abrirModalBarbero(id);}
+function eliminarBarbero(id){if(!confirm('¿Eliminar?'))return;var barberos=db.get('barberos')||[];db.set('barberos',barberos.filter(function(b){return b.id!==id;}));renderBarberos();toast('Eliminado','warn');}
+
+// ═══════════════════════════════════════════════════════
+// COLA DE ESPERA
+// ═══════════════════════════════════════════════════════
+function renderCola(){
+  var cola=db.get('cola')||[];
+  var el=gel('cola-list');
+  if(!cola.length){el.innerHTML='<div class="empty-state"><i class="fas fa-users-line"></i><p>Cola vacía</p></div>';return;}
+  el.innerHTML=cola.map(function(c,i){
+    var espera=Math.round((Date.now()-c.fecha)/60000);
+    return'<div class="config-section" style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:14px;font-weight:700">#'+(i+1)+' — '+c.nombre+'</div><div style="font-size:12px;color:var(--text2)">Llegó: '+new Date(c.fecha).toLocaleTimeString('es-VE',{hour:'2-digit',minute:'2-digit'})+' · '+espera+' min espera</div>'+(c.barbero?'<div style="font-size:11px;color:var(--text3)">💈 Asignado: '+c.barbero+'</div>':'<div style="font-size:11px;color:var(--orange)">⏳ Sin asignar</div>')+'</div><div><button class="btn btn-green btn-sm" onclick="atenderCola('+i+')">✅ Atender</button> <button class="btn btn-danger btn-sm" onclick="quitarCola('+i+')"><i class="fas fa-times"></i></button></div></div>';
+  }).join('');
+}
+function agregarCola(){
+  var nombre=prompt('Nombre del cliente:');
+  if(!nombre||!nombre.trim())return;
+  var cola=db.get('cola')||[];
+  cola.push({id:'q'+Date.now(),nombre:nombre.trim(),fecha:Date.now(),barbero:''});
+  db.set('cola',cola);renderCola();toast('✅ Agregado a la cola','ok');
+}
+function atenderCola(idx){var cola=db.get('cola')||[];cola.splice(idx,1);db.set('cola',cola);renderCola();toast('✅ Cliente atendido','ok');}
+function quitarCola(idx){var cola=db.get('cola')||[];cola.splice(idx,1);db.set('cola',cola);renderCola();toast('Eliminado de la cola','warn');}
+
+// ═══════════════════════════════════════════════════════
+// MEMBRESÍAS
+// ═══════════════════════════════════════════════════════
+function renderMembresias(){
+  var mems=db.get('membresias')||[];
+  var el=gel('membresias-list');
+  if(!mems.length){el.innerHTML='<div class="empty-state"><i class="fas fa-id-card"></i><p>No hay paquetes creados</p></div>';return;}
+  el.innerHTML=mems.map(function(m){
+    return'<div class="config-section"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:15px;font-weight:700">'+m.nombre+'</div><div style="font-size:12px;color:var(--text2)">'+m.tipo+' · '+m.sesiones+' sesiones · '+fmt$(m.precio)+'</div>'+(m.servicios?'<div style="font-size:11px;color:var(--text3)">'+m.servicios+'</div>':'')+'</div><div><button class="btn btn-danger btn-sm" onclick="eliminarMembresia(\''+m.id+'\')"><i class="fas fa-trash"></i></button></div></div></div>';
+  }).join('');
+}
+function abrirModalMembresia(){gel('mem-nombre').value='';gel('mem-precio').value='';gel('mem-sesiones').value='5';gel('mem-servicios').value='';abrirModal('modal-membresia');}
+function guardarMembresia(){
+  var nombre=gel('mem-nombre').value.trim();var precio=parseFloat(gel('mem-precio').value)||0;
+  if(!nombre){toast('⚠️ Nombre obligatorio','warn');return;}
+  var mems=db.get('membresias')||[];
+  mems.push({id:'mem'+Date.now(),nombre:nombre,precio:precio,sesiones:parseInt(gel('mem-sesiones').value)||5,servicios:gel('mem-servicios').value,tipo:gel('mem-tipo').value});
+  db.set('membresias',mems);cerrarModal('modal-membresia');renderMembresias();toast('✅ Paquete creado','ok');
+}
+function eliminarMembresia(id){if(!confirm('¿Eliminar?'))return;var mems=db.get('membresias')||[];db.set('membresias',mems.filter(function(m){return m.id!==id;}));renderMembresias();toast('Eliminado','warn');}
+
+// ═══════════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════════
+function renderConfig(){
+  var cfg=getCfg();
+  var html=
+  '<div class="config-section"><h3><i class="fas fa-store"></i> Datos del Negocio</h3>'+
+  '<div class="form-group"><label class="form-label">Nombre del Negocio</label><input type="text" class="form-input" id="cfg-negocio" value="'+(cfg.negocio||'')+'"></div>'+
+  '<div class="form-group"><label class="form-label">Teléfono</label><input type="tel" class="form-input" id="cfg-telefono" value="'+(cfg.telefono||'')+'"></div>'+
+  '<div class="form-group"><label class="form-label">Dirección</label><input type="text" class="form-input" id="cfg-direccion" value="'+(cfg.direccion||'')+'"></div>'+
+  '<div class="form-group"><label class="form-label">RIF</label><input type="text" class="form-input" id="cfg-rif" value="'+(cfg.rif||'')+'"></div>'+
+  '<div class="form-group"><label class="form-label">Instagram</label><input type="text" class="form-input" id="cfg-instagram" value="'+(cfg.instagram||'')+'" placeholder="@barberia"></div>'+
+  '</div>'+
+  '<div class="config-section"><h3><i class="fas fa-money-bill-wave"></i> Tasa de Cambio</h3>'+
+  '<div class="form-group"><label class="form-label">1 USD =</label><input type="number" class="form-input" id="cfg-tasa" value="'+(cfg.tasa||36.5)+'" step="0.01"></div>'+
+  '</div>'+
+  '<div class="config-section"><h3><i class="fas fa-building-columns"></i> Datos Bancarios</h3>'+
+  '<div class="form-group"><label class="form-label">Banco</label><input type="text" class="form-input" id="cfg-banco" value="'+(cfg.banco||'')+'"></div>'+
+  '<div class="form-group"><label class="form-label">Cuenta</label><input type="text" class="form-input" id="cfg-cuenta" value="'+(cfg.cuenta||'')+'"></div>'+
+  '<div class="form-group"><label class="form-label">CI/RIF Pago Móvil</label><input type="text" class="form-input" id="cfg-ci" value="'+(cfg.ciPagoMovil||'')+'"></div>'+
+  '<div class="form-group"><label class="form-label">Email Zelle</label><input type="email" class="form-input" id="cfg-zelle" value="'+(cfg.zelleEmail||'')+'"></div>'+
+  '</div>'+
+  '<div class="config-section"><h3><i class="fas fa-key"></i> Clave Admin Panel Licencias</h3>'+
+  '<div class="form-group"><label class="form-label">Clave para el panel de administración</label><input type="password" class="form-input" id="cfg-admin-pw" placeholder="Clave admin" value="'+(cfg.adminPw||'')+'"></div>'+
+  '</div>'+
+  '<div class="config-section"><h3><i class="fas fa-credit-card"></i> Métodos de Pago Activos</h3>'+
+  '<div class="pm-grid">';
+  METODOS_PAGO.forEach(function(m){
+    var activo=(cfg.metodosPago||[]).indexOf(m.nombre)>=0;
+    html+='<div class="pm-item"><input type="checkbox" id="pm-'+m.nombre.replace(/[^a-zA-Z]/g,'')+'" '+(activo?'checked':'')+' onchange="toggleMetodoPago(\''+m.nombre.replace(/'/g,"\\'")+'\')"><label for="pm-'+m.nombre.replace(/[^a-zA-Z]/g,'')+'">'+m.nombre+'</label></div>';
+  });
+  html+='</div></div>'+
+  '<button class="btn btn-gold btn-block" onclick="guardarConfig()" style="padding:12px;font-size:14px"><i class="fas fa-save"></i> Guardar Configuración</button>';
+  gel('config-content').innerHTML=html;
+}
+function toggleMetodoPago(nombre){/* handled on save */}
+function guardarConfig(){
+  var cfg=getCfg();
+  cfg.negocio=gel('cfg-negocio').value;cfg.telefono=gel('cfg-telefono').value;
+  cfg.direccion=gel('cfg-direccion').value;cfg.rif=gel('cfg-rif').value;
+  cfg.instagram=gel('cfg-instagram').value;cfg.tasa=parseFloat(gel('cfg-tasa').value)||36.5;
+  cfg.banco=gel('cfg-banco').value;cfg.cuenta=gel('cfg-cuenta').value;
+  cfg.ciPagoMovil=gel('cfg-ci').value;cfg.zelleEmail=gel('cfg-zelle').value;
+  cfg.adminPw=gel('cfg-admin-pw').value;
+  var metodos=[];
+  METODOS_PAGO.forEach(function(m){
+    var cb=gel('pm-'+m.nombre.replace(/[^a-zA-Z]/g,''));
+    if(cb&&cb.checked)metodos.push(m.nombre);
+  });
+  cfg.metodosPago=metodos;
+  db.set('config',cfg);
+  // Also update cuenta
+  var cuenta=db.get('cuenta')||{};
+  cuenta.negocio=cfg.negocio;cuenta.telefono=cfg.telefono;
+  db.set('cuenta',cuenta);
+  gel('top-user-name').textContent=cfg.dueno||'Admin';
+  toast('✅ Configuración guardada','ok');
+}
+
+// ═══════════════════════════════════════════════════════
+// LICENCIA INFO
+// ═══════════════════════════════════════════════════════
+function mostrarInfoLicencia(){
+  var lic=db.get('licencia_activa');
+  var html='<div style="text-align:center;margin-bottom:16px"><span style="font-size:48px">🔐</span></div>';
+  if(!lic){html+='<p style="color:var(--red)">No hay licencia activa.</p>';}
+  else{
+    html+='<table style="width:100%;font-size:13px">';
+    html+='<tr><td style="color:var(--text2);padding:6px">Tipo:</td><td style="font-weight:700;color:'+(lic.tipo==='PRO'?'var(--green)':'var(--orange')+'">'+lic.tipo+'</td></tr>';
+    html+='<tr><td style="color:var(--text2);padding:6px">Código:</td><td style="font-family:var(--mono);font-size:11px">'+lic.code+'</td></tr>';
+    html+='<tr><td style="color:var(--text2);padding:6px">Device ID:</td><td style="font-family:var(--mono);font-size:11px">'+lic.device+'</td></tr>';
+    html+='<tr><td style="color:var(--text2);padding:6px">Activada:</td><td>'+new Date(lic.activado).toLocaleString('es-VE')+'</td></tr>';
+    if(lic.tipo==='DEMO'&&lic.expiry){
+      var rem=Math.max(0,Math.ceil((lic.expiry-Date.now())/86400000));
+      html+='<tr><td style="color:var(--text2);padding:6px">Expira:</td><td style="color:'+(rem<=3?'var(--red)':'var(--green)')+'">'+new Date(lic.expiry).toLocaleString('es-VE')+' ('+rem+' días restantes)</td></tr>';
+    }
+    if(lic.master)html+='<tr><td style="color:var(--text2);padding:6px">Tipo:</td><td style="color:var(--gold);font-weight:700">🔑 Licencia Maestra (Multi-dispositivo)</td></tr>';
+    html+='</table>';
+  }
+  gel('lic-info-content').innerHTML=html;
+  abrirModal('modal-licencia');
+}
+
+// ═══════════════════════════════════════════════════════
+// KEYBOARD SHORTCUTS
+// ═══════════════════════════════════════════════════════
+document.addEventListener('keydown',function(e){
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT')return;
+  if(e.key==='Enter'&&_cart.items.length){e.preventDefault();abrirModalCobro();}
+  if(e.key==='Escape'){e.preventDefault();vaciarCarrito();}
+  if(e.key==='+'&&_cart.items.length){e.preventDefault();changeQty(_cart.items.length-1,1);}
+  if(e.key==='-'&&_cart.items.length){e.preventDefault();changeQty(_cart.items.length-1,-1);}
+});
+
+// ═══════════════════════════════════════════════════════
+// AUTO-INIT
+// ═══════════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded',function(){
+  var lic=db.get('licencia_activa');
+  if(lic){
+    var devId=getDeviceId();
+    if(!lic.master&&lic.device!==devId){db.remove('licencia_activa');return;}
+    if(lic.tipo==='DEMO'&&lic.expiry&&Date.now()>lic.expiry){db.remove('licencia_activa');return;}
+    _initApp();
+  }
+});
+</script>
