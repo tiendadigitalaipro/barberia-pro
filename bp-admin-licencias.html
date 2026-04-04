@@ -245,6 +245,20 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 .demo-meta{font-size:11px;color:var(--text3)}
 .demo-actions{margin-left:auto;display:flex;gap:4px}
 
+/* ========== LICENSE ACTIONS ========== */
+.license-actions{display:flex;gap:4px;padding:10px 20px;border-top:1px solid var(--border);background:rgba(0,0,0,0.1)}
+.license-actions .btn-icon-action{width:30px;height:30px;border-radius:6px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .2s;background:none}
+.license-actions .btn-activate{color:var(--green2);border:1px solid rgba(16,185,129,0.3)}
+.license-actions .btn-activate:hover{background:var(--green-dim)}
+.license-actions .btn-block{color:var(--red);border:1px solid rgba(220,38,38,0.25)}
+.license-actions .btn-block:hover{background:var(--red-dim)}
+.license-actions .btn-pause{color:var(--orange);border:1px solid rgba(245,158,11,0.25)}
+.license-actions .btn-pause:hover{background:var(--orange-dim)}
+.license-actions .btn-share{color:var(--blue);border:1px solid rgba(59,130,246,0.25)}
+.license-actions .btn-share:hover{background:var(--blue-dim)}
+.license-actions .btn-delete{color:var(--red);border:1px solid rgba(220,38,38,0.25)}
+.license-actions .btn-delete:hover{background:var(--red-dim)}
+
 /* Badge */
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:10px;font-size:10px;font-weight:700}
 .badge-pro{background:var(--gold-dim);color:var(--gold)}
@@ -375,11 +389,31 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
         </div>
         <div class="gen-panel-body">
           <p class="text-sm text-muted mb-3" style="line-height:1.6">
-            Código de prueba: <strong class="text-orange">5 días</strong> de uso completo. El cliente lo activa en la app sin necesidad de Device ID.
+            Código de prueba: <strong class="text-orange">días seleccionados</strong> de uso completo. El cliente lo activa en la app sin necesidad de Device ID.
           </p>
           <div class="form-group">
-            <label class="form-label">Nota Interna</label>
-            <input type="text" id="demo-nota" class="form-input" placeholder="Nombre del prospecto, negocio...">
+            <label class="form-label form-required">Nombre del Negocio</label>
+            <input type="text" id="demo-negocio" class="form-input" placeholder="Barbería Don Juan" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label form-required">Teléfono / WhatsApp</label>
+              <input type="tel" id="demo-telefono" class="form-input" placeholder="+58 412 1234567" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">ID Dispositivo</label>
+              <input type="text" id="demo-device" class="form-input" placeholder="BP-XXXX-XXXX-XXXX (opcional)">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Días de Prueba</label>
+            <select id="demo-dias" class="form-select">
+              <option value="3">3 días</option>
+              <option value="5" selected>5 días</option>
+              <option value="7">7 días</option>
+              <option value="10">10 días</option>
+              <option value="15">15 días</option>
+            </select>
           </div>
           <button class="btn btn-orange btn-block" onclick="generarDEMO()" style="font-size:14px;padding:12px">
             <i class="fas fa-flask"></i> Generar Código DEMO
@@ -391,10 +425,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
               <div class="code-text demo-code" id="result-demo-code">—</div>
               <button class="btn btn-icon btn-ghost" onclick="copyText('result-demo-code')" title="Copiar"><i class="fas fa-copy"></i></button>
             </div>
-            <div class="text-sm text-muted mb-2">⏰ Expira 5 días después de ser activado por el cliente.</div>
+            <div class="text-sm text-muted mb-2" id="result-demo-info"></div>
             <div class="result-actions">
               <button class="btn btn-sm btn-ghost" onclick="waDemo()"><i class="fab fa-whatsapp"></i> WhatsApp</button>
-              <button class="btn btn-sm btn-ghost" onclick="document.getElementById('demo-nota').value='';document.getElementById('result-demo').style.display='none'"><i class="fas fa-redo"></i> Nuevo</button>
+              <button class="btn btn-sm btn-ghost" onclick="resetDemoForm()"><i class="fas fa-redo"></i> Nuevo</button>
             </div>
           </div>
         </div>
@@ -567,7 +601,7 @@ function syncToLegacy(db) {
       });
     });
     (db.demos || []).forEach(function(d) {
-      legacy.push({ code: d.code, tipo: 'DEMO', nota: d.nota, ts: d.ts });
+      legacy.push({ code: d.code, tipo: 'DEMO', nota: d.negocio || d.nota || '', ts: d.ts });
     });
     localStorage.setItem(_SYNC_KEY, JSON.stringify(legacy));
   } catch (e) {}
@@ -811,18 +845,46 @@ function resetProForm() {
 
 /* ========== GENERATE DEMO ========== */
 function generarDEMO() {
-  var nota = (document.getElementById('demo-nota').value || '').trim();
+  var negocio = (document.getElementById('demo-negocio').value || '').trim();
+  var telefono = (document.getElementById('demo-telefono').value || '').trim();
+  var device = (document.getElementById('demo-device').value || '').trim().toUpperCase();
+  var dias = parseInt(document.getElementById('demo-dias').value) || 5;
+
+  /* Validate required fields */
+  if (!negocio) { toast('El nombre del negocio es obligatorio', 'err'); document.getElementById('demo-negocio').focus(); return; }
+  if (!telefono) { toast('El teléfono es obligatorio', 'err'); document.getElementById('demo-telefono').focus(); return; }
+
+  /* If device provided, validate format */
+  if (device && !device.match(/^BP-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/)) {
+    toast('Formato de Device ID inválido (BP-XXXX-XXXX-XXXX)', 'err');
+    document.getElementById('demo-device').focus();
+    return;
+  }
+
   var code = generateDemoCode();
 
   var db = getDB();
   if (!db.demos) db.demos = [];
-  db.demos.push({ id: uid(), code: code, tipo: 'DEMO', nota: nota, ts: Date.now() });
+  db.demos.push({ id: uid(), code: code, tipo: 'DEMO', negocio: negocio, telefono: telefono, device: device, dias: dias, ts: Date.now() });
   saveDB(db);
 
   document.getElementById('result-demo-code').textContent = code;
+  document.getElementById('result-demo-info').innerHTML =
+    '<i class="fas fa-store"></i> ' + escHtml(negocio) +
+    (telefono ? ' · <i class="fab fa-whatsapp"></i> ' + escHtml(telefono) : '') +
+    (device ? ' · <i class="fas fa-desktop"></i> ' + escHtml(device) : '') +
+    ' · <i class="fas fa-clock"></i> ' + dias + ' días';
   document.getElementById('result-demo').style.display = 'block';
   renderStats();
-  toast('🎯 Código DEMO generado', 'ok');
+  toast('🎯 Código DEMO generado (' + dias + ' días)', 'ok');
+}
+
+function resetDemoForm() {
+  document.getElementById('demo-negocio').value = '';
+  document.getElementById('demo-telefono').value = '';
+  document.getElementById('demo-device').value = '';
+  document.getElementById('demo-dias').value = '5';
+  document.getElementById('result-demo').style.display = 'none';
 }
 
 /* ========== DURATION LABEL ========== */
@@ -866,10 +928,20 @@ function copyAllProCodes() {
 /* ========== WHATSAPP ========== */
 function waDemo() {
   var code = document.getElementById('result-demo-code').textContent;
-  var nota = (document.getElementById('demo-nota').value || '').trim();
-  var msg = '💈 *Barbería Pro*\n\nCódigo de prueba DEMO (5 días):\n\n*' + code + '*\n\n' +
+  var negocio = (document.getElementById('demo-negocio').value || '').trim();
+  var telefono = (document.getElementById('demo-telefono').value || '').trim();
+  var dias = document.getElementById('demo-dias').value || '5';
+  var msg = '💈 *Barbería Pro*\n\nCódigo de prueba DEMO (' + dias + ' días):\n\n*' + code + '*\n\n' +
+    (negocio ? 'Negocio: *' + negocio + '*\n\n' : '') +
     '1. Abre la app\n2. Pega el código\n3. Presiona "Activar DEMO"\n\n💪 ¡Disfruta la prueba!';
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+
+  /* If phone number available, pre-fill wa.me */
+  var phone = telefono.replace(/[^0-9]/g, '');
+  if (phone.length > 8) {
+    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+  } else {
+    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  }
 }
 
 function waProCodes() {
@@ -925,7 +997,9 @@ function renderLista() {
         '<div class="client-badges">' +
         '<span class="badge badge-duration"><i class="fas fa-clock"></i> ' + getDurationLabel(c.duracion) + '</span>' +
         '<span class="badge badge-terminals"><i class="fas fa-desktop"></i> ' + assignedDevices.length + '/' + c.numTerminales + '</span>' +
-        (activatedDevices.length > 0 ? '<span class="badge" style="background:var(--green-dim);color:var(--green2)"><i class="fas fa-check"></i> Activa</span>' : '<span class="badge" style="background:var(--orange-dim);color:var(--orange)"><i class="fas fa-hourglass-half"></i> Inactiva</span>') +
+        (c.bloqueada ? '<span class="badge" style="background:var(--red-dim);color:var(--red)"><i class="fas fa-ban"></i> BLOQUEADA</span>' : '') +
+        (c.pausada ? '<span class="badge" style="background:var(--orange-dim);color:var(--orange)"><i class="fas fa-pause"></i> PAUSADA</span>' : '') +
+        (!c.bloqueada && !c.pausada ? (activatedDevices.length > 0 ? '<span class="badge" style="background:var(--green-dim);color:var(--green2)"><i class="fas fa-check"></i> Activa</span>' : '<span class="badge" style="background:var(--orange-dim);color:var(--orange)"><i class="fas fa-hourglass-half"></i> Inactiva</span>') : '') +
         '</div>' +
         '<div class="client-card-arrow"><i class="fas fa-chevron-down"></i></div>' +
         '</div>';
@@ -964,11 +1038,18 @@ function renderLista() {
         html += '<div class="text-sm text-muted mt-2" style="padding-left:4px"><i class="fas fa-plus-circle"></i> ' + available + ' terminal(es) disponible(s)</div>';
       }
 
-      html += '<div style="display:flex;justify-content:flex-end;margin-top:12px">' +
-        '<button class="btn btn-sm btn-danger" onclick="event.stopPropagation();deleteClient(\'' + c.id + '\')"><i class="fas fa-trash"></i> Eliminar</button>' +
+      html += '</div>';
+
+      /* Action footer */
+      html += '<div class="license-actions">' +
+        '<button class="btn-icon-action btn-activate" onclick="event.stopPropagation();toggleBlockClient(\'' + c.id + '\')" title="Activar"><span>🟢</span></button>' +
+        '<button class="btn-icon-action btn-block" onclick="event.stopPropagation();toggleBlockClient(\'' + c.id + '\')" title="Bloquear"><span>🔴</span></button>' +
+        '<button class="btn-icon-action btn-pause" onclick="event.stopPropagation();togglePauseClient(\'' + c.id + '\')" title="Pausar"><span>⏸️</span></button>' +
+        '<button class="btn-icon-action btn-share" onclick="event.stopPropagation();shareWhatsAppCliente(\'' + c.id + '\')" title="Compartir via WhatsApp"><span>📤</span></button>' +
+        '<button class="btn-icon-action btn-delete" onclick="event.stopPropagation();deleteClient(\'' + c.id + '\')" title="Eliminar"><span>🗑️</span></button>' +
         '</div>';
 
-      html += '</div></div>';
+      html += '</div>';
     });
   }
 
@@ -980,9 +1061,16 @@ function renderLista() {
         '<span class="badge badge-demo"><i class="fas fa-flask"></i> DEMO</span>' +
         '<div style="flex:1;min-width:0">' +
         '<div class="demo-code-text">' + escHtml(d.code) + '</div>' +
-        '<div class="demo-meta">' + (d.nota ? escHtml(d.nota) + ' · ' : '') + new Date(d.ts).toLocaleDateString('es-VE') + '</div>' +
+        '<div class="demo-meta">' +
+        (d.negocio ? escHtml(d.negocio) + ' · ' : '') +
+        (d.telefono ? escHtml(d.telefono) + ' · ' : '') +
+        (d.nota ? escHtml(d.nota) + ' · ' : '') +
+        (d.dias ? d.dias + ' días · ' : '') +
+        new Date(d.ts).toLocaleDateString('es-VE') +
+        '</div>' +
         '</div>' +
         '<button class="btn btn-icon btn-ghost" onclick="copyRaw(\'' + escAttr(d.code) + '\')" title="Copiar"><i class="fas fa-copy"></i></button>' +
+        '<button class="btn btn-icon" style="background:none;color:var(--blue);border:1px solid rgba(59,130,246,0.25)" onclick="shareWhatsAppDemo(\'' + d.id + '\')" title="Compartir via WhatsApp"><span>📤</span></button>' +
         '<button class="btn btn-icon btn-danger" onclick="deleteDemo(\'' + d.id + '\')" title="Eliminar"><i class="fas fa-trash"></i></button>' +
         '</div>';
     });
@@ -1047,6 +1135,79 @@ function deleteDemo(id) {
   toast('Demo eliminada', 'err');
 }
 
+/* ========== CLIENT ACTIONS ========== */
+function toggleBlockClient(id) {
+  var db = getDB();
+  var client = (db.clients || []).find(function(c) { return c.id === id; });
+  if (client) {
+    client.bloqueada = !client.bloqueada;
+    if (client.bloqueada) { client.pausada = false; } /* Clear pausada when blocking */
+    saveDB(db);
+    renderLista();
+    renderStats();
+    toast(client.bloqueada ? '🔴 Cliente bloqueado' : '🟢 Cliente desbloqueado', client.bloqueada ? 'err' : 'ok');
+  }
+}
+
+function togglePauseClient(id) {
+  var db = getDB();
+  var client = (db.clients || []).find(function(c) { return c.id === id; });
+  if (client) {
+    client.pausada = !client.pausada;
+    if (client.pausada) { client.bloqueada = false; } /* Clear bloqueada when pausing */
+    saveDB(db);
+    renderLista();
+    renderStats();
+    toast(client.pausada ? '⏸️ Cliente pausado' : '▶️ Cliente reanudado', client.pausada ? 'err' : 'ok');
+  }
+}
+
+function shareWhatsAppCliente(id) {
+  var db = getDB();
+  var client = (db.clients || []).find(function(c) { return c.id === id; });
+  if (!client) return;
+
+  var codesList = [];
+  (client.dispositivos || []).forEach(function(d, i) {
+    if (d.code) {
+      codesList.push('Terminal ' + (i + 1) + ': ' + d.code);
+    }
+  });
+
+  var msg = '💈 *Barbería Pro — Licencia(s) PRO*\n\n' +
+    'Negocio: *' + client.negocio + '*\n' +
+    (client.telefono ? 'Teléfono: ' + client.telefono + '\n' : '') +
+    'Duración: ' + getDurationLabel(client.duracion) + '\n\n' +
+    'Código(s) de activación:\n\n' +
+    (codesList.length > 0 ? codesList.join('\n') : 'Sin códigos asignados') +
+    '\n\n1. Abre la app en cada terminal\n2. Pega el código correspondiente\n3. Presiona "Crear Cuenta y Activar"\n\n💪 ¡Listo!';
+
+  var phone = (client.telefono || '').replace(/[^0-9]/g, '');
+  if (phone.length > 8) {
+    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+  } else {
+    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  }
+}
+
+function shareWhatsAppDemo(id) {
+  var db = getDB();
+  var demo = (db.demos || []).find(function(d) { return d.id === id; });
+  if (!demo) return;
+
+  var dias = demo.dias || 5;
+  var msg = '💈 *Barbería Pro*\n\nCódigo de prueba DEMO (' + dias + ' días):\n\n*' + demo.code + '*\n\n' +
+    (demo.negocio ? 'Negocio: *' + demo.negocio + '*\n\n' : '') +
+    '1. Abre la app\n2. Pega el código\n3. Presiona "Activar DEMO"\n\n💪 ¡Disfruta la prueba!';
+
+  var phone = (demo.telefono || '').replace(/[^0-9]/g, '');
+  if (phone.length > 8) {
+    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+  } else {
+    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  }
+}
+
 function limpiarTodo() {
   if (!confirm('⚠️ ¿Eliminar TODOS los registros? Esta acción no se puede deshacer.')) return;
   var db = getDB();
@@ -1093,7 +1254,7 @@ function exportCSV() {
   });
 
   demos.forEach(function(d) {
-    rows.push(['DEMO', csvCell(d.nota), '', '', '', '5 días', '1', '', csvCell(d.code), 'Demo',
+    rows.push(['DEMO', csvCell(d.negocio || d.nota), csvCell(d.telefono), '', '', (d.dias || 5) + ' días', '1', csvCell(d.device), csvCell(d.code), 'Demo',
       new Date(d.ts).toLocaleDateString('es-VE')
     ].join(','));
   });
