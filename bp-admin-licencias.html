@@ -2,122 +2,1124 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Admin Licencias — Barbería Pro · A2K Digital Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Licencias — Barbería Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-:root{--bg:#0a0a0a;--bg2:#111;--border:#2a2a2a;--gold:#c9a96e;--gold2:#d4af37;--red:#dc2626;--green:#16a34a;--orange:#f59e0b;--blue:#2563eb;--text:#e5e5e5;--text2:#888;--text3:#555;--mono:'JetBrains Mono',monospace;--body:'Inter',sans-serif;--radius:8px}
-*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}a{color:var(--blue);text-decoration:none}
-#loginPanel{width:100%;max-width:420px;margin:60px auto}
-.login-logo{font-size:52px;text-align:center;margin-bottom:12px;filter:drop-shadow(0 0 20px rgba(201,169,110,.4))}
-.login-title{text-align:center;font-size:22px;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
-.login-sub{text-align:center;font-size:12px;color:var(--text3);margin-bottom:28px}
-.login-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.form-label{display:block;font-size:12px;color:var(--text2);margin-bottom:5px;font-weight:600;letter-spacing:.5px}
-.form-input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-size:13px;outline:none;font-family:var(--body)}
-.form-input:focus{border-color:var(--gold)}
+:root{
+  --bg:#0a0a0a;--bg2:#111113;--bg3:#18181b;--bg4:#1e1e22;
+  --border:#2a2a2e;--border2:#333338;
+  --gold:#c9a96e;--gold2:#d4af37;--gold-dim:rgba(201,169,110,.15);
+  --red:#dc2626;--red-dim:rgba(220,38,38,.12);
+  --green:#16a34a;--green2:#10b981;--green-dim:rgba(16,185,129,.12);
+  --orange:#f59e0b;--orange2:#fb923c;--orange-dim:rgba(245,158,11,.12);
+  --teal:#14b8a6;--teal-dim:rgba(20,184,166,.12);
+  --blue:#3b82f6;--blue-dim:rgba(59,130,246,.12);
+  --text:#e5e5e5;--text2:#a0a0a5;--text3:#5a5a60;
+  --mono:'JetBrains Mono',monospace;
+  --body:'Inter',sans-serif;
+  --radius:10px;--radius-lg:14px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* ========== LOGIN ========== */
+#loginPanel{
+  display:flex;align-items:center;justify-content:center;min-height:100vh;
+  padding:20px;
+}
+.login-box{
+  width:100%;max-width:400px;text-align:center;
+  animation:fadeUp .5s ease;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.login-icon{font-size:56px;margin-bottom:8px;filter:drop-shadow(0 0 24px rgba(201,169,110,.35))}
+.login-title{font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.login-sub{font-size:12px;color:var(--text3);margin:4px 0 28px;letter-spacing:.5px}
+.login-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+
+/* ========== FORMS ========== */
+.form-label{display:block;font-size:11px;color:var(--text2);margin-bottom:5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
+.form-input,.form-select,.form-textarea{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:8px;padding:10px 14px;color:var(--text);font-size:13px;
+  outline:none;font-family:var(--body);transition:border-color .2s;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold)}
+.form-input::placeholder{color:var(--text3)}
+.form-select{cursor:pointer;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a5a60' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:36px;
+}
+.form-select option{background:var(--bg3);color:var(--text)}
+.form-textarea{resize:vertical;min-height:60px}
 .form-group{margin-bottom:14px}
-.btn{padding:10px 18px;border-radius:8px;border:none;cursor:pointer;font-weight:700;font-size:13px;font-family:var(--body)}
-.btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000}.btn-primary:hover{opacity:.9}
+.form-required::after{content:' *';color:var(--red);margin-left:2px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:540px){.form-row{grid-template-columns:1fr}}
+
+/* ========== BUTTONS ========== */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:10px 18px;border-radius:8px;border:none;cursor:pointer;
+  font-weight:700;font-size:13px;font-family:var(--body);transition:all .2s;
+}
+.btn:active{transform:scale(.97)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000}
+.btn-gold:hover{box-shadow:0 0 20px rgba(201,169,110,.3)}
+.btn-orange{background:linear-gradient(135deg,var(--orange),var(--orange2));color:#000}
+.btn-orange:hover{box-shadow:0 0 20px rgba(245,158,11,.3)}
+.btn-danger{background:var(--red-dim);border:1px solid rgba(220,38,38,.25);color:var(--red)}
+.btn-danger:hover{background:rgba(220,38,38,.2)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text2)}
+.btn-ghost:hover{border-color:var(--text2);color:var(--text)}
+.btn-sm{padding:6px 12px;font-size:11px;border-radius:6px}
 .btn-block{width:100%}
-#adminPanel{width:100%;max-width:860px;display:none}
-.panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
-.panel-title{font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
-.stat-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center}
-.stat-num{font-size:28px;font-weight:800;font-family:var(--mono)}.stat-label{font-size:11px;color:var(--text2);margin-top:4px}
-.tabs{display:flex;gap:4px;background:var(--bg2);padding:4px;border-radius:10px;margin-bottom:24px;border:1px solid var(--border)}
-.tab-btn{flex:1;padding:10px;border:none;background:transparent;color:var(--text2);cursor:pointer;border-radius:8px;font-size:13px;font-weight:600;font-family:var(--body)}
-.tab-btn.active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000}
-.tab-panel{display:none}.tab-panel.active{display:block}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:16px}
-.card-title{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.result-box{background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.3);border-radius:10px;padding:16px;margin-top:14px;display:none}
-.result-code{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--green);letter-spacing:2px;word-break:break-all;text-align:center;margin-bottom:10px}
-.result-device{font-size:12px;color:var(--text2);text-align:center;margin-bottom:10px}
-.lic-table{width:100%;border-collapse:collapse;font-size:12px}
-.lic-table th{padding:10px;text-align:left;color:var(--text2);font-size:11px;border-bottom:1px solid var(--border);font-weight:600}
-.lic-table td{padding:9px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle}
-.lic-table tr:hover td{background:rgba(255,255,255,.02)}
-.badge{display:inline-flex;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700}
-.badge-pro{background:rgba(201,169,110,.15);color:var(--gold)}.badge-demo{background:rgba(255,107,53,.15);color:var(--orange)}
-#toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 20px;font-size:13px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:320px}
-#toast.show{opacity:1}#toast.ok{border-color:var(--green);color:var(--green)}#toast.err{border-color:var(--red);color:var(--red)}
+.btn-icon{width:32px;height:32px;padding:0;border-radius:6px;font-size:12px}
+
+/* ========== ADMIN PANEL ========== */
+#adminPanel{display:none;padding:20px;max-width:1200px;margin:0 auto;animation:fadeUp .4s ease}
+.panel-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border);
+}
+.panel-brand{display:flex;align-items:center;gap:12px}
+.panel-logo{
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  box-shadow:0 4px 16px rgba(201,169,110,.25);
+}
+.panel-title{font-size:18px;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.panel-sub{font-size:11px;color:var(--text3);margin-top:1px}
+.panel-actions{display:flex;gap:8px}
+
+/* ========== STATS ========== */
+.stats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:24px}
+.stat-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px 12px;text-align:center;transition:border-color .2s;
+}
+.stat-card:hover{border-color:var(--border2)}
+.stat-icon{font-size:16px;margin-bottom:6px}
+.stat-num{font-size:26px;font-weight:800;font-family:var(--mono);line-height:1}
+.stat-label{font-size:10px;color:var(--text2);margin-top:5px;text-transform:uppercase;letter-spacing:.6px;font-weight:600}
+.stat-total .stat-icon,.stat-total .stat-num{color:var(--gold)}
+.stat-activas .stat-icon,.stat-activas .stat-num{color:var(--green2)}
+.stat-vencidas .stat-icon,.stat-vencidas .stat-num{color:var(--red)}
+.stat-inactivas .stat-icon,.stat-inactivas .stat-num{color:var(--orange)}
+.stat-demos .stat-icon,.stat-demos .stat-num{color:var(--teal)}
+
+@media(max-width:900px){.stats-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:540px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ========== TABS ========== */
+.tabs{
+  display:flex;gap:2px;background:var(--bg2);padding:4px;
+  border-radius:var(--radius);margin-bottom:24px;border:1px solid var(--border);
+}
+.tab-btn{
+  flex:1;padding:10px 8px;border:none;background:transparent;
+  color:var(--text3);cursor:pointer;border-radius:7px;
+  font-size:13px;font-weight:700;font-family:var(--body);transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.tab-btn:hover{color:var(--text2)}
+.tab-btn.active{color:#000;font-weight:800}
+.tab-btn.active[data-tab="generar"]{background:linear-gradient(135deg,var(--gold),var(--gold2))}
+.tab-btn.active[data-tab="demo"]{background:linear-gradient(135deg,var(--orange),var(--orange2))}
+.tab-btn.active[data-tab="lista"]{background:rgba(255,255,255,.1);color:var(--text)}
+.tab-panel{display:none}.tab-panel.active{display:block;animation:fadeUp .25s ease}
+
+/* ========== DUAL PANEL LAYOUT ========== */
+.gen-panels{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:768px){.gen-panels{grid-template-columns:1fr}}
+.gen-panel{
+  background:var(--bg2);border-radius:var(--radius-lg);overflow:hidden;
+  border:1px solid var(--border);
+}
+.gen-panel-head{
+  padding:16px 20px;display:flex;align-items:center;gap:10px;
+  font-size:14px;font-weight:800;border-bottom:1px solid var(--border);
+}
+.gen-panel-head i{font-size:16px}
+.panel-demo .gen-panel-head{border-left:3px solid var(--orange);color:var(--orange)}
+.panel-demo .gen-panel-head i{color:var(--orange)}
+.panel-pro .gen-panel-head{border-left:3px solid var(--gold);color:var(--gold)}
+.panel-pro .gen-panel-head i{color:var(--gold)}
+.gen-panel-body{padding:20px}
+.gen-panel-body .form-group:last-of-type{margin-bottom:18px}
+
+/* ========== DEVICE FIELDS ========== */
+.device-fields-area{margin-top:12px}
+.device-field{
+  display:flex;align-items:center;gap:8px;margin-bottom:8px;
+  animation:fadeUp .2s ease;
+}
+.device-field-label{
+  font-size:11px;font-weight:700;color:var(--text2);
+  min-width:80px;white-space:nowrap;
+}
+.device-field-input{
+  flex:1;
+}
+.device-field-status{
+  font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;
+  white-space:nowrap;
+}
+.status-asignada{background:var(--green-dim);color:var(--green2)}
+.status-disponible{background:var(--blue-dim);color:var(--blue)}
+
+/* ========== RESULT BOX ========== */
+.result-box{
+  border-radius:var(--radius);padding:16px;margin-top:16px;
+  animation:fadeUp .3s ease;
+}
+.result-box.demo-result{background:var(--orange-dim);border:1px solid rgba(245,158,11,.25)}
+.result-box.pro-result{background:var(--gold-dim);border:1px solid rgba(201,169,110,.25)}
+.result-title{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.code-line{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(0,0,0,.3);border-radius:8px;padding:10px 12px;margin-bottom:8px;
+}
+.code-text{flex:1;font-family:var(--mono);font-size:14px;font-weight:700;letter-spacing:1.5px;word-break:break-all}
+.code-text.demo-code{color:var(--orange)}
+.code-text.pro-code{color:var(--green2)}
+.code-meta{font-size:10px;color:var(--text3)}
+.result-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+
+/* ========== LIST ========== */
+.list-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.list-header-title{font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px}
+.list-actions{display:flex;gap:8px}
+
+/* Client Card */
+.client-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);
+  margin-bottom:12px;overflow:hidden;transition:border-color .2s;
+}
+.client-card:hover{border-color:var(--border2)}
+.client-card-head{
+  padding:16px 20px;cursor:pointer;display:flex;align-items:center;
+  justify-content:space-between;transition:background .15s;
+}
+.client-card-head:hover{background:rgba(255,255,255,.02)}
+.client-info{flex:1;min-width:0}
+.client-name{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.client-meta{font-size:11px;color:var(--text3);margin-top:3px;display:flex;gap:12px;flex-wrap:wrap}
+.client-badges{display:flex;gap:6px;align-items:center}
+.client-card-arrow{color:var(--text3);font-size:12px;transition:transform .2s;margin-left:12px}
+.client-card.open .client-card-arrow{transform:rotate(180deg)}
+.client-card-body{display:none;padding:0 20px 16px;border-top:1px solid var(--border)}
+.client-card.open .client-card-body{display:block;animation:fadeUp .2s ease}
+
+/* Terminal Row */
+.terminal-row{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;margin-top:10px;
+  background:rgba(0,0,0,.2);border-radius:8px;
+}
+.terminal-num{font-size:10px;font-weight:800;color:var(--text3);min-width:70px;text-transform:uppercase}
+.terminal-device{flex:1;font-family:var(--mono);font-size:12px;color:var(--text2)}
+.terminal-code{font-family:var(--mono);font-size:11px;color:var(--green2);font-weight:700}
+.terminal-status{font-size:10px;padding:3px 10px;border-radius:10px;font-weight:700;white-space:nowrap}
+.terminal-actions{display:flex;gap:4px}
+.terminal-empty{color:var(--text3);font-style:italic;font-size:12px}
+
+/* Demo row */
+.demo-row{
+  display:flex;align-items:center;gap:12px;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:12px 16px;margin-bottom:8px;
+  transition:border-color .2s;
+}
+.demo-row:hover{border-color:var(--border2)}
+.demo-code-text{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--orange);letter-spacing:1px}
+.demo-meta{font-size:11px;color:var(--text3)}
+.demo-actions{margin-left:auto;display:flex;gap:4px}
+
+/* Badge */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:10px;font-size:10px;font-weight:700}
+.badge-pro{background:var(--gold-dim);color:var(--gold)}
+.badge-demo{background:var(--orange-dim);color:var(--orange)}
+.badge-duration{background:var(--blue-dim);color:var(--blue)}
+.badge-terminals{background:rgba(255,255,255,.06);color:var(--text2)}
+
+/* ========== TOAST ========== */
+#toast{
+  position:fixed;bottom:24px;right:24px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius);padding:12px 20px;font-size:13px;
+  z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;
+  max-width:360px;display:flex;align-items:center;gap:8px;
+  box-shadow:0 8px 30px rgba(0,0,0,.5);
+}
+#toast.show{opacity:1}
+#toast.ok{border-color:rgba(16,185,129,.4);color:var(--green2)}
+#toast.err{border-color:rgba(220,38,38,.4);color:var(--red)}
+
+/* ========== EMPTY STATE ========== */
+.empty-state{text-align:center;padding:60px 20px;color:var(--text3)}
+.empty-state i{font-size:48px;margin-bottom:12px;opacity:.3}
+.empty-state p{font-size:14px}
+
+/* ========== SECTION DIVIDER ========== */
+.section-divider{
+  display:flex;align-items:center;gap:12px;margin:20px 0 14px;
+  font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;
+}
+.section-divider::before,.section-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ========== MISC ========== */
+.mono{font-family:var(--mono)}
+.text-gold{color:var(--gold)}.text-green{color:var(--green2)}.text-orange{color:var(--orange)}
+.text-red{color:var(--red)}.text-muted{color:var(--text3)}.text-sm{font-size:12px}
+.mt-2{margin-top:8px}.mt-3{margin-top:12px}.mt-4{margin-top:16px}
+.mb-2{margin-bottom:8px}.mb-3{margin-bottom:12px}
+.flex-center{display:flex;align-items:center;justify-content:center;gap:8px}
 </style>
 </head>
 <body>
+
+<!-- ==================== LOGIN ==================== -->
 <div id="loginPanel">
-  <div class="login-logo">💈</div>
-  <div class="login-title">Panel de Administrador</div>
-  <div class="login-sub">Barbería Pro · A2K Digital Studio</div>
-  <div class="login-card">
-    <div class="form-group"><label class="form-label">CONTRASEÑA DE ADMINISTRADOR</label><input type="password" id="admin-pw" class="form-input" placeholder="••••••••••" onkeydown="if(event.key==='Enter')loginAdmin()"></div>
-    <button class="btn btn-primary btn-block" onclick="loginAdmin()">🔐 Ingresar al Panel</button>
-    <div id="login-err" style="font-size:12px;color:var(--red);margin-top:10px;text-align:center;min-height:18px"></div>
+  <div class="login-box">
+    <div class="login-icon">💈</div>
+    <div class="login-title">Panel de Administrador</div>
+    <div class="login-sub">BARBERÍA PRO · SISTEMA DE LICENCIAS</div>
+    <div class="login-card">
+      <div class="form-group">
+        <label class="form-label">Contraseña de Administrador</label>
+        <input type="password" id="admin-pw" class="form-input" placeholder="••••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')loginAdmin()">
+      </div>
+      <button class="btn btn-gold btn-block" onclick="loginAdmin()" style="font-size:14px;padding:12px">
+        <i class="fas fa-lock"></i> Ingresar al Panel
+      </button>
+      <div id="login-err" style="font-size:12px;color:var(--red);margin-top:10px;text-align:center;min-height:18px"></div>
+    </div>
   </div>
 </div>
+
+<!-- ==================== ADMIN PANEL ==================== -->
 <div id="adminPanel">
-  <div class="panel-header"><div><div class="panel-title">💈 Admin — Barbería Pro</div><div style="font-size:12px;color:var(--text3);margin-top:2px">A2K Digital Studio · Sistema de Licencias</div></div><button class="btn" style="border:1px solid var(--border);color:var(--text2);font-size:12px" onclick="logout()">🚪 Salir</button></div>
-  <div class="stats-grid"><div class="stat-card"><div class="stat-num" style="color:var(--gold)" id="stat-total">0</div><div class="stat-label">Total Generadas</div></div><div class="stat-card"><div class="stat-num" style="color:var(--green)" id="stat-pro">0</div><div class="stat-label">Licencias PRO</div></div><div class="stat-card"><div class="stat-num" style="color:var(--orange)" id="stat-demo">0</div><div class="stat-label">Demos Generadas</div></div></div>
-  <div class="tabs"><button class="tab-btn active" onclick="switchTab('pro',this)">⚡ Generar PRO</button><button class="tab-btn" onclick="switchTab('demo',this)">🎯 Generar DEMO</button><button class="tab-btn" onclick="switchTab('lista',this)">📋 Lista</button></div>
-  <div class="tab-panel active" id="tab-pro"><div class="card"><div class="card-title">⚡ Nueva Licencia PRO</div><p style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.6">La licencia PRO queda <strong style="color:var(--gold)">vinculada al Device ID del cliente</strong>. Solo funcionará en ese dispositivo.</p><div class="form-group"><label class="form-label">DATOS DEL CLIENTE (opcional)</label><input type="text" id="pro-nota" class="form-input" placeholder="Nombre, negocio, teléfono..."></div><div class="form-group"><label class="form-label">DEVICE ID DEL CLIENTE</label><input type="text" id="pro-device-id" class="form-input" style="font-family:var(--mono);letter-spacing:1px" placeholder="BP-XXXX-XXXX-XXXX" oninput="this.value=this.value.toUpperCase()"><div style="font-size:11px;color:var(--text3);margin-top:4px">📌 El cliente lo ve en la pantalla de activación de la app.</div></div><button class="btn btn-primary btn-block" onclick="generarPRO()" style="font-size:14px;padding:12px">⚡ Generar Licencia PRO</button><div class="result-box" id="result-pro"><div class="result-device" id="result-pro-device"></div><div class="result-code" id="result-pro-code">BP-PRO-XXXXXX-XXXX-XXXX</div><div style="display:flex;gap:8px;justify-content:center"><button class="btn" style="border:1px solid var(--border);color:var(--text2);font-size:12px" onclick="copiar('result-pro-code')">📋 Copiar</button><button class="btn" style="border:1px solid var(--border);color:var(--text2);font-size:12px" onclick="shareWA('result-pro-code','result-pro-device')">💬 WhatsApp</button></div></div></div></div>
-  <div class="tab-panel" id="tab-demo"><div class="card"><div class="card-title">🎯 Nueva Licencia DEMO</div><p style="font-size:13px;color:var(--text2);margin-bottom:16px">El código DEMO permite <strong style="color:var(--orange)">5 días de prueba</strong>. Al vencer, la app se bloquea.</p><div class="form-group"><label class="form-label">NOTA INTERNA (opcional)</label><input type="text" id="demo-nota" class="form-input" placeholder="Nombre del prospecto..."></div><button class="btn btn-primary btn-block" onclick="generarDEMO()" style="font-size:14px;padding:12px">🎯 Generar DEMO (5 días)</button><div class="result-box" id="result-demo"><div style="font-size:12px;color:var(--text2);text-align:center;margin-bottom:8px">⏰ Expira 5 días después de ser activado.</div><div class="result-code" id="result-demo-code">BP-DEMO-XXXXXX-XXXX</div><div style="display:flex;gap:8px;justify-content:center"><button class="btn" style="border:1px solid var(--border);color:var(--text2);font-size:12px" onclick="copiar('result-demo-code')">📋 Copiar</button><button class="btn" style="border:1px solid var(--border);color:var(--text2);font-size:12px" onclick="shareWA('result-demo-code',null)">💬 WhatsApp</button></div></div></div></div>
-  <div class="tab-panel" id="tab-lista"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><span style="font-size:14px;font-weight:700">Historial de licencias</span><button class="btn" style="border:1px solid var(--red);color:var(--red);font-size:11px" onclick="limpiarTodo()">🗑️ Limpiar</button></div><div id="lista-container"></div></div>
+
+  <!-- Header -->
+  <div class="panel-header">
+    <div class="panel-brand">
+      <div class="panel-logo">💈</div>
+      <div>
+        <div class="panel-title">Barbería Pro</div>
+        <div class="panel-sub">Sistema de Licencias · Panel Admin</div>
+      </div>
+    </div>
+    <div class="panel-actions">
+      <button class="btn btn-ghost btn-sm" onclick="exportCSV()"><i class="fas fa-download"></i> CSV</button>
+      <button class="btn btn-ghost btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Salir</button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card stat-total">
+      <div class="stat-icon"><i class="fas fa-layer-group"></i></div>
+      <div class="stat-num" id="stat-total">0</div>
+      <div class="stat-label">Total</div>
+    </div>
+    <div class="stat-card stat-activas">
+      <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="stat-num" id="stat-activas">0</div>
+      <div class="stat-label">Activas</div>
+    </div>
+    <div class="stat-card stat-vencidas">
+      <div class="stat-icon"><i class="fas fa-clock"></i></div>
+      <div class="stat-num" id="stat-vencidas">0</div>
+      <div class="stat-label">Vencidas</div>
+    </div>
+    <div class="stat-card stat-inactivas">
+      <div class="stat-icon"><i class="fas fa-pause-circle"></i></div>
+      <div class="stat-num" id="stat-inactivas">0</div>
+      <div class="stat-label">Inactivas</div>
+    </div>
+    <div class="stat-card stat-demos">
+      <div class="stat-icon"><i class="fas fa-flask"></i></div>
+      <div class="stat-num" id="stat-demos">0</div>
+      <div class="stat-label">Demos</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="generar" onclick="switchTab('generar',this)">
+      <i class="fas fa-bolt"></i> Generar
+    </button>
+    <button class="tab-btn" data-tab="lista" onclick="switchTab('lista',this)">
+      <i class="fas fa-list"></i> Clientes
+    </button>
+  </div>
+
+  <!-- ========== TAB: GENERAR (Dual Panel) ========== -->
+  <div class="tab-panel active" id="tab-generar">
+    <div class="gen-panels">
+
+      <!-- DEMO Panel -->
+      <div class="gen-panel panel-demo">
+        <div class="gen-panel-head">
+          <i class="fas fa-flask"></i> Generar DEMO
+        </div>
+        <div class="gen-panel-body">
+          <p class="text-sm text-muted mb-3" style="line-height:1.6">
+            Código de prueba: <strong class="text-orange">5 días</strong> de uso completo. El cliente lo activa en la app sin necesidad de Device ID.
+          </p>
+          <div class="form-group">
+            <label class="form-label">Nota Interna</label>
+            <input type="text" id="demo-nota" class="form-input" placeholder="Nombre del prospecto, negocio...">
+          </div>
+          <button class="btn btn-orange btn-block" onclick="generarDEMO()" style="font-size:14px;padding:12px">
+            <i class="fas fa-flask"></i> Generar Código DEMO
+          </button>
+          <!-- Result -->
+          <div class="result-box demo-result" id="result-demo" style="display:none">
+            <div class="result-title"><i class="fas fa-check-circle"></i> Código DEMO generado</div>
+            <div class="code-line">
+              <div class="code-text demo-code" id="result-demo-code">—</div>
+              <button class="btn btn-icon btn-ghost" onclick="copyText('result-demo-code')" title="Copiar"><i class="fas fa-copy"></i></button>
+            </div>
+            <div class="text-sm text-muted mb-2">⏰ Expira 5 días después de ser activado por el cliente.</div>
+            <div class="result-actions">
+              <button class="btn btn-sm btn-ghost" onclick="waDemo()"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+              <button class="btn btn-sm btn-ghost" onclick="document.getElementById('demo-nota').value='';document.getElementById('result-demo').style.display='none'"><i class="fas fa-redo"></i> Nuevo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRO Panel -->
+      <div class="gen-panel panel-pro">
+        <div class="gen-panel-head">
+          <i class="fas fa-crown"></i> Generar PRO
+        </div>
+        <div class="gen-panel-body">
+          <p class="text-sm text-muted mb-3" style="line-height:1.6">
+            Licencia <strong class="text-gold">vinculada al Device ID</strong> de cada terminal. Elija cantidad de terminales y asigne códigos.
+          </p>
+
+          <!-- Client Info -->
+          <div class="form-group">
+            <label class="form-label form-required">Nombre del Negocio</label>
+            <input type="text" id="pro-negocio" class="form-input" placeholder="Barbería Don Juan">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label form-required">Teléfono / WhatsApp</label>
+              <input type="tel" id="pro-telefono" class="form-input" placeholder="+58 412 1234567">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input type="email" id="pro-email" class="form-input" placeholder="correo@ejemplo.com">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Ciudad / Ubicación</label>
+              <input type="text" id="pro-ciudad" class="form-input" placeholder="Caracas, Venezuela">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Duración</label>
+              <select id="pro-duracion" class="form-select">
+                <option value="1">1 mes</option>
+                <option value="3">3 meses</option>
+                <option value="6">6 meses</option>
+                <option value="12" selected>12 meses (1 año)</option>
+                <option value="24">24 meses (2 años)</option>
+                <option value="0">Permanente</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Notas Internas</label>
+            <textarea id="pro-notas" class="form-textarea" rows="2" placeholder="Notas opcionales sobre el cliente..."></textarea>
+          </div>
+
+          <!-- Terminal Selector -->
+          <div class="form-group">
+            <label class="form-label">Cantidad de Terminales</label>
+            <select id="pro-terminales" class="form-select" onchange="renderDeviceFields()">
+              <option value="1">1 terminal</option>
+              <option value="2">2 terminales</option>
+              <option value="3">3 terminales</option>
+              <option value="4">4 terminales</option>
+              <option value="5">5 terminales</option>
+              <option value="6">6 terminales</option>
+              <option value="7">7 terminales</option>
+              <option value="8">8 terminales</option>
+              <option value="9">9 terminales</option>
+              <option value="10">10 terminales</option>
+            </select>
+          </div>
+
+          <!-- Dynamic Device Fields -->
+          <div class="device-fields-area" id="device-fields-area"></div>
+
+          <button class="btn btn-gold btn-block" onclick="generarPRO()" style="font-size:14px;padding:12px">
+            <i class="fas fa-crown"></i> Generar Licencias PRO
+          </button>
+
+          <!-- Result -->
+          <div class="result-box pro-result" id="result-pro" style="display:none">
+            <div class="result-title"><i class="fas fa-check-circle"></i> Licencia(s) PRO generada(s)</div>
+            <div id="result-pro-codes"></div>
+            <div class="result-actions">
+              <button class="btn btn-sm btn-ghost" onclick="copyAllProCodes()"><i class="fas fa-copy"></i> Copiar Todo</button>
+              <button class="btn btn-sm btn-ghost" onclick="waProCodes()"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+              <button class="btn btn-sm btn-ghost" onclick="resetProForm()"><i class="fas fa-redo"></i> Nuevo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========== TAB: LISTA ========== -->
+  <div class="tab-panel" id="tab-lista">
+    <div class="list-header">
+      <div class="list-header-title"><i class="fas fa-users"></i> Registros de Clientes</div>
+      <div class="list-actions">
+        <button class="btn btn-sm btn-ghost" onclick="exportCSV()"><i class="fas fa-file-csv"></i> Exportar CSV</button>
+        <button class="btn btn-sm btn-danger" onclick="limpiarTodo()"><i class="fas fa-trash"></i> Limpiar Todo</button>
+      </div>
+    </div>
+    <div id="lista-container"></div>
+  </div>
+
 </div>
+
+<!-- Toast -->
 <div id="toast"></div>
+
 <script>
 'use strict';
-var _SIGN_SALT='BPBARBER2026';
-var _ADMIN_PW_DEFAULT='BP2026ADMIN';
-var _DB_KEY='bp_licencias_admin';
-var _loggedIn=false;
-function _hash(s){var h=0;for(var i=0;i<s.length;i++){h=Math.imul(31,h)+s.charCodeAt(i)|0;}return Math.abs(h).toString(36).toUpperCase();}
-function _devHash(deviceId){return _hash(deviceId.trim().toUpperCase()+_SIGN_SALT).slice(0,6);}
-function getDB(){try{var v=localStorage.getItem(_DB_KEY);return v?JSON.parse(v):{lics:[],adminPw:_ADMIN_PW_DEFAULT};}catch(e){return{lics:[],adminPw:_ADMIN_PW_DEFAULT};}}
-function saveDB(d){try{localStorage.setItem(_DB_KEY,JSON.stringify(d));}catch(e){}}
-function toast(msg,type){var t=document.getElementById('toast');t.textContent=msg;t.className='show '+(type||'ok');setTimeout(function(){t.className='';},3000);}
-function loginAdmin(){
-  var pw=(document.getElementById('admin-pw')||{}).value||'';
-  var db=getDB();
-  var adminPw=db.adminPw||_ADMIN_PW_DEFAULT;
-  try{var mainPw=localStorage.getItem('bp_admin_pw');if(mainPw){var p=JSON.parse(mainPw);if(p&&typeof p==='string'&&p.length>=4)adminPw=p;}}catch(e){}
-  if(pw===adminPw||pw===_ADMIN_PW_DEFAULT||pw==='BP2026ADMIN'){
-    try{localStorage.setItem(_DB_KEY,JSON.stringify({lics:(db.lics||[]),adminPw:'BP2026ADMIN'}));}catch(e){}
-    _loggedIn=true;document.getElementById('loginPanel').style.display='none';document.getElementById('adminPanel').style.display='block';renderStats();renderLista();
-  }else{document.getElementById('login-err').textContent='❌ Contraseña incorrecta.';setTimeout(function(){document.getElementById('login-err').textContent='';},3000);}
+
+/* ========== CONSTANTS ========== */
+var _SIGN_SALT = 'BPBARBER2026';
+var _ADMIN_PW_DEFAULT = 'BP2026ADMIN';
+var _DB_KEY = 'bp_licencias_admin';
+var _SYNC_KEY = 'bp_licencias_generadas';
+var _loggedIn = false;
+
+/* ========== HASH & CODE GENERATION ========== */
+function _hash(s) {
+  var h = 0;
+  for (var i = 0; i < s.length; i++) {
+    h = Math.imul(31, h) + s.charCodeAt(i) | 0;
+  }
+  return Math.abs(h).toString(36).toUpperCase();
 }
-function logout(){_loggedIn=false;document.getElementById('adminPanel').style.display='none';document.getElementById('loginPanel').style.display='block';document.getElementById('admin-pw').value='';}
-function switchTab(id,btn){document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');document.getElementById('tab-'+id).classList.add('active');if(id==='lista')renderLista();}
-function generarPRO(){
-  var deviceId=(document.getElementById('pro-device-id').value||'').trim().toUpperCase();
-  var nota=(document.getElementById('pro-nota').value||'').trim();
-  if(!deviceId){toast('Ingresa el Device ID del cliente','err');return;}
-  if(!deviceId.match(/^BP-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/)){toast('Formato inválido (BP-XXXX-XXXX-XXXX)','err');return;}
-  var dh=_devHash(deviceId);var rnd=Math.random().toString(36).slice(2,6).toUpperCase();
-  var base='BP-PRO-'+dh+'-'+rnd;var check=_hash(base+_SIGN_SALT).slice(0,4);var code=base+'-'+check;
-  var entry={code:code,tipo:'PRO',device:deviceId,nota:nota,ts:Date.now()};
-  var db=getDB();db.lics.push(entry);saveDB(db);
-  document.getElementById('result-pro-device').textContent='Para: '+deviceId+(nota?' ('+nota+')':'');
-  document.getElementById('result-pro-code').textContent=code;document.getElementById('result-pro').style.display='block';
-  document.getElementById('pro-device-id').value='';document.getElementById('pro-nota').value='';renderStats();toast('✅ Licencia PRO generada','ok');
+
+function _devHash(deviceId) {
+  return _hash(deviceId.trim().toUpperCase() + _SIGN_SALT).slice(0, 6);
 }
-function generarDEMO(){
-  var nota=(document.getElementById('demo-nota').value||'').trim();
-  var rnd=Math.random().toString(36).slice(2,8).toUpperCase();var base='BP-DEMO-'+rnd;var check=_hash(base+_SIGN_SALT).slice(0,4);var code=base+'-'+check;
-  var entry={code:code,tipo:'DEMO',nota:nota,ts:Date.now()};
-  var db=getDB();db.lics.push(entry);saveDB(db);
-  document.getElementById('result-demo-code').textContent=code;document.getElementById('result-demo').style.display='block';
-  document.getElementById('demo-nota').value='';renderStats();toast('🎯 Código DEMO generado','ok');
+
+function generateProCode(deviceId) {
+  var dh = _devHash(deviceId);
+  var rnd = Math.random().toString(36).slice(2, 6).toUpperCase();
+  var base = 'BP-PRO-' + dh + '-' + rnd;
+  var check = _hash(base + _SIGN_SALT).slice(0, 4);
+  return base + '-' + check;
 }
-function renderStats(){var db=getDB();var lics=db.lics||[];var pro=lics.filter(function(l){return l.tipo==='PRO';}).length;var demo=lics.filter(function(l){return l.tipo==='DEMO';}).length;document.getElementById('stat-total').textContent=lics.length;document.getElementById('stat-pro').textContent=pro;document.getElementById('stat-demo').textContent=demo;}
-function renderLista(){
-  var db=getDB();var lics=(db.lics||[]).slice().reverse();var c=document.getElementById('lista-container');
-  if(!lics.length){c.innerHTML='<div style="text-align:center;padding:40px;color:var(--text3)"><span style="font-size:48px">💈</span><p style="margin-top:8px">Sin licencias generadas</p></div>';return;}
-  c.innerHTML='<table class="lic-table"><thead><tr><th>Tipo</th><th>Código</th><th>Device</th><th>Nota</th><th>Fecha</th></tr></thead><tbody>'+lics.map(function(l){return'<tr><td>'+(l.tipo==='PRO'?'<span class="badge badge-pro">⚡ PRO</span>':'<span class="badge badge-demo">🎯 DEMO</span>')+'</td><td style="font-family:var(--mono);font-size:11px;color:var(--text2)">'+l.code+'</td><td style="font-size:11px;color:var(--text3)">'+(l.device||'—')+'</td><td style="font-size:11px;color:var(--text2)">'+(l.nota||'—')+'</td><td style="font-size:11px;color:var(--text3)">'+new Date(l.ts).toLocaleDateString('es-VE')+'</td></tr>';}).join('')+'</tbody></table>';
+
+function generateDemoCode() {
+  var rnd = Math.random().toString(36).slice(2, 8).toUpperCase();
+  var base = 'BP-DEMO-' + rnd;
+  var check = _hash(base + _SIGN_SALT).slice(0, 4);
+  return base + '-' + check;
 }
-function copiar(elId){var code=document.getElementById(elId).textContent;navigator.clipboard.writeText(code).then(function(){toast('📋 Copiado','ok');});}
-function shareWA(codeElId,devElId){var code=document.getElementById(codeElId).textContent;var device=devElId?document.getElementById(devElId).textContent:'';var msg='💈 *Barbería Pro — A2K Digital Studio*\n\nCódigo de activación:\n\n*'+code+'*\n\n'+(device?'📱 Device ID: '+device+'\n\n':'')+'1. Abre la app\n2. Pega el código\n3. Presiona "Crear Cuenta y Activar"\n\n💪 ¡Listo!';window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');}
-function limpiarTodo(){if(!confirm('¿Eliminar todo el historial?'))return;var db=getDB();db.lics=[];saveDB(db);renderLista();renderStats();toast('Historial limpiado','err');}
+
+/* ========== DATABASE ========== */
+function getDB() {
+  try {
+    var v = localStorage.getItem(_DB_KEY);
+    return v ? JSON.parse(v) : { clients: [], demos: [], adminPw: _ADMIN_PW_DEFAULT };
+  } catch (e) {
+    return { clients: [], demos: [], adminPw: _ADMIN_PW_DEFAULT };
+  }
+}
+
+function saveDB(db) {
+  try { localStorage.setItem(_DB_KEY, JSON.stringify(db)); } catch (e) {}
+  syncToLegacy(db);
+}
+
+function syncToLegacy(db) {
+  /* Keep backward sync with bp_licencias_generadas for main app compatibility */
+  try {
+    var legacy = [];
+    (db.clients || []).forEach(function(c) {
+      (c.dispositivos || []).forEach(function(d) {
+        legacy.push({ code: d.code, tipo: 'PRO', device: d.deviceId, nota: c.negocio, ts: c.ts });
+      });
+    });
+    (db.demos || []).forEach(function(d) {
+      legacy.push({ code: d.code, tipo: 'DEMO', nota: d.nota, ts: d.ts });
+    });
+    localStorage.setItem(_SYNC_KEY, JSON.stringify(legacy));
+  } catch (e) {}
+}
+
+function migrateOldDB(db) {
+  /* One-time migration from flat lics array to new structure */
+  if (!db._migrated && db.lics && db.lics.length > 0) {
+    db.lics.forEach(function(l) {
+      if (l.tipo === 'DEMO') {
+        db.demos.push({ id: uid(), code: l.code, nota: l.nota || '', ts: l.ts });
+      } else if (l.tipo === 'PRO') {
+        db.clients.push({
+          id: uid(),
+          negocio: l.nota || '',
+          telefono: '', email: '', ciudad: '', notas: '',
+          duracion: '12',
+          numTerminales: 1,
+          dispositivos: l.device ? [{ deviceId: l.device, code: l.code, activada: false }] : [],
+          ts: l.ts
+        });
+      }
+    });
+    delete db.lics;
+    db._migrated = true;
+    saveDB(db);
+  }
+  if (!db._migrated) { db._migrated = true; saveDB(db); }
+}
+
+function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+
+/* ========== TOAST ========== */
+function toast(msg, type) {
+  var t = document.getElementById('toast');
+  t.innerHTML = '<i class="fas fa-' + (type === 'err' ? 'exclamation-circle' : 'check-circle') + '"></i> ' + msg;
+  t.className = 'show ' + (type || 'ok');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function() { t.className = ''; }, 3000);
+}
+
+/* ========== AUTH ========== */
+function loginAdmin() {
+  var pw = (document.getElementById('admin-pw') || {}).value || '';
+  var db = getDB();
+  var adminPw = db.adminPw || _ADMIN_PW_DEFAULT;
+  /* Triple fallback: DB pw -> stored bp_admin_pw -> hardcoded default */
+  try {
+    var mainPw = localStorage.getItem('bp_admin_pw');
+    if (mainPw) {
+      var p = JSON.parse(mainPw);
+      if (p && typeof p === 'string' && p.length >= 4) adminPw = p;
+    }
+  } catch (e) {}
+  if (pw === adminPw || pw === _ADMIN_PW_DEFAULT || pw === 'BP2026ADMIN') {
+    try {
+      db.adminPw = 'BP2026ADMIN';
+      saveDB(db);
+    } catch (e) {}
+    _loggedIn = true;
+    document.getElementById('loginPanel').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    migrateOldDB(db);
+    renderAll();
+  } else {
+    document.getElementById('login-err').textContent = '❌ Contraseña incorrecta.';
+    setTimeout(function() { document.getElementById('login-err').textContent = ''; }, 3000);
+  }
+}
+
+function logout() {
+  _loggedIn = false;
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('loginPanel').style.display = 'flex';
+  document.getElementById('admin-pw').value = '';
+}
+
+/* ========== TABS ========== */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+  if (id === 'lista') renderLista();
+}
+
+/* ========== RENDER ALL ========== */
+function renderAll() {
+  renderStats();
+  renderDeviceFields();
+}
+
+/* ========== STATS ========== */
+function renderStats() {
+  var db = getDB();
+  var clients = db.clients || [];
+  var demos = db.demos || [];
+  var now = Date.now();
+
+  var activas = 0, vencidas = 0, inactivas = 0;
+  clients.forEach(function(c) {
+    var hasActivated = (c.dispositivos || []).some(function(d) { return d.activada; });
+    var months = parseInt(c.duracion) || 12;
+    if (hasActivated) {
+      if (months === 0) {
+        activas++; /* Permanent */
+      } else {
+        var expiresAt = c.ts + months * 30 * 24 * 60 * 60 * 1000;
+        if (now > expiresAt) { vencidas++; }
+        else { activas++; }
+      }
+    } else {
+      inactivas++;
+    }
+  });
+
+  document.getElementById('stat-total').textContent = clients.length + demos.length;
+  document.getElementById('stat-activas').textContent = activas;
+  document.getElementById('stat-vencidas').textContent = vencidas;
+  document.getElementById('stat-inactivas').textContent = inactivas;
+  document.getElementById('stat-demos').textContent = demos.length;
+}
+
+/* ========== DEVICE FIELDS (Dynamic) ========== */
+function renderDeviceFields() {
+  var n = parseInt(document.getElementById('pro-terminales').value) || 1;
+  var area = document.getElementById('device-fields-area');
+  var html = '';
+  for (var i = 1; i <= n; i++) {
+    html += '<div class="device-field">' +
+      '<div class="device-field-label"><i class="fas fa-desktop" style="margin-right:4px;opacity:.5"></i> Terminal ' + i + '</div>' +
+      '<div class="device-field-input"><input type="text" class="form-input device-id-input" data-terminal="' + i + '" placeholder="BP-XXXX-XXXX-XXXX" style="font-family:var(--mono);letter-spacing:1px;font-size:12px" oninput="this.value=this.value.toUpperCase()"></div>' +
+      '</div>';
+  }
+  area.innerHTML = html;
+}
+
+/* ========== GENERATE PRO ========== */
+function generarPRO() {
+  var negocio = (document.getElementById('pro-negocio').value || '').trim();
+  var telefono = (document.getElementById('pro-telefono').value || '').trim();
+  var email = (document.getElementById('pro-email').value || '').trim();
+  var ciudad = (document.getElementById('pro-ciudad').value || '').trim();
+  var notas = (document.getElementById('pro-notas').value || '').trim();
+  var duracion = document.getElementById('pro-duracion').value;
+  var numTerminales = parseInt(document.getElementById('pro-terminales').value) || 1;
+
+  /* Validate required fields */
+  if (!negocio) { toast('El nombre del negocio es obligatorio', 'err'); document.getElementById('pro-negocio').focus(); return; }
+  if (!telefono) { toast('El teléfono es obligatorio', 'err'); document.getElementById('pro-telefono').focus(); return; }
+
+  /* Collect device IDs */
+  var inputs = document.querySelectorAll('.device-id-input');
+  var dispositivos = [];
+  var filledCount = 0;
+  inputs.forEach(function(inp) {
+    var val = inp.value.trim().toUpperCase();
+    var termNum = parseInt(inp.dataset.terminal);
+    if (val) {
+      /* Validate format */
+      if (!val.match(/^BP-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/)) {
+        toast('Terminal ' + termNum + ': formato inválido (BP-XXXX-XXXX-XXXX)', 'err');
+        inp.focus();
+        return;
+      }
+      dispositivos.push({ deviceId: val, code: generateProCode(val), activada: false });
+      filledCount++;
+    } else {
+      dispositivos.push({ deviceId: '', code: '', activada: false });
+    }
+  });
+
+  if (filledCount === 0) {
+    toast('Ingresa al menos un Device ID', 'err');
+    return;
+  }
+
+  /* Build client record */
+  var client = {
+    id: uid(),
+    negocio: negocio,
+    telefono: telefono,
+    email: email,
+    ciudad: ciudad,
+    notas: notas,
+    duracion: duracion,
+    numTerminales: numTerminales,
+    dispositivos: dispositivos,
+    ts: Date.now()
+  };
+
+  var db = getDB();
+  if (!db.clients) db.clients = [];
+  db.clients.push(client);
+  saveDB(db);
+
+  /* Show result */
+  var codesDiv = document.getElementById('result-pro-codes');
+  var html = '';
+  var allCodes = [];
+  var terminalIndex = 0;
+  dispositivos.forEach(function(d, idx) {
+    if (d.code) {
+      terminalIndex++;
+      html += '<div class="code-line">' +
+        '<div style="min-width:70px"><span class="code-meta">Terminal ' + terminalIndex + '</span></div>' +
+        '<div class="code-text pro-code" id="pro-code-' + idx + '">' + d.code + '</div>' +
+        '<button class="btn btn-icon btn-ghost" onclick="copyText(\'pro-code-' + idx + '\')" title="Copiar"><i class="fas fa-copy"></i></button>' +
+        '</div>';
+      allCodes.push('Terminal ' + terminalIndex + ': ' + d.code);
+    }
+  });
+
+  html += '<div class="text-sm text-muted mt-2"><i class="fas fa-store"></i> ' + negocio +
+    (telefono ? ' · <i class="fab fa-whatsapp"></i> ' + telefono : '') +
+    ' · <i class="fas fa-calendar"></i> ' + getDurationLabel(duracion) + '</div>';
+
+  codesDiv.innerHTML = html;
+  codesDiv.setAttribute('data-codes', allCodes.join('\n'));
+  codesDiv.setAttribute('data-negocio', negocio);
+  codesDiv.setAttribute('data-telefono', telefono);
+
+  document.getElementById('result-pro').style.display = 'block';
+  renderStats();
+  toast('✅ ' + filledCount + ' licencia(s) PRO generada(s)', 'ok');
+}
+
+function resetProForm() {
+  document.getElementById('pro-negocio').value = '';
+  document.getElementById('pro-telefono').value = '';
+  document.getElementById('pro-email').value = '';
+  document.getElementById('pro-ciudad').value = '';
+  document.getElementById('pro-notas').value = '';
+  document.getElementById('pro-duracion').value = '12';
+  document.getElementById('pro-terminales').value = '1';
+  document.getElementById('result-pro').style.display = 'none';
+  renderDeviceFields();
+}
+
+/* ========== GENERATE DEMO ========== */
+function generarDEMO() {
+  var nota = (document.getElementById('demo-nota').value || '').trim();
+  var code = generateDemoCode();
+
+  var db = getDB();
+  if (!db.demos) db.demos = [];
+  db.demos.push({ id: uid(), code: code, tipo: 'DEMO', nota: nota, ts: Date.now() });
+  saveDB(db);
+
+  document.getElementById('result-demo-code').textContent = code;
+  document.getElementById('result-demo').style.display = 'block';
+  renderStats();
+  toast('🎯 Código DEMO generado', 'ok');
+}
+
+/* ========== DURATION LABEL ========== */
+function getDurationLabel(val) {
+  var v = parseInt(val);
+  if (v === 0) return 'Permanente';
+  if (v === 1) return '1 mes';
+  if (v === 12) return '1 año';
+  if (v === 24) return '2 años';
+  return v + ' meses';
+}
+
+/* ========== COPY ========== */
+function copyText(elId) {
+  var el = document.getElementById(elId);
+  if (!el) return;
+  var text = el.textContent || el.innerText;
+  navigator.clipboard.writeText(text).then(function() {
+    toast('📋 Copiado al portapapeles', 'ok');
+  }).catch(function() {
+    /* Fallback */
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    toast('📋 Copiado', 'ok');
+  });
+}
+
+function copyAllProCodes() {
+  var codesDiv = document.getElementById('result-pro-codes');
+  var text = codesDiv.getAttribute('data-codes') || '';
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(function() {
+    toast('📋 Todos los códigos copiados', 'ok');
+  }).catch(function() {
+    toast('Error al copiar', 'err');
+  });
+}
+
+/* ========== WHATSAPP ========== */
+function waDemo() {
+  var code = document.getElementById('result-demo-code').textContent;
+  var nota = (document.getElementById('demo-nota').value || '').trim();
+  var msg = '💈 *Barbería Pro*\n\nCódigo de prueba DEMO (5 días):\n\n*' + code + '*\n\n' +
+    '1. Abre la app\n2. Pega el código\n3. Presiona "Activar DEMO"\n\n💪 ¡Disfruta la prueba!';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function waProCodes() {
+  var codesDiv = document.getElementById('result-pro-codes');
+  var codes = codesDiv.getAttribute('data-codes') || '';
+  var negocio = codesDiv.getAttribute('data-negocio') || '';
+  var telefono = codesDiv.getAttribute('data-telefono') || '';
+  var msg = '💈 *Barbería Pro — Licencia(s) Activada(s)*\n\nNegocio: *' + negocio + '*\n\nCódigo(s) de activación:\n\n' +
+    codes +
+    '\n\n1. Abre la app en cada terminal\n2. Pega el código correspondiente\n3. Presiona "Crear Cuenta y Activar"\n\n💪 ¡Listo!';
+
+  /* If phone number available, pre-fill wa.me */
+  var phone = telefono.replace(/[^0-9]/g, '');
+  if (phone.length > 8) {
+    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+  } else {
+    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  }
+}
+
+/* ========== LIST RENDER ========== */
+function renderLista() {
+  var db = getDB();
+  var clients = (db.clients || []).slice().reverse();
+  var demos = (db.demos || []).slice().reverse();
+  var container = document.getElementById('lista-container');
+
+  if (clients.length === 0 && demos.length === 0) {
+    container.innerHTML = '<div class="empty-state"><i class="fas fa-folder-open"></i><p>No hay registros aún</p></div>';
+    return;
+  }
+
+  var html = '';
+
+  /* PRO Clients */
+  if (clients.length > 0) {
+    html += '<div class="section-divider"><i class="fas fa-crown" style="color:var(--gold)"></i> Clientes PRO (' + clients.length + ')</div>';
+    clients.forEach(function(c, ci) {
+      var termIndex = 0;
+      var assignedDevices = (c.dispositivos || []).filter(function(d) { return d.code; });
+      var activatedDevices = (c.dispositivos || []).filter(function(d) { return d.activada; });
+
+      html += '<div class="client-card" id="client-' + c.id + '">' +
+        '<div class="client-card-head" onclick="toggleCard(\'' + c.id + '\')">' +
+        '<div class="client-info">' +
+        '<div class="client-name"><span class="badge badge-pro"><i class="fas fa-crown"></i> PRO</span> ' + escHtml(c.negocio) + '</div>' +
+        '<div class="client-meta">' +
+        '<span><i class="fab fa-whatsapp"></i> ' + escHtml(c.telefono) + '</span>' +
+        (c.email ? '<span><i class="fas fa-envelope"></i> ' + escHtml(c.email) + '</span>' : '') +
+        (c.ciudad ? '<span><i class="fas fa-map-marker-alt"></i> ' + escHtml(c.ciudad) + '</span>' : '') +
+        '<span><i class="fas fa-calendar"></i> ' + new Date(c.ts).toLocaleDateString('es-VE') + '</span>' +
+        '</div></div>' +
+        '<div class="client-badges">' +
+        '<span class="badge badge-duration"><i class="fas fa-clock"></i> ' + getDurationLabel(c.duracion) + '</span>' +
+        '<span class="badge badge-terminals"><i class="fas fa-desktop"></i> ' + assignedDevices.length + '/' + c.numTerminales + '</span>' +
+        (activatedDevices.length > 0 ? '<span class="badge" style="background:var(--green-dim);color:var(--green2)"><i class="fas fa-check"></i> Activa</span>' : '<span class="badge" style="background:var(--orange-dim);color:var(--orange)"><i class="fas fa-hourglass-half"></i> Inactiva</span>') +
+        '</div>' +
+        '<div class="client-card-arrow"><i class="fas fa-chevron-down"></i></div>' +
+        '</div>';
+
+      /* Card Body (hidden by default) */
+      html += '<div class="client-card-body">';
+      if (c.notas) {
+        html += '<div class="text-sm text-muted mt-3 mb-2"><i class="fas fa-sticky-note"></i> ' + escHtml(c.notas) + '</div>';
+      }
+
+      (c.dispositivos || []).forEach(function(d, di) {
+        if (d.code) {
+          termIndex++;
+          var statusClass, statusText;
+          if (d.activada) {
+            statusClass = 'background:var(--green-dim);color:var(--green2)';
+            statusText = '✅ Activada';
+          } else {
+            statusClass = 'background:var(--blue-dim);color:var(--blue)';
+            statusText = '⏳ Disponible';
+          }
+          html += '<div class="terminal-row">' +
+            '<div class="terminal-num">Terminal ' + termIndex + '</div>' +
+            '<div class="terminal-device">' + escHtml(d.deviceId) + '</div>' +
+            '<div class="terminal-code">' + escHtml(d.code) + '</div>' +
+            '<button class="btn btn-icon btn-ghost" onclick="event.stopPropagation();copyRaw(\'' + escAttr(d.code) + '\')" title="Copiar código"><i class="fas fa-copy"></i></button>' +
+            '<span class="terminal-status" style="' + statusClass + '">' + statusText + '</span>' +
+            '<button class="btn btn-icon" style="background:var(--green-dim);color:var(--green2);border:none" onclick="event.stopPropagation();toggleActivation(\'' + c.id + '\',' + di + ')" title="Marcar como ' + (d.activada ? 'disponible' : 'activada') + '"><i class="fas fa-' + (d.activada ? 'undo' : 'check') + '"></i></button>' +
+            '</div>';
+        }
+      });
+
+      /* Available slots */
+      var available = c.numTerminales - assignedDevices.length;
+      if (available > 0) {
+        html += '<div class="text-sm text-muted mt-2" style="padding-left:4px"><i class="fas fa-plus-circle"></i> ' + available + ' terminal(es) disponible(s)</div>';
+      }
+
+      html += '<div style="display:flex;justify-content:flex-end;margin-top:12px">' +
+        '<button class="btn btn-sm btn-danger" onclick="event.stopPropagation();deleteClient(\'' + c.id + '\')"><i class="fas fa-trash"></i> Eliminar</button>' +
+        '</div>';
+
+      html += '</div></div>';
+    });
+  }
+
+  /* DEMO entries */
+  if (demos.length > 0) {
+    html += '<div class="section-divider" style="margin-top:24px"><i class="fas fa-flask" style="color:var(--orange)"></i> Demos (' + demos.length + ')</div>';
+    demos.forEach(function(d) {
+      html += '<div class="demo-row">' +
+        '<span class="badge badge-demo"><i class="fas fa-flask"></i> DEMO</span>' +
+        '<div style="flex:1;min-width:0">' +
+        '<div class="demo-code-text">' + escHtml(d.code) + '</div>' +
+        '<div class="demo-meta">' + (d.nota ? escHtml(d.nota) + ' · ' : '') + new Date(d.ts).toLocaleDateString('es-VE') + '</div>' +
+        '</div>' +
+        '<button class="btn btn-icon btn-ghost" onclick="copyRaw(\'' + escAttr(d.code) + '\')" title="Copiar"><i class="fas fa-copy"></i></button>' +
+        '<button class="btn btn-icon btn-danger" onclick="deleteDemo(\'' + d.id + '\')" title="Eliminar"><i class="fas fa-trash"></i></button>' +
+        '</div>';
+    });
+  }
+
+  container.innerHTML = html;
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function escAttr(s) {
+  if (!s) return '';
+  return s.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+
+function toggleCard(id) {
+  var card = document.getElementById('client-' + id);
+  if (card) card.classList.toggle('open');
+}
+
+function copyRaw(text) {
+  navigator.clipboard.writeText(text).then(function() {
+    toast('📋 Copiado', 'ok');
+  }).catch(function() {
+    toast('Error al copiar', 'err');
+  });
+}
+
+function toggleActivation(clientId, deviceIndex) {
+  var db = getDB();
+  var client = (db.clients || []).find(function(c) { return c.id === clientId; });
+  if (client && client.dispositivos && client.dispositivos[deviceIndex]) {
+    client.dispositivos[deviceIndex].activada = !client.dispositivos[deviceIndex].activada;
+    saveDB(db);
+    renderLista();
+    renderStats();
+    var state = client.dispositivos[deviceIndex].activada ? 'activada' : 'disponible';
+    toast('Terminal marcada como ' + state, 'ok');
+  }
+}
+
+function deleteClient(id) {
+  if (!confirm('¿Eliminar este cliente y todas sus licencias?')) return;
+  var db = getDB();
+  db.clients = (db.clients || []).filter(function(c) { return c.id !== id; });
+  saveDB(db);
+  renderLista();
+  renderStats();
+  toast('Cliente eliminado', 'err');
+}
+
+function deleteDemo(id) {
+  if (!confirm('¿Eliminar este código DEMO?')) return;
+  var db = getDB();
+  db.demos = (db.demos || []).filter(function(d) { return d.id !== id; });
+  saveDB(db);
+  renderLista();
+  renderStats();
+  toast('Demo eliminada', 'err');
+}
+
+function limpiarTodo() {
+  if (!confirm('⚠️ ¿Eliminar TODOS los registros? Esta acción no se puede deshacer.')) return;
+  var db = getDB();
+  db.clients = [];
+  db.demos = [];
+  saveDB(db);
+  renderLista();
+  renderStats();
+  toast('Todo el historial ha sido eliminado', 'err');
+}
+
+/* ========== EXPORT CSV ========== */
+function exportCSV() {
+  var db = getDB();
+  var clients = db.clients || [];
+  var demos = db.demos || [];
+  var rows = [];
+  rows.push('Tipo,Negocio/Nota,Teléfono,Email,Ciudad,Duración,Terminales,Device ID,Código,Estado,Fecha');
+
+  clients.forEach(function(c) {
+    var termIdx = 0;
+    var disps = c.dispositivos || [];
+    disps.forEach(function(d) {
+      if (d.code) {
+        termIdx++;
+        var estado = d.activada ? 'Activada' : 'Disponible';
+        rows.push([
+          'PRO', csvCell(c.negocio), csvCell(c.telefono), csvCell(c.email),
+          csvCell(c.ciudad), getDurationLabel(c.duracion),
+          termIdx + '/' + c.numTerminales, csvCell(d.deviceId),
+          csvCell(d.code), estado,
+          new Date(c.ts).toLocaleDateString('es-VE')
+        ].join(','));
+      }
+    });
+    /* Empty terminals */
+    for (var i = disps.length; i < c.numTerminales; i++) {
+      rows.push(['PRO', csvCell(c.negocio), csvCell(c.telefono), csvCell(c.email),
+        csvCell(c.ciudad), getDurationLabel(c.duracion),
+        '0/' + c.numTerminales, '', '', 'Sin asignar',
+        new Date(c.ts).toLocaleDateString('es-VE')
+      ].join(','));
+    }
+  });
+
+  demos.forEach(function(d) {
+    rows.push(['DEMO', csvCell(d.nota), '', '', '', '5 días', '1', '', csvCell(d.code), 'Demo',
+      new Date(d.ts).toLocaleDateString('es-VE')
+    ].join(','));
+  });
+
+  var csv = rows.join('\n');
+  var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'barberia_pro_licencias_' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('📄 CSV exportado', 'ok');
+}
+
+function csvCell(val) {
+  if (!val) return '';
+  val = String(val);
+  if (val.indexOf(',') >= 0 || val.indexOf('"') >= 0 || val.indexOf('\n') >= 0) {
+    return '"' + val.replace(/"/g, '""') + '"';
+  }
+  return val;
+}
+
+/* ========== INIT ========== */
+renderDeviceFields();
 </script>
 </body>
 </html>
