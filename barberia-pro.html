@@ -189,6 +189,53 @@ select option{background:var(--bg3);color:var(--text)}
 .pm-item{display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg4);border-radius:var(--radius);border:1px solid var(--border)}
 .pm-item label{flex:1;font-size:12px;font-weight:600;cursor:pointer}
 .pm-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--gold)}
+/* CONFIRM MODAL */
+.confirm-header{text-align:center;padding:16px 0 12px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.confirm-method{display:flex;align-items:center;justify-content:center;gap:10px;font-size:18px;font-weight:700;color:var(--gold)}
+.confirm-method i{font-size:28px}
+.confirm-total{text-align:center;font-family:var(--mono);font-size:32px;font-weight:800;color:var(--gold);margin:12px 0}
+.confirm-total small{font-size:14px;color:var(--text2);display:block;margin-top:2px}
+.confirm-items{max-height:200px;overflow-y:auto;margin-bottom:16px}
+.confirm-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03);font-size:12px}
+.confirm-item .ci-name{flex:1;color:var(--text)}
+.confirm-item .ci-qty{color:var(--text3);width:40px;text-align:center;font-family:var(--mono)}
+.confirm-item .ci-sub{font-family:var(--mono);font-weight:700;color:var(--text);min-width:60px;text-align:right}
+.confirm-summary{padding-top:10px;border-top:1px dashed var(--border)}
+.confirm-row{display:flex;justify-content:space-between;padding:3px 0;font-size:13px}
+.confirm-row .cr-label{color:var(--text2)}
+.confirm-row .cr-value{font-family:var(--mono);font-weight:700}
+.confirm-row.total-row{font-size:18px;font-weight:800;color:var(--gold);padding-top:8px;margin-top:4px;border-top:2px solid var(--gold)}
+.confirm-client-row{display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);border-radius:8px;margin-bottom:14px;font-size:13px}
+.confirm-client-row i{color:var(--blue)}
+.confirm-client-row span{color:var(--blue);font-weight:600}
+.confirm-btns{display:flex;gap:10px;margin-top:18px}
+.confirm-btns .btn{flex:1;padding:14px;font-size:15px;font-weight:700}
+/* RECEIPT MODAL */
+.receipt-wrap{max-width:380px;margin:0 auto}
+.receipt-paper{background:#fff;color:#111;border-radius:4px;padding:16px;font-family:'Courier New',monospace;font-size:12px;line-height:1.5;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.receipt-paper .rc-center{text-align:center}
+.receipt-paper .rc-bold{font-weight:700}
+.receipt-paper .rc-title{font-size:16px;font-weight:700;margin-bottom:2px}
+.receipt-paper .rc-sub{font-size:10px;color:#666;margin-bottom:8px}
+.receipt-paper .rc-divider{border-top:1px dashed #999;margin:6px 0}
+.receipt-paper .rc-row{display:flex;justify-content:space-between;padding:1px 0}
+.receipt-paper .rc-items{margin:6px 0}
+.receipt-paper .rc-itm{display:flex;justify-content:space-between;padding:1px 0;font-size:11px}
+.receipt-paper .rc-itm-name{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.receipt-paper .rc-itm-sub{min-width:50px;text-align:right}
+.receipt-paper .rc-total{text-align:center;font-size:18px;font-weight:700;margin:4px 0;padding:4px 0;border-top:2px solid #000;border-bottom:2px solid #000}
+.receipt-paper .rc-footer{text-align:center;font-size:10px;color:#666;margin-top:8px;padding-top:6px;border-top:1px dashed #999}
+.receipt-paper .rc-qr{text-align:center;margin:8px 0;font-size:10px;color:#888}
+.receipt-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.receipt-actions .btn{flex:1;min-width:100px;justify-content:center;font-size:12px;padding:10px}
+.receipt-actions .btn i{margin-right:4px}
+@media print{
+  body *{visibility:hidden!important}
+  .receipt-paper,.receipt-paper *{visibility:visible!important}
+  .receipt-paper{position:fixed;left:0;top:0;width:100%;margin:0;padding:8px;box-shadow:none;border-radius:0}
+  @page{margin:2mm}
+}
+.receipt-80 .receipt-paper{max-width:100%}
 </style>
 </head>
 <body>
@@ -376,6 +423,32 @@ select option{background:var(--bg3);color:var(--text)}
     <div class="pay-amount">Total: $<span id="pay-total">0.00</span> <span style="font-size:14px;color:var(--text2)">· Bs <span id="pay-bs">0.00</span></span></div>
     <div class="pay-grid" id="pay-grid"></div>
     <button class="btn btn-ghost btn-block" onclick="cerrarModal('modal-cobro')" style="margin-top:14px">Cancelar</button>
+  </div>
+</div>
+
+<!-- ===== MODAL: CONFIRMAR VENTA ===== -->
+<div class="modal-overlay" id="modal-confirmar">
+  <div class="modal" style="max-width:480px">
+    <div class="confirm-header">
+      <div class="confirm-method"><i id="cf-method-icon" class="fas fa-dollar-sign"></i> <span id="cf-method-name">Efectivo $</span></div>
+    </div>
+    <div id="cf-client-row"></div>
+    <div class="confirm-items" id="cf-items"></div>
+    <div class="confirm-summary" id="cf-summary"></div>
+    <div class="confirm-btns">
+      <button class="btn btn-ghost" onclick="volverAMetodos()"><i class="fas fa-arrow-left"></i> Atrás</button>
+      <button class="btn btn-gold" onclick="confirmarVenta()"><i class="fas fa-check-circle"></i> CONFIRMAR COBRO</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: FACTURA / RECIBO ===== -->
+<div class="modal-overlay" id="modal-factura">
+  <div class="modal" style="max-width:440px">
+    <div style="text-align:center;margin-bottom:12px"><span style="font-size:28px">✅</span><div style="font-size:16px;font-weight:700;color:var(--green)">¡Venta Exitosa!</div></div>
+    <div class="receipt-wrap" id="receipt-wrap"></div>
+    <div class="receipt-actions" id="receipt-actions"></div>
+    <button class="btn btn-ghost btn-block" onclick="cerrarFactura()" style="margin-top:8px">Cerrar</button>
   </div>
 </div>
 
@@ -910,17 +983,54 @@ function abrirModalCobro(){
   g.innerHTML=metodos.map(function(nombre){
     var m=METODOS_PAGO.find(function(mp){return mp.nombre===nombre;})||{icon:'fas fa-money-bill',moneda:'USD'};
     var bc=m.moneda==='USD'?'pay-badge-usd':m.moneda==='Bs'?'pay-badge-bs':'pay-badge-mix';
-    return'<div class="pay-btn" onclick="procesarPago(\''+nombre.replace(/'/g,"\\'")+'\')"><i class="'+m.icon+'"></i><span class="pay-name">'+nombre+'</span><span class="pay-badge '+bc+'">'+m.moneda+'</span></div>';
+    return'<div class="pay-btn" onclick="seleccionarMetodo(\''+nombre.replace(/'/g,"\\'")+'\',\''+m.icon+'\')"><i class="'+m.icon+'"></i><span class="pay-name">'+nombre+'</span><span class="pay-badge '+bc+'">'+m.moneda+'</span></div>';
   }).join('');
   abrirModal('modal-cobro');
 }
 
-function procesarPago(metodo){
+// ── Store selected method ──
+var _selectedMetodo=null;
+
+function seleccionarMetodo(nombre,icon){
+  _selectedMetodo={nombre:nombre,icon:icon};
+  var cfg=getCfg();var tasa=cfg.tasa||36.5;var total=_getTotal();
+  var sub=_getSubtotal();var desc=0;
+  if(_cart.descuento.tipo==='pct'){desc=sub*_cart.descuento.valor/100;}
+  else if(_cart.descuento.tipo==='fix'){desc=Math.min(sub,_cart.descuento.valor);}
+  // Set method info
+  gel('cf-method-icon').className=icon;
+  gel('cf-method-name').textContent=nombre;
+  // Client row
+  if(_cart.cliente){
+    gel('cf-client-row').innerHTML='<div class="confirm-client-row"><i class="fas fa-user"></i><span>'+_cart.cliente.nombre+'</span></div>';
+  }else{gel('cf-client-row').innerHTML='';}
+  // Items
+  gel('cf-items').innerHTML=_cart.items.map(function(it){
+    return'<div class="confirm-item"><span class="ci-name">'+it.emoji+' '+it.nombre+'</span><span class="ci-qty">x'+it.qty+'</span><span class="ci-sub">'+fmt$(it.precio*it.qty)+'</span></div>';
+  }).join('');
+  // Summary
+  var sumHTML='';
+  sumHTML+='<div class="confirm-row"><span class="cr-label">Subtotal</span><span class="cr-value">'+fmt$(sub)+'</span></div>';
+  if(desc>0){sumHTML+='<div class="confirm-row"><span class="cr-label">Descuento</span><span class="cr-value" style="color:var(--red)">-'+fmt$(desc)+'</span></div>';}
+  sumHTML+='<div class="confirm-row"><span class="cr-label">Total Bs</span><span class="cr-value" style="color:var(--text2);font-size:12px">'+fmtBs(total*tasa)+'</span></div>';
+  sumHTML+='<div class="confirm-row total-row"><span class="cr-label">TOTAL A COBRAR</span><span class="cr-value">'+fmt$(total)+'</span></div>';
+  gel('cf-summary').innerHTML=sumHTML;
+  // Switch modals
+  cerrarModal('modal-cobro');
+  abrirModal('modal-confirmar');
+}
+
+function volverAMetodos(){
+  cerrarModal('modal-confirmar');
+  abrirModal('modal-cobro');
+}
+
+function confirmarVenta(){
   var total=_getTotal();var cfg=getCfg();var tasa=cfg.tasa||36.5;
   var venta={
     id:'v'+Date.now(),num:_ticketCounter,
     items:_cart.items.slice(),subtotal:_getSubtotal(),
-    descuento:_cart.descuento,total:total,metodo:metodo,
+    descuento:_cart.descuento,total:total,metodo:_selectedMetodo.nombre,
     cliente:_cart.cliente,fecha:Date.now(),
     tasa:tasa,totalBs:total*tasa
   };
@@ -932,10 +1042,9 @@ function procesarPago(metodo){
   var caja=db.get('caja');
   if(!caja||!caja.abierta){caja={abierta:true,inicio:0,ventas:0,gastos:0,movimientos:[],fecha:Date.now()};}
   caja.ventas=(caja.ventas||0)+total;
-  caja.movimientos.push({tipo:'venta',monto:total,metodo:metodo,fecha:Date.now(),detalle:'Ticket #'+_ticketCounter});
+  caja.movimientos.push({tipo:'venta',monto:total,metodo:_selectedMetodo.nombre,fecha:Date.now(),detalle:'Ticket #'+_ticketCounter});
   db.set('caja',caja);
   _updateCajaDisplay();
-  // Update product stock if any products
   // Update client visits
   if(_cart.cliente){
     var clientes=db.get('clientes')||[];
@@ -948,12 +1057,204 @@ function procesarPago(metodo){
       }
     }
   }
+  var ticketNum=_ticketCounter;
   _ticketCounter++;
   db.set('ticket_counter',_ticketCounter);
   db.remove('venta_pausada');
-  cerrarModal('modal-cobro');
+  cerrarModal('modal-confirmar');
   vaciarCarrito();
-  toast('✅ Venta registrada — Ticket #'+(_ticketCounter-1),'ok');
+  toast('✅ Venta registrada — Ticket #'+ticketNum,'ok');
+  // Show receipt
+  _showFactura(venta,ticketNum);
+}
+
+// ═══════════════════════════════════════════════════════
+// FACTURA / RECIBO
+// ═══════════════════════════════════════════════════════
+var _lastVenta=null;
+
+function _showFactura(venta,ticketNum){
+  _lastVenta=venta;
+  var cfg=getCfg();var cuenta=db.get('cuenta')||{};
+  var d=new Date(venta.fecha);
+  var fechaStr=d.toLocaleDateString('es-VE',{day:'2-digit',month:'2-digit',year:'numeric'});
+  var horaStr=d.toLocaleTimeString('es-VE',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  var desc=0;
+  if(venta.descuento){
+    if(venta.descuento.tipo==='pct')desc=venta.subtotal*venta.descuento.valor/100;
+    else if(venta.descuento.tipo==='fix')desc=Math.min(venta.subtotal,venta.descuento.valor);
+  }
+  // Build receipt HTML (white paper style for thermal)
+  var html='<div class="receipt-paper" id="receipt-paper-print">';
+  html+='<div class="rc-center rc-title">💈 '+((cfg.negocio||'Barbería Pro').toUpperCase())+'</div>';
+  html+='<div class="rc-center rc-sub">';
+  if(cuenta.dueno)html+=cuenta.dueno+'<br>';
+  if(cfg.direccion)html+=cfg.direccion+'<br>';
+  if(cfg.telefono)html+='Tel: '+cfg.telefono+'<br>';
+  if(cfg.rif)html+='RIF: '+cfg.rif;
+  html+='</div>';
+  html+='<div class="rc-divider"></div>';
+  html+='<div class="rc-center" style="font-size:11px"><b>FACTURA</b></div>';
+  html+='<div class="rc-row"><span>Ticket:</span><span><b>#'+String(ticketNum).padStart(4,'0')+'</b></span></div>';
+  html+='<div class="rc-row"><span>Fecha:</span><span>'+fechaStr+' '+horaStr+'</span></div>';
+  if(venta.cliente)html+='<div class="rc-row"><span>Cliente:</span><span>'+venta.cliente.nombre+'</span></div>';
+  html+='<div class="rc-row"><span>Método:</span><span><b>'+venta.metodo+'</b></span></div>';
+  html+='<div class="rc-divider"></div>';
+  // Items
+  html+='<div class="rc-items">';
+  venta.items.forEach(function(it){
+    html+='<div class="rc-itm"><span class="rc-itm-name">'+it.qty+'x '+it.nombre+'</span><span class="rc-itm-sub">'+fmt$(it.precio*it.qty)+'</span></div>';
+  });
+  html+='</div>';
+  html+='<div class="rc-divider"></div>';
+  // Totals
+  html+='<div class="rc-row"><span>Subtotal:</span><span>'+fmt$(venta.subtotal)+'</span></div>';
+  if(desc>0)html+='<div class="rc-row"><span>Descuento:</span><span>-'+fmt$(desc)+'</span></div>';
+  html+='<div class="rc-total">$ '+venta.total.toFixed(2)+'</div>';
+  html+='<div class="rc-row"><span>Bs:</span><span>'+fmtBs(venta.totalBs)+'</span></div>';
+  html+='<div class="rc-row"><span>Tasa:</span><span>1 USD = '+venta.tasa+' Bs</span></div>';
+  html+='<div class="rc-divider"></div>';
+  // Bank info
+  if(venta.metodo==='Transferencia'||venta.metodo==='Pago Móvil'){
+    html+='<div class="rc-center" style="font-size:10px">';
+    if(cfg.banco)html+='<br>Banco: '+cfg.banco;
+    if(cfg.cuenta)html+='<br>Cta: '+cfg.cuenta;
+    if(cfg.ciPagoMovil)html+='<br>CI P.Móvil: '+cfg.ciPagoMovil;
+    html+='</div>';
+  }
+  if(venta.metodo==='Zelle'&&cfg.zelleEmail){
+    html+='<div class="rc-center" style="font-size:10px"><br>Zelle: '+cfg.zelleEmail+'</div>';
+  }
+  html+='<div class="rc-footer">¡Gracias por su visita! 💈<br>Barbería Pro — A2K Digital Studio</div>';
+  html+='</div>';
+  gel('receipt-wrap').innerHTML=html;
+  // Actions
+  gel('receipt-actions').innerHTML=
+    '<button class="btn btn-gold" onclick="imprimirRecibo(58)"><i class="fas fa-print"></i> 58mm Térmica</button>'+
+    '<button class="btn btn-gold" onclick="imprimirRecibo(80)"><i class="fas fa-print"></i> 80mm Térmica</button>'+
+    '<button class="btn btn-green" onclick="enviarFacturaWhatsApp()"><i class="fab fa-whatsapp"></i> WhatsApp</button>'+
+    '<button class="btn btn-ghost" onclick="descargarFactura()"><i class="fas fa-download"></i> Descargar</button>';
+  abrirModal('modal-factura');
+}
+
+function cerrarFactura(){
+  cerrarModal('modal-factura');
+  _lastVenta=null;
+}
+
+function imprimirRecibo(ancho){
+  if(!_lastVenta)return;
+  var wrap=gel('receipt-wrap');
+  var modal=gel('modal-factura');
+  // Set print width
+  wrap.className='receipt-wrap'+(ancho===80?' receipt-80':'');
+  // Trigger print
+  setTimeout(function(){
+    window.print();
+    wrap.className='receipt-wrap';
+  },100);
+}
+
+function enviarFacturaWhatsApp(){
+  if(!_lastVenta)return;
+  var cfg=getCfg();var cuenta=db.get('cuenta')||{};
+  var v=_lastVenta;
+  var d=new Date(v.fecha);
+  var fechaStr=d.toLocaleDateString('es-VE',{day:'2-digit',month:'2-digit',year:'numeric'});
+  var horaStr=d.toLocaleTimeString('es-VE',{hour:'2-digit',minute:'2-digit'});
+  var desc=0;
+  if(v.descuento){
+    if(v.descuento.tipo==='pct')desc=v.subtotal*v.descuento.valor/100;
+    else if(v.descuento.tipo==='fix')desc=Math.min(v.subtotal,v.descuento.valor);
+  }
+  // Build text receipt for WhatsApp
+  var t='💈 *'+(cfg.negocio||'Barbería Pro').toUpperCase()+'*\n';
+  if(cuenta.dueno)t+='👤 '+cuenta.dueno+'\n';
+  if(cfg.direccion)t+='📍 '+cfg.direccion+'\n';
+  if(cfg.telefono)t+='📞 '+cfg.telefono+'\n';
+  t+='\n📋 *FACTURA*\n';
+  t+='🧾 Ticket: *#'+String(v.num).padStart(4,'0')+'*\n';
+  t+='📅 '+fechaStr+' '+horaStr+'\n';
+  if(v.cliente)t+='👤 Cliente: '+v.cliente.nombre+'\n';
+  t+='💳 Método: '+v.metodo+'\n';
+  t+='\n━━━━━━━━━━━━━━━\n';
+  t+='*DETALLE:*\n';
+  v.items.forEach(function(it){
+    t+='• '+it.qty+'x '+it.nombre+' → '+fmt$(it.precio*it.qty)+'\n';
+  });
+  t+='━━━━━━━━━━━━━━━\n';
+  t+='Subtotal: '+fmt$(v.subtotal)+'\n';
+  if(desc>0)t+='Descuento: -'+fmt$(desc)+'\n';
+  t+='*TOTAL: $'+v.total.toFixed(2)+'*\n';
+  t+='Bs: '+fmtBs(v.totalBs)+'\n';
+  t+='Tasa: 1 USD = '+v.tasa+' Bs\n';
+  t+='\n¡Gracias por su visita! 💈✂️';
+  // Determine phone number
+  var telefono=v.cliente?v.cliente.telefono:(cfg.telefono||'');
+  var cleanPhone=telefono.replace(/[^0-9]/g,'');
+  if(!cleanPhone){toast('⚠️ No hay número de teléfono','warn');return;}
+  // Ensure country code
+  if(cleanPhone.length===10)cleanPhone='58'+cleanPhone;
+  var url='https://wa.me/'+cleanPhone+'?text='+encodeURIComponent(t);
+  window.open(url,'_blank');
+}
+
+function descargarFactura(){
+  if(!_lastVenta)return;
+  var cfg=getCfg();var cuenta=db.get('cuenta')||{};
+  var v=_lastVenta;
+  var d=new Date(v.fecha);
+  var fechaStr=d.toLocaleDateString('es-VE',{day:'2-digit',month:'2-digit',year:'numeric'});
+  var horaStr=d.toLocaleTimeString('es-VE',{hour:'2-digit',minute:'2-digit'});
+  var desc=0;
+  if(v.descuento){
+    if(v.descuento.tipo==='pct')desc=v.subtotal*v.descuento.valor/100;
+    else if(v.descuento.tipo==='fix')desc=Math.min(v.subtotal,v.descuento.valor);
+  }
+  // Build plain text
+  var txt='================================\n';
+  txt+='  '+((cfg.negocio||'Barbería Pro').toUpperCase())+'\n';
+  txt+='================================\n';
+  if(cuenta.dueno)txt+='Propietario: '+cuenta.dueno+'\n';
+  if(cfg.direccion)txt+='Dirección: '+cfg.direccion+'\n';
+  if(cfg.telefono)txt+='Teléfono: '+cfg.telefono+'\n';
+  if(cfg.rif)txt+='RIF: '+cfg.rif+'\n';
+  txt+='--------------------------------\n';
+  txt+='          FACTURA\n';
+  txt+='Ticket: #'+String(v.num).padStart(4,'0')+'\n';
+  txt+='Fecha: '+fechaStr+' '+horaStr+'\n';
+  if(v.cliente)txt+='Cliente: '+v.cliente.nombre+'\n';
+  txt+='Método: '+v.metodo+'\n';
+  txt+='--------------------------------\n';
+  v.items.forEach(function(it){
+    var line=it.qty+'x '+it.nombre;
+    var dots='.'.repeat(Math.max(1,40-line.length-fmt$(it.precio*it.qty).length));
+    txt+=line+' '+dots+' '+fmt$(it.precio*it.qty)+'\n';
+  });
+  txt+='--------------------------------\n';
+  txt+='Subtotal:     '+fmt$(v.subtotal)+'\n';
+  if(desc>0)txt+='Descuento:    -'+fmt$(desc)+'\n';
+  txt+='================================\n';
+  txt+='  TOTAL: $ '+v.total.toFixed(2)+'\n';
+  txt+='  Bs:    '+fmtBs(v.totalBs)+'\n';
+  txt+='  Tasa:  1 USD = '+v.tasa+' Bs\n';
+  txt+='================================\n';
+  if(v.metodo==='Transferencia'||v.metodo==='Pago Móvil'){
+    if(cfg.banco)txt+='Banco: '+cfg.banco+'\n';
+    if(cfg.cuenta)txt+='Cuenta: '+cfg.cuenta+'\n';
+    if(cfg.ciPagoMovil)txt+='CI Pago Móvil: '+cfg.ciPagoMovil+'\n';
+  }
+  txt+='\n   ¡Gracias por su visita! 💈\n';
+  txt+='   Barbería Pro — A2K Digital\n';
+  // Download as text file
+  var blob=new Blob([txt],{type:'text/plain;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='factura-ticket-'+String(v.num).padStart(4,'0')+'.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Factura descargada','ok');
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1457,7 +1758,7 @@ function mostrarInfoLicencia(){
   if(!lic){html+='<p style="color:var(--red)">No hay licencia activa.</p>';}
   else{
     html+='<table style="width:100%;font-size:13px">';
-    html+='<tr><td style="color:var(--text2);padding:6px">Tipo:</td><td style="font-weight:700;color:'+(lic.tipo==='PRO'?'var(--green)':'var(--orange')+'">'+lic.tipo+'</td></tr>';
+    html+='<tr><td style="color:var(--text2);padding:6px">Tipo:</td><td style="font-weight:700;color:'+(lic.tipo==='PRO'?'var(--green)':'var(--orange)')+'">'+lic.tipo+'</td></tr>';
     html+='<tr><td style="color:var(--text2);padding:6px">Código:</td><td style="font-family:var(--mono);font-size:11px">'+lic.code+'</td></tr>';
     html+='<tr><td style="color:var(--text2);padding:6px">Device ID:</td><td style="font-family:var(--mono);font-size:11px">'+lic.device+'</td></tr>';
     html+='<tr><td style="color:var(--text2);padding:6px">Activada:</td><td>'+new Date(lic.activado).toLocaleString('es-VE')+'</td></tr>';
