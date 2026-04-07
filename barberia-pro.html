@@ -1045,6 +1045,18 @@ function confirmarVenta(){
   caja.movimientos.push({tipo:'venta',monto:total,metodo:_selectedMetodo.nombre,fecha:Date.now(),detalle:'Ticket #'+_ticketCounter});
   db.set('caja',caja);
   _updateCajaDisplay();
+  // Descontar stock de inventario
+  var prods=db.get('productos')||[];
+  var stockModificado=false;
+  _cart.items.forEach(function(item){
+    for(var i=0;i<prods.length;i++){
+      if(prods[i].id===item.id){
+        prods[i].stock=Math.max(0,(prods[i].stock||0)-(item.qty||item.cantidad||1));
+        stockModificado=true;break;
+      }
+    }
+  });
+  if(stockModificado){db.set('productos',prods);}
   // Update client visits
   if(_cart.cliente){
     var clientes=db.get('clientes')||[];
