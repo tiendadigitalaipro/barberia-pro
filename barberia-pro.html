@@ -303,7 +303,7 @@ select option{background:var(--bg3);color:var(--text)}
       <div class="form-group"><label class="form-label">Teléfono</label><input type="tel" id="reg-telefono" class="form-input" placeholder="Ej: 0414-1234567"></div>
       <div class="form-group"><label class="form-label">Nombre del Dueño</label><input type="text" id="reg-dueno" class="form-input" placeholder="Ej: Carlos Pérez"></div>
       <div class="form-group"><label class="form-label">TU DEVICE ID (comparte para obtener licencia)</label><div class="lock-device" id="lock-device-id">LOADING...</div></div>
-      <div class="form-group"><label class="form-label">CÓDIGO DE LICENCIA</label><input type="text" id="reg-licencia" class="form-input" placeholder="BP-PRO-... o BP-DEMO-..." style="font-family:var(--mono);text-align:center;letter-spacing:1px;text-transform:uppercase"></div>
+      <div class="form-group"><label class="form-label">CÓDIGO DE LICENCIA</label><input type="text" id="reg-licencia" class="form-input" type="password" placeholder="BP-PRO-... o BP-DEMO-..." style="font-family:var(--mono);text-align:center;letter-spacing:1px;text-transform:uppercase"></div>
       <button class="btn btn-primary btn-block" onclick="registrarYActivar()" style="padding:12px;font-size:14px">🔑 Crear Cuenta y Activar</button>
       <button class="btn btn-ghost btn-block" onclick="usarDemo()" style="margin-top:8px">🎯 Prueba gratuita 5 días</button>
       <div class="lock-err" id="lock-err"></div>
